@@ -21,7 +21,7 @@ class database:
         result = []
         self.cursor.execute('''SELECT IDNode, IDParent, TreeType,
                                 NodeType, NodeName, NodeStatus,
-                                SortOrderId, NodeActive 
+                                NodeActive 
                             FROM Node''')
         
         while True:
@@ -30,4 +30,33 @@ class database:
                 result.append(row)
             else:
                 return result
+    
+    def search(self, node_id: int, size: int = 50, index: int = 0):
+        result = []
+        self.cursor.execute('''SELECT IDMeasurement, IDNode, MeasDate,
+                                    MeasValue, StartFreq, EndFreq,
+                                    SampleRate, Speed, SpeedMin,
+                                    SpeedMax, SpeedBegin, SpeedEnd
+                                FROM Measurement
+                                WHERE IDNode = {0}
+ 
+                                ORDER BY (SELECT NULL)
+                                OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(node_id, index * size, size))
+        
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                result.append(row)
+            else:
+                return result
             
+    def raw(self, measure_id):
+        result = []
+        self.cursor.execute('''SELECT * FROM MeasurementBinaryRaw WHERE IDMeasurement={0}'''.format(measure_id))
+        
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                result.append(row)
+            else:
+                return result
