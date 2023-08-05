@@ -1,7 +1,7 @@
 import numpy as np
 import struct
 
-def convertData(row):
+def __convertData(row):
     result = []
     width = 2
 
@@ -28,5 +28,5 @@ def convertSearch(data):
 
 def convertRaw(data):
     return list(map(lambda x: {"id": x[0], "data_type": x[1], "rawdata_type": x[2],
-                               "scale_factor":x[3], "rawdata":x[3]}, convertData(data)))
+                               "scale_factor":x[3], "rawdata": __convertData(x[4])}, data))
 

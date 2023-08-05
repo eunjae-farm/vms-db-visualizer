@@ -1,6 +1,5 @@
 import pymssql as mssql
-import numpy as np
-import struct
+from dto import convertRaw, convertSearch, convertNode
 
 class database:
     def __init__(self):
@@ -29,7 +28,7 @@ class database:
             if row != None:
                 result.append(row)
             else:
-                return result
+                return convertNode(result)
     
     def search(self, node_id: int, size: int = 50, index: int = 0):
         result = []
@@ -48,7 +47,7 @@ class database:
             if row != None:
                 result.append(row)
             else:
-                return result
+                return convertSearch(result)
             
     def raw(self, measure_id):
         result = []
@@ -59,4 +58,4 @@ class database:
             if row != None:
                 result.append(row)
             else:
-                return result
+                return convertRaw(result)
