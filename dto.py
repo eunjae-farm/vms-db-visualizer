@@ -17,7 +17,7 @@ def __convertData(row):
 
 def convertNode(data):
     return list(map(lambda x: {"node":x[0], "parent": x[1], "treetype": x[2],
-                               "nodetype":x[3], "name":x[4], "status":x[5],
+                               "nodetype":x[3], "name":x[4].strip(), "status":x[5],
                                "active":x[6]}, data))
 
 def convertSearch(data):
