@@ -35,11 +35,10 @@ class database:
         self.cursor.execute('''SELECT IDMeasurement, IDNode, MeasDate,
                                     MeasValue, StartFreq, EndFreq,
                                     SampleRate, Speed, SpeedMin,
-                                    SpeedMax, SpeedBegin, SpeedEnd
+                                    SpeedMax, SpeedBegin, SpeedEnd, TimesignalLines, SpectraScaling, SpectraEUType
                                 FROM Measurement
                                 WHERE IDNode = {0}
- 
-                                ORDER BY (SELECT NULL)
+                                ORDER BY (SELECT NULL), IDMeasurement DESC
                                 OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(node_id, index * size, size))
         
         while True:
