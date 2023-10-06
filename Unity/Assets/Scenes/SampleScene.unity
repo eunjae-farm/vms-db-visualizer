@@ -225,6 +225,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2810381265594315931, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.907
+      objectReference: {fileID: 0}
     - target: {fileID: 3022114881760009551, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_Name
       value: object
@@ -242,32 +246,36 @@ PrefabInstance:
       value: 7.0696526
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.957
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6856525
+      value: 0.71049035
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.6856525
+      value: -0.65988034
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.17286026
+      value: -0.17912215
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.17286026
+      value: 0.16636287
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -61.7
+      value: -61.411
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: -82.199
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
+      value: 81.133
       objectReference: {fileID: 0}
     - target: {fileID: 6079037108791356085, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_Enabled
@@ -476,7 +484,7 @@ MonoBehaviour:
   Electro: {fileID: 2030040997}
   RefreshTick: 10
   Amp: 30
-  WingRotatePerSeconds: 360
+  WingRotatePerSeconds: 1
 --- !u!1 &2030040997 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1384329165552494358, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
