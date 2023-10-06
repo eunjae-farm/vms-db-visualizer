@@ -243,23 +243,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6858016
+      value: 0.6856525
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.6858018
+      value: -0.6856525
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.17226733
+      value: -0.17286026
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.17226733
+      value: 0.17286026
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -61.799
+      value: -61.7
       objectReference: {fileID: 0}
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -268,6 +268,10 @@ PrefabInstance:
     - target: {fileID: 4906171337886847450, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6079037108791356085, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6615795613969502180, guid: 4cf9682714e67f24dbad1811d674968a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -470,8 +474,8 @@ MonoBehaviour:
   Hole: {fileID: 829894315}
   Body: {fileID: 829894314}
   Electro: {fileID: 2030040997}
-  RefreshTick: 2
-  Amp: 5
+  RefreshTick: 10
+  Amp: 30
   WingRotatePerSeconds: 360
 --- !u!1 &2030040997 stripped
 GameObject:
