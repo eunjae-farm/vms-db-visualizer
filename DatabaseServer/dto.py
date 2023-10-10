@@ -13,7 +13,7 @@ def __convertData(row):
         data = float(struct.unpack('<h', raw)[0])
             
         result.append(data)
-    return np.array(result)
+    return result
 
 def convertNode(data):
     return list(map(lambda x: {"node":x[0], "parent": x[1], "treetype": x[2],

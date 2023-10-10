@@ -1,0 +1,6 @@
+pymssql
+numpy
+scipy
+matplotlib
+flask
+hashlib

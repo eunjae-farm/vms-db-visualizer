@@ -2,11 +2,15 @@ import pymssql as mssql
 from dto import convertRaw, convertSearch, convertNode
 
 class database:
-    def __init__(self):
-        self.db = "Hangwon4"
-        self.ip = '59.28.91.19:1433'
-        self.username='sa'
-        self.password='skf1234!'
+    def __init__(self, name, ip, id, pw):
+        self.db = name
+        self.ip = ip
+        self.username = id
+        self.password = pw
+        # self.db = "Hangwon4"
+        # self.ip = '59.28.91.19:1433'
+        # self.username='sa'
+        # self.password='skf1234!'
         self.cursor = None
 
     def connect(self):
