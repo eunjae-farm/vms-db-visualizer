@@ -75,7 +75,7 @@ def get_charts():
     item = list(filter(lambda x: x['data_type'] == 2, raw))
     if len(item) == 1: 
         item = item[0]
-        return jsonify({"duration": (np.array(len(item['rawdata'])) / params['sample_rate']).tolist(), "data": item['rawdata'] * item['scale_factor']})
+        return jsonify({"duration": len(item['rawdata']) / params['sample_rate'], "data": (np.array(item['rawdata']) * item['scale_factor']).tolist()})
     else:
         return jsonify({"error": "this log data has not stored charts data"})
 
