@@ -115,7 +115,7 @@ def logout():
     
     
 if __name__ == "__main__":
-    app.run(port=5001, debug=True)
+    app.run(port=5001, host="0.0.0.0")
     # db = database()
     # db.connect()
     # result = db.nodes()
