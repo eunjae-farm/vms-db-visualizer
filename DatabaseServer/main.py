@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from datareceiver import database
 from auth import Authorization
 from convert import convert_spectra 
+import numpy as np
 
 author = Authorization()
 app = Flask(__name__)
@@ -57,7 +58,6 @@ def get_fft():
         item = item[0]
         x, y = convert_spectra(params['timeline'], params['freq'], item)
         return jsonify({"freq": x, "itensitiy": y})
-        return jsonify({"duration": len(item) / params['sample_rate'], "data": item['rawdata'] * item['scale_factor']})
     else:
         return jsonify({"error": "this log data has not stored charts data"})
     
@@ -75,7 +75,7 @@ def get_charts():
     item = list(filter(lambda x: x['data_type'] == 2, raw))
     if len(item) == 1: 
         item = item[0]
-        return jsonify({"duration": len(item) / params['sample_rate'], "data": item['rawdata'] * item['scale_factor']})
+        return jsonify({"duration": (np.array(len(item['rawdata'])) / params['sample_rate']).tolist(), "data": item['rawdata'] * item['scale_factor']})
     else:
         return jsonify({"error": "this log data has not stored charts data"})
 
