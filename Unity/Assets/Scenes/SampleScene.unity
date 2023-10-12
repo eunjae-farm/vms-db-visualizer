@@ -1343,6 +1343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 773083206}
   - component: {fileID: 773083207}
+  - component: {fileID: 773083208}
   m_Layer: 0
   m_Name: UserInterface
   m_TagString: Untagged
@@ -1383,6 +1384,25 @@ MonoBehaviour:
   UserId: {fileID: 1814528591}
   UserPassword: {fileID: 1391466998}
   Connect: {fileID: 1240632262}
+--- !u!114 &773083208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773083205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e2c0e6278e5f4e5e949000b08f2a48b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IP: home.udon.party
+  Port: 8000
+  DatabaseIP: 59.28.91.19
+  DatabasePort: 1433
+  DatabaseName: Hangwon4
+  DatabaseId: sa
+  DatabasePw: skf1234!
 --- !u!1 &809885705
 GameObject:
   m_ObjectHideFlags: 0

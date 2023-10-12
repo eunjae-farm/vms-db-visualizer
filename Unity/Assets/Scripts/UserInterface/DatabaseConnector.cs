@@ -14,7 +14,7 @@ public class DatabaseConnector : MonoBehaviour
 
     public void DatabaseConnect()
     {
-   
+        GetComponent<Server>().Login();
     }
 
     void Start()
@@ -27,3 +27,4 @@ public class DatabaseConnector : MonoBehaviour
         
     }
 }
+
