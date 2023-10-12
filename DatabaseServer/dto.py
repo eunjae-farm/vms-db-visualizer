@@ -15,6 +15,18 @@ def __convertData(row):
         result.append(data)
     return result
 
+def convertAlarm(data):
+    return list(map(lambda x: {
+        "id": x[0],
+        "node": x[1],
+        "date": x[2],
+        "title": x[4],
+        "status": x[7],
+        "source": x[8],
+        "value": x[9],
+        "eu": x[10],
+    }, data))
+
 def convertNode(data):
     return list(map(lambda x: {"node":x[0], "parent": x[1], "treetype": x[2],
                                "nodetype":x[3], "name":x[4].strip(), "status":x[5],

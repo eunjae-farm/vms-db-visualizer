@@ -89,7 +89,15 @@ def get_alarm():
     db = author.get(params['token'])
     data = database(db['name'], db['ip'], db['id'], db['pw'])
     data.connect()
-    search = data.search(params['id'], params['size'], params['offset'])
+    
+    if 'node' in params:
+        search = data.search_alarm(params['node'], 
+                                   params['size'], 
+                                   params['offset'])
+    else:
+        search = data.alarm(params['size'], 
+                            params['offset'])
+    
     return jsonify(search)
 
 
@@ -99,6 +107,13 @@ def login():
     token = author.login(params['id'], params['pw'], params['name'], params['ip'])
     return jsonify({"token": token})
 
+@app.route('/logout', methods=["POST"])
+def logout():
+    params = request.get_json()
+    r = author.logout(params['token'])
+    return jsonify({"result": r})
+    
+    
 if __name__ == "__main__":
     app.run(port=5001, debug=True)
     # db = database()

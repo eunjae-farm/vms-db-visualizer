@@ -20,7 +20,14 @@ class Authorization:
         h = hash.sha512(text).hexdigest()
         self.hash[h] = {"id": id, "pw": pw, "name":dbName, "ip": dbIp}
         return h
-        
+    
+    def logout(self, token: str):
+        if token in self.hash:
+            del self.hash[token]
+            return True
+        else:
+            return False
+    
     def valid(self, h: str) -> bool:
         if h in self.hash:
             return True
@@ -30,4 +37,5 @@ class Authorization:
     def get(self, token: str):
         return self.hash[token]
         
+
 # %%

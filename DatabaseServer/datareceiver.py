@@ -1,5 +1,5 @@
 import pymssql as mssql
-from dto import convertRaw, convertSearch, convertNode
+from dto import convertRaw, convertSearch, convertNode, convertAlarm
 
 class database:
     def __init__(self, name, ip, id, pw):
@@ -62,3 +62,32 @@ class database:
                 result.append(row)
             else:
                 return convertRaw(result)
+            
+    def alarm(self, size: int = 50, offset: int = 0):
+        result = []
+        self.cursor.execute('''SELECT * FROM Alarm 
+                                Order By IDAlarm DESC
+                                OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY
+                            '''.format(offset * size, size))
+        
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                result.append(row)
+            else:
+                return convertAlarm(result)
+            
+    def search_alarm(self, node_id: int, size: int = 50, offset: int = 0):
+        result = []
+        self.cursor.execute('''SELECT * FROM Alarm 
+                                WHERE IDNode = {0}
+                                Order By IDAlarm DESC
+                                OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY
+                            '''.format(node_id, offset * size, size))
+        
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                result.append(row)
+            else:
+                return convertAlarm(result)
