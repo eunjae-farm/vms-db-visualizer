@@ -116,17 +116,3 @@ def logout():
     
 if __name__ == "__main__":
     app.run(port=5001, host="0.0.0.0")
-    # db = database()
-    # db.connect()
-    # result = db.nodes()
-    # print(result)
-    # print()
-    # print()
-    # print()
-    # print(db.search(6))
-    # print()
-    # print()
-    # print()
-    # print(db.raw(778096))
-
-
