@@ -59,15 +59,18 @@ public class Server : MonoBehaviour
         Debug.Log(Token);
     }
 
-    public List<VMSAlarm> Alarm(int node, int size, int offset)
+    public List<VMSAlarm> Alarm(int size, int offset, int node = -1)
     {
         var values = new Dictionary<object, object>
         {
             { "token", Token },
-            { "node", node },
             { "size", size },
             { "offset", offset },
         };
+        if (node != -1)
+        {
+            values["node"] = node;
+        }
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
