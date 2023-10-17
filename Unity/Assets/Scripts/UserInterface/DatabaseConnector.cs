@@ -11,11 +11,14 @@ public class DatabaseConnector : MonoBehaviour
     public List<string> Node;
     public List<string> Alarm;
 
+    public GameObject Wind;
+
     public void DatabaseConnect()
     {
         GetComponent<Server>().Login();
     }
 
+    bool t = false;
     IEnumerator UpdateNode()
     {
         while (true)
@@ -26,6 +29,9 @@ public class DatabaseConnector : MonoBehaviour
             Alarm = GetComponent<Server>().Alarm(10, 0)
                 .Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")
                 .ToList();
+
+            t = !t;
+            Wind.GetComponent<GeneratorMotion>().OutterBody(t);
 
             yield return new WaitForSeconds(5);
         }
