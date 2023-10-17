@@ -7,7 +7,7 @@ import numpy as np
 author = Authorization()
 app = Flask(__name__)
 
-@app.route('/node')
+@app.route('/node', methods=["POST"])
 def get_node():
     params = request.get_json()
     if not author.valid(params['token']):
@@ -19,7 +19,7 @@ def get_node():
     node = data.nodes()    
     return jsonify(node)
 
-@app.route('/search')
+@app.route('/search', methods=["POST"])
 def get_search():
     params = request.get_json()
     if not author.valid(params['token']):
@@ -31,7 +31,7 @@ def get_search():
     search = data.search(params['id'], params['size'], params['offset'])
     return jsonify(search)
 
-@app.route('/raw')
+@app.route('/raw', methods=["POST"])
 def get_raw():
     params = request.get_json()
     if not author.valid(params['token']):
@@ -43,7 +43,7 @@ def get_raw():
     search = data.raw(params['id'])
     return jsonify(search)
 
-@app.route('/fft')
+@app.route('/fft', methods=["POST"])
 def get_fft():
     params = request.get_json()
     if not author.valid(params['token']):
@@ -62,7 +62,7 @@ def get_fft():
         return jsonify({"error": "this log data has not stored charts data"})
     
 
-@app.route('/charts')
+@app.route('/charts', methods=["POST"])
 def get_charts():
     params = request.get_json()
     if not author.valid(params['token']):
@@ -80,7 +80,7 @@ def get_charts():
         return jsonify({"error": "this log data has not stored charts data"})
 
  
-@app.route('/alarm')
+@app.route('/alarm', methods=["POST"])
 def get_alarm():
     params = request.get_json()
     if not author.valid(params['token']):
