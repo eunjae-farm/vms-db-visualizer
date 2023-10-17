@@ -51,7 +51,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{DatabaseIP}:{DatabasePort}/logout", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/logout", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<JObject>(responseString);
@@ -71,7 +71,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{DatabaseIP}:{DatabasePort}/alarm", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/alarm", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(responseString);
@@ -92,7 +92,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{DatabaseIP}:{DatabasePort}/fft", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/fft", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSFFT>>(responseString);
@@ -112,7 +112,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{DatabaseIP}:{DatabasePort}/charts", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/charts", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSCharts>>(responseString);
@@ -129,7 +129,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{DatabaseIP}:{DatabasePort}/node", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/node", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSNode>>(responseString);
@@ -150,7 +150,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{DatabaseIP}:{DatabasePort}/search", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/search", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);
