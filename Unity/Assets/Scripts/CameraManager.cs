@@ -5,8 +5,10 @@ using System.Collections.Generic;
 public class CameraSceneMove : MonoBehaviour
 {
     public List<Camera> Cameras;
+    public List<SceneManager> Callback;
 
     int current = 0;
+
     public void SetCamera(int index)
     {
         index = index % Cameras.Count;
@@ -14,10 +16,11 @@ public class CameraSceneMove : MonoBehaviour
         {
             Cameras[index].enabled = true;
             Cameras[current].enabled = false;
+            Callback[current].Disable();
+            Callback[index].Enable();
             current = index;
         }
     }
-
     
     void Start()
     {

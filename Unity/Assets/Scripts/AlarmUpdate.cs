@@ -27,6 +27,7 @@ public class AlarmUpdate : MonoBehaviour
             {
                 Destroy(item);
             }
+            g.Clear();
 
             foreach (var item in Connector.Alarm)
             {
