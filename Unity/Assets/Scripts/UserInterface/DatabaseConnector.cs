@@ -8,30 +8,40 @@ using System.Linq;
 public class DatabaseConnector : MonoBehaviour
 {
     public Button Connect;
-    public List<string> Node;
+    public List<VMSNode> Node;
+    public List<VMSAlarmWithNode> Alarm;
+
+    public GameObject Wind;
 
     public void DatabaseConnect()
     {
         GetComponent<Server>().Login();
     }
 
-    IEnumerator Fade()
+    bool t = false;
+    IEnumerator UpdateNode()
     {
         while (true)
         {
             Node = GetComponent<Server>().Node()
-                .Select(item => item.Name)
+                //.Select(item => $"{item.NodeId}_{item.Name}")
+                .ToList();
+            Alarm = GetComponent<Server>().Alarm(10, 0)
+                .Select(item => new VMSAlarmWithNode(item, Node.First(i => i.NodeId == item.Node).Name))
+                //.Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")
                 .ToList();
 
-            yield return new WaitForSeconds(5);
+            t = !t;
+            Wind.GetComponent<GeneratorMotion>().OutterBody(t);
+
+            yield return new WaitForSeconds(3600);
         }
     }
 
     void Start()
     {
         GetComponent<Server>().Login();
-
-        StartCoroutine(Fade());
+        StartCoroutine(UpdateNode());
     }
     void OnDestroy()
     {

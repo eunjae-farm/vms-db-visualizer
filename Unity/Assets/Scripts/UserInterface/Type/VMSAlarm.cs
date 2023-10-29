@@ -12,7 +12,7 @@ public class VMSAlarm
     [JsonProperty("id")]
     public int Id { get; set; }
 
-    [JsonProperty("duration")]
+    [JsonProperty("node")]
     public int Node { get; set; }
 
     [JsonProperty("source")]

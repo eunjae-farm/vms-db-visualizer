@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class SceneLoginWithDatabase : MonoBehaviour
 {
-    TMPro.TMP_InputField IP;
-    TMPro.TMP_InputField ID;
-    TMPro.TMP_InputField Pw;
-    TMPro.TMP_InputField DBName;
+    GameObject OutterBody;
+
 
     // Start is called before the first frame update
     void Start()
