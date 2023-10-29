@@ -16,8 +16,10 @@ public class CameraSceneMove : MonoBehaviour
         {
             Cameras[index].enabled = true;
             Cameras[current].enabled = false;
+
             Callback[current].Disable();
             Callback[index].Enable();
+
             current = index;
         }
     }

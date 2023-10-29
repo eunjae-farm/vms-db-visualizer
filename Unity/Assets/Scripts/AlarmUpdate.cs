@@ -9,12 +9,17 @@ public class AlarmUpdate : MonoBehaviour
     public GameObject Prefab;
     public float RefreshTick = 5;
     public float currentTick = 5;
-
     public List<GameObject> g;
-    // Start is called before the first frame update
-    void Start()
+    public GameObject Alarm;
+
+    public void Disable()
     {
-    
+        Alarm.SetActive(false);
+    }
+
+    public void Enable()
+    {
+        Alarm.SetActive(true);
     }
 
     // Update is called once per frame

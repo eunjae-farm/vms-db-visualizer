@@ -9,12 +9,14 @@ public class OverviewManager : SceneManager
 
     public override void Disable()
     {
-        throw new System.NotImplementedException();
+        Alarm.GetComponent<AlarmUpdate>().Disable();
+        Alarm.SetActive(false);
     }
 
     public override void Enable()
     {
-        throw new System.NotImplementedException();
+        Alarm.GetComponent<AlarmUpdate>().Enable();
+        Alarm.SetActive(true);
     }
 
 

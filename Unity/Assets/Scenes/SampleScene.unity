@@ -592,6 +592,7 @@ GameObject:
   - component: {fileID: 123099221}
   - component: {fileID: 123099220}
   - component: {fileID: 123099222}
+  - component: {fileID: 123099223}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -668,7 +669,24 @@ MonoBehaviour:
   - {fileID: 1248419177}
   - {fileID: 1329877624}
   Callback:
-  - {fileID: 103668721}
+  - {fileID: 103668723}
+  - {fileID: 123099223}
+  - {fileID: 123099223}
+  - {fileID: 123099223}
+  - {fileID: 123099223}
+  - {fileID: 123099223}
+--- !u!114 &123099223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123099218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b32a442a189a34f2298cf8339a48910e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &160600132
 GameObject:
   m_ObjectHideFlags: 0
@@ -5752,7 +5770,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1691589547}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99985385
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
