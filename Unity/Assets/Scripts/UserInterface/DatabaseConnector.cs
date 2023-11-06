@@ -42,8 +42,7 @@ public class DatabaseConnector : MonoBehaviour
     }
     void OnDestroy()
     {
-        
-        GetComponent<Server>().Logout();
+        Server.Instance.Logout();
     }
 
     void Update()
