@@ -7,7 +7,6 @@ using System.Linq;
 
 public class DatabaseConnector : MonoBehaviour
 {
-    public Button Connect;
     public List<VMSNode> Node;
     public List<VMSAlarmWithNode> Alarm;
 
@@ -15,7 +14,7 @@ public class DatabaseConnector : MonoBehaviour
 
     public void DatabaseConnect()
     {
-        GetComponent<Server>().Login();
+        
     }
 
     bool t = false;
@@ -26,7 +25,7 @@ public class DatabaseConnector : MonoBehaviour
             Node = GetComponent<Server>().Node()
                 //.Select(item => $"{item.NodeId}_{item.Name}")
                 .ToList();
-            Alarm = GetComponent<Server>().Alarm(10, 0)
+            Alarm = GetComponent<Server>().Alarm(100, 0)
                 .Select(item => new VMSAlarmWithNode(item, Node.First(i => i.NodeId == item.Node).Name))
                 //.Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")
                 .ToList();
@@ -40,7 +39,7 @@ public class DatabaseConnector : MonoBehaviour
 
     void Start()
     {
-        GetComponent<Server>().Login();
+        //GetComponent<Server>().Login();
         StartCoroutine(UpdateNode());
     }
     void OnDestroy()
