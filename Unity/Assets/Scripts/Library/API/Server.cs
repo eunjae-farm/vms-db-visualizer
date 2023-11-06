@@ -7,39 +7,62 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-public class Server : MonoBehaviour
+public class Server
 {
-    public string IP;
-    public int Port;
+    private static readonly HttpClient client = new HttpClient();
 
-    public string DatabaseIP;
-    public string DatabasePort;
-    public string DatabaseName;
-    public string DatabaseId;
-    public string DatabasePw;
+    private static object _lock = new object();
+    private static Server _instance = null;
+    public static Server Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new Server();
+                    }
+                }
+            }
+
+            return _instance;
+        }
+    }
+
+    LoginObject LoginData;
 
     private string Token = "NULL";
 
-    private static readonly HttpClient client = new HttpClient();
 
-    public void Login()
+    public bool Login(LoginObject data)
     {
+        LoginData = data;
+
         var values = new Dictionary<string, string>
         {
-            { "id", DatabaseId },
-            { "pw", DatabasePw },
-            { "name", DatabaseName },
-            { "ip", DatabaseIP },
+            { "id", LoginData.DatabaseId },
+            { "pw", LoginData.DatabasePw },
+            { "name", LoginData.DatabaseName },
+            { "ip", LoginData.DatabaseIP },
         };
-
-        var send = JsonConvert.SerializeObject(values);
-        var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        var response = client.PostAsync($"http://{IP}:{Port}/login", content).Result;
-        var responseString = response.Content.ReadAsStringAsync().Result;
-        var json = JsonConvert.DeserializeObject<JObject>(responseString);
-        Token = json["token"].Value<string>();
-        Debug.Log(json);
+        try
+        {
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            Debug.Log(send);
+            var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/login", content).Result;
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<JObject>(responseString);
+            Token = json["token"].Value<string>();
+            Debug.Log(json);
+            return true;
+        }catch
+        {
+            return false;
+        }
     }
 
     public void Logout()
@@ -51,7 +74,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{IP}:{Port}/logout", content).Result;
+        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/logout", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<JObject>(responseString);
@@ -74,7 +97,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{IP}:{Port}/alarm", content).Result;
+        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/alarm", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(responseString);
@@ -95,7 +118,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{IP}:{Port}/fft", content).Result;
+        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/fft", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSFFT>>(responseString);
@@ -115,7 +138,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{IP}:{Port}/charts", content).Result;
+        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/charts", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSCharts>>(responseString);
@@ -132,7 +155,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{IP}:{Port}/node", content).Result;
+        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/node", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSNode>>(responseString);
@@ -153,7 +176,7 @@ public class Server : MonoBehaviour
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{IP}:{Port}/search", content).Result;
+        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/search", content).Result;
         Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);
