@@ -40,6 +40,7 @@ public class DatabaseConnector : MonoBehaviour
         Server.Instance.Login(new LoginObject());
         StartCoroutine(UpdateNode());
     }
+
     void OnDestroy()
     {
         Server.Instance.Logout();
