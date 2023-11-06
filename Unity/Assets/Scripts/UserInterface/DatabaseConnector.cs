@@ -17,21 +17,19 @@ public class DatabaseConnector : MonoBehaviour
         
     }
 
-    bool t = false;
     IEnumerator UpdateNode()
     {
         while (true)
         {
-            Node = GetComponent<Server>().Node()
+            Node = Server.Instance.Node()
                 //.Select(item => $"{item.NodeId}_{item.Name}")
                 .ToList();
-            Alarm = GetComponent<Server>().Alarm(100, 0)
+            Alarm = Server.Instance.Alarm(100, 0)
                 .Select(item => new VMSAlarmWithNode(item, Node.First(i => i.NodeId == item.Node).Name))
                 //.Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")
                 .ToList();
 
-            t = !t;
-            Wind.GetComponent<GeneratorMotion>().OutterBody(t);
+            //Wind.GetComponent<GeneratorMotion>().OutterBody(t);
 
             yield return new WaitForSeconds(3600);
         }
@@ -39,7 +37,7 @@ public class DatabaseConnector : MonoBehaviour
 
     void Start()
     {
-        //GetComponent<Server>().Login();
+        Server.Instance.Login(new LoginObject());
         StartCoroutine(UpdateNode());
     }
     void OnDestroy()
