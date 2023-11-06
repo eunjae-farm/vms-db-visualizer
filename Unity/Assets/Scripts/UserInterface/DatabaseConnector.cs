@@ -14,7 +14,7 @@ public class DatabaseConnector : MonoBehaviour
 
     public void DatabaseConnect()
     {
-        GetComponent<Server>().Login();
+        
     }
 
     bool t = false;
@@ -39,7 +39,7 @@ public class DatabaseConnector : MonoBehaviour
 
     void Start()
     {
-        GetComponent<Server>().Login();
+        //GetComponent<Server>().Login();
         StartCoroutine(UpdateNode());
     }
     void OnDestroy()
