@@ -25,6 +25,7 @@ public class AlarmUpdate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         currentTick += Time.deltaTime;
 
         if (currentTick >= RefreshTick) {
@@ -33,15 +34,17 @@ public class AlarmUpdate : MonoBehaviour
                 Destroy(item);
             }
             g.Clear();
-
-            foreach (var item in Connector.Alarm)
-            {
-                GameObject myInstance = Instantiate(Prefab, Content.transform);
-                myInstance.GetComponent<Setting_For_Panel>().SetAlarm(item);
-                g.Add(myInstance);
-            }
-
             currentTick -= 5;
+
+            if (Connector.Alarm != null)
+            {
+                foreach (var item in Connector.Alarm)
+                {
+                    GameObject myInstance = Instantiate(Prefab, Content.transform);
+                    myInstance.GetComponent<Setting_For_Panel>().SetAlarm(item);
+                    g.Add(myInstance);
+                }
+            }
         }
     }
 }
