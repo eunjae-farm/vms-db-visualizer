@@ -646,6 +646,9 @@ MonoBehaviour:
   currentTick: 5
   g: []
   Alarm: {fileID: 645544449}
+  Buttones:
+  - {fileID: 1145361891}
+  - {fileID: 1500627406}
 --- !u!1 &123099218
 GameObject:
   m_ObjectHideFlags: 0
@@ -5538,7 +5541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1614688700
 Transform:
   m_ObjectHideFlags: 0
