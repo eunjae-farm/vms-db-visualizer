@@ -6,6 +6,7 @@ public class GeneratorMotion : MonoBehaviour
 {
     public GameObject outter_body;
 
+    #region Removable Outter Body
     public void OutterBody(bool on)
     {
         if (on)
@@ -25,7 +26,6 @@ public class GeneratorMotion : MonoBehaviour
         p.z = z;
         return p;
     }
-
     IEnumerator OutterBodyCoroutine(float duration, float s, float e)
     {
 
@@ -43,6 +43,13 @@ public class GeneratorMotion : MonoBehaviour
         }
         outter_body.transform.localPosition = get_curret_position(e);
     }
+    #endregion
+    public void SetData(List<NodeData> data)
+    {
+
+    }
+
+
 
     // Start is called before the first frame update
     void Start()

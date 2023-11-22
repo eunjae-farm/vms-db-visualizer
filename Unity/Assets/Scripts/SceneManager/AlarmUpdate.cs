@@ -8,8 +8,8 @@ public class AlarmUpdate : MonoBehaviour
     public GameObject Content;
     public GameObject Prefab;
 
-    public float RefreshTick = 5;
-    public float currentTick = 5;
+    public float RefreshTick = 1800;
+    public float currentTick = 1800;
     public List<GameObject> g;
     public GameObject Alarm;
 
@@ -35,7 +35,7 @@ public class AlarmUpdate : MonoBehaviour
                 Destroy(item);
             }
             g.Clear();
-            currentTick -= 5;
+            currentTick -= RefreshTick;
 
             if (Connector.Alarm != null)
             {
@@ -43,9 +43,15 @@ public class AlarmUpdate : MonoBehaviour
                 {
                     GameObject myInstance = Instantiate(Prefab, Content.transform);
                     myInstance.GetComponent<Setting_For_Panel>().SetAlarm(item);
+                    myInstance.GetComponent<Setting_For_Panel>().MouseClick += AlarmUpdate_MouseClick;
                     g.Add(myInstance);
                 }
             }
         }
     }
+
+    private void AlarmUpdate_MouseClick(GameObject self, VMSAlarmWithNode data)
+    {
+    }
+
 }

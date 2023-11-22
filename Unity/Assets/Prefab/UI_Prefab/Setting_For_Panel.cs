@@ -11,8 +11,8 @@ public class Setting_For_Panel : MonoBehaviour
     public TMPro.TMP_Text NodeNmae;
     public TMPro.TMP_Text Title;
     public TMPro.TMP_Text Status;
+    public event Action<GameObject, VMSAlarmWithNode> MouseClick;
     private VMSAlarmWithNode data;
-    public event Action<VMSAlarmWithNode> MouseClick;
 
     public void SetAlarm(VMSAlarmWithNode data)
     {
@@ -23,9 +23,9 @@ public class Setting_For_Panel : MonoBehaviour
         this.Status.text = $"Status : {data.GetStatus()}";
     }
 
-    public void OnMouseClickEvent()
+    protected void OnMouseClickEvent()
     {
         Debug.Log("OnMouseClickEvent!");
-        MouseClick?.Invoke(data);
+        MouseClick?.Invoke(this.gameObject, data);
     }
 }
