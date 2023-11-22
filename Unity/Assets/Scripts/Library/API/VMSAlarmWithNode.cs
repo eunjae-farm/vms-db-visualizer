@@ -1,4 +1,7 @@
 ﻿using System;
+using UnityEngine;
+
+[Serializable]
 public class VMSAlarmWithNode : VMSAlarm
 {
     public string NodeName { get; set; }

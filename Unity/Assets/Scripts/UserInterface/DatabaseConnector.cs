@@ -37,9 +37,9 @@ public class DatabaseConnector : MonoBehaviour
                 .Where(node => !node.Name.ToLower().Contains("high"))
                 .Where(node => !node.Name.ToLower().Contains("env"))
                 .Where(node => !node.Name.ToLower().Contains("polar"))
+                .Where(node => !node.Name.ToLower().Contains("hz"))
                 .Select(node => (node, Server.Instance.Search(node.NodeId, 1, 0)))
                 .Where(item => item.Item2.Any())
-                
                 .Select(item =>
                 {
                     Debug.Log(item.node.Name);
@@ -50,14 +50,12 @@ public class DatabaseConnector : MonoBehaviour
                                     search: item.Item2,
                                     fft: Server.Instance.fft(item.Item2.Id, item.Item2.TimeSignalLines, (int)item.Item2.EndFrequency),
                                     charts: Server.Instance.Charts(item.Item2.Id, (int)item.Item2.SampleRate)))
+                .Where(item => item.fft != null && item.charts != null)
+                .OrderBy(item => item.node.Name)
                 .ToList();
             s.Stop();
 
             Debug.Log(s.ElapsedMilliseconds + "ms");
-            Debug.Log(s.ElapsedMilliseconds + "ms");
-            Debug.Log(s.ElapsedMilliseconds + "ms");
-            Debug.Log(s.ElapsedMilliseconds + "ms");
-
 
             //Wind.GetComponent<GeneratorMotion>().OutterBody(t);
 
@@ -71,7 +69,7 @@ public class DatabaseConnector : MonoBehaviour
         StartCoroutine(UpdateNode());
     }
 
-    void OnDestroy()
+    private void OnApplicationQuit()
     {
         Server.Instance.Logout();
     }
