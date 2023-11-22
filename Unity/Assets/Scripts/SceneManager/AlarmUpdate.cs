@@ -12,24 +12,15 @@ public class AlarmUpdate : MonoBehaviour
     public float currentTick = 5;
     public List<GameObject> g;
     public GameObject Alarm;
-    public List<GameObject> Buttones;
 
     public void Disable()
     {
         Alarm.SetActive(false);
-        foreach (var button in Buttones)
-        {
-            button.SetActive(false);
-        }
     }
 
     public void Enable()
     {
         Alarm.SetActive(true);
-        foreach (var button in Buttones)
-        {
-            button.SetActive(true);
-        }
     }
 
     // Update is called once per frame
