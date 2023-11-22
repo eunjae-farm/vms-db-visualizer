@@ -30,8 +30,8 @@ public class RotateTurbine : MonoBehaviour
     void Update()
     {
         var (center, _) = ComputeCenterPosition(Wing);
-        this.Wing.transform.RotateAround(center, Vector3.fwd, Time.deltaTime * WingRotatePerSeconds * 360);
+        this.Wing.transform.RotateAround(center, Vector3.forward, Time.deltaTime * WingRotatePerSeconds * 360);
         var cur = this.Propeller.transform.eulerAngles;
-        this.Propeller.transform.RotateAround(Vector3.fwd, WingRotatePerSeconds * Time.deltaTime * 3.6f);
+        this.Propeller.transform.RotateAround(Vector3.forward, WingRotatePerSeconds * Time.deltaTime * 3.6f);
     }
 }

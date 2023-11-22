@@ -29,6 +29,34 @@ public class DatabaseConnector : MonoBehaviour
                 //.Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")
                 .ToList();
 
+            var s = new System.Diagnostics.Stopwatch();
+            s.Start();
+            var p = Node
+                .AsParallel()
+                .Where(node => !node.Name.ToLower().Contains("low"))
+                .Where(node => !node.Name.ToLower().Contains("high"))
+                .Where(node => !node.Name.ToLower().Contains("env"))
+                .Where(node => !node.Name.ToLower().Contains("polar"))
+                .Where(node => !node.Name.ToLower().Contains("hz"))
+                .Select(node => (node, Server.Instance.Search(node.NodeId, 1, 0)))
+                .Where(item => item.Item2.Any())
+                .Select(item =>
+                {
+                    Debug.Log(item.node.Name);
+                    return item;
+                })
+                .Select(item => (item.node, item.Item2.First()))
+                .Select(item => (item.node,
+                                    search: item.Item2,
+                                    fft: Server.Instance.fft(item.Item2.Id, item.Item2.TimeSignalLines, (int)item.Item2.EndFrequency),
+                                    charts: Server.Instance.Charts(item.Item2.Id, (int)item.Item2.SampleRate)))
+                .Where(item => item.fft != null && item.charts != null)
+                .OrderBy(item => item.node.Name)
+                .ToList();
+            s.Stop();
+
+            Debug.Log(s.ElapsedMilliseconds + "ms");
+
             //Wind.GetComponent<GeneratorMotion>().OutterBody(t);
 
             yield return new WaitForSeconds(3600);
@@ -41,7 +69,7 @@ public class DatabaseConnector : MonoBehaviour
         StartCoroutine(UpdateNode());
     }
 
-    void OnDestroy()
+    private void OnApplicationQuit()
     {
         Server.Instance.Logout();
     }
