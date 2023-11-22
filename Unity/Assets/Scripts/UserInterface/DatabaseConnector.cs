@@ -59,7 +59,7 @@ public class DatabaseConnector : MonoBehaviour
                                         search: item.Item2,
                                         fft: Server.Instance.fft(item.Item2.Id, item.Item2.TimeSignalLines, (int)item.Item2.EndFrequency),
                                         charts: Server.Instance.Charts(item.Item2.Id, (int)item.Item2.SampleRate)))
-                    .Where(item => item.fft != null && item.charts != null)
+                    //.Where(item => item.fft != null && item.charts != null)
                     .Select(item => new NodeData(item.node, item.fft, item.charts, item.search))
                     .OrderBy(item => item.Node.Name)
                     .ToList();

@@ -106,7 +106,7 @@ public class Server
         return json;
     }
 
-    public List<VMSFFT> fft(int id, int timeline, int end_freq)
+    public VMSFFT fft(int id, int timeline, int end_freq)
     {
         var values = new Dictionary<object, object>
         {
@@ -123,7 +123,7 @@ public class Server
             //Debug.Log(send);
             var responseString = response.Content.ReadAsStringAsync().Result;
             //Debug.Log(responseString);
-            var json = JsonConvert.DeserializeObject<List<VMSFFT>>(responseString);
+            var json = JsonConvert.DeserializeObject<VMSFFT>(responseString);
             //Token = json["token"].Value<string>();
             //Debug.Log(Token);
             return json;
@@ -133,7 +133,7 @@ public class Server
         }
     }
 
-    public List<VMSCharts> Charts(int id, int sample_rate)
+    public VMSCharts Charts(int id, int sample_rate)
     {
         var values = new Dictionary<object, object>
         {
@@ -148,7 +148,7 @@ public class Server
             var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/charts", content).Result;
             //Debug.Log(send);
             var responseString = response.Content.ReadAsStringAsync().Result;
-            var json = JsonConvert.DeserializeObject<List<VMSCharts>>(responseString);
+            var json = JsonConvert.DeserializeObject<VMSCharts>(responseString);
             //Debug.Log(Token);
             return json;
         }catch

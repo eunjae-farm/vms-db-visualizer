@@ -5,6 +5,7 @@ using UnityEngine;
 public class GeneratorMotion : MonoBehaviour
 {
     public GameObject outter_body;
+    public List<NodeData> Data;
 
     #region Removable Outter Body
     public void OutterBody(bool on)
@@ -46,7 +47,7 @@ public class GeneratorMotion : MonoBehaviour
     #endregion
     public void SetData(List<NodeData> data)
     {
-
+        this.Data = data;
     }
 
 
