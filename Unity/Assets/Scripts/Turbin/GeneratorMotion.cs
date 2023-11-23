@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GeneratorMotion : MonoBehaviour
 {
     public GameObject outter_body;
-    public List<NodeData> Data;
+    public float Magn = 5.0F;
+
+    // MainBearing, GearBox_MainBearing, GearBox_Generator, Generator
+    
+    public List<UnityList<GameObject>> Bearing; 
+
+    public List<UnityList<float>> Times;
+    public List<UnityList<NodeData>> Nodes;
 
     #region Removable Outter Body
     public void OutterBody(bool on)
@@ -47,7 +55,28 @@ public class GeneratorMotion : MonoBehaviour
     #endregion
     public void SetData(List<NodeData> data)
     {
-        this.Data = data;
+        //var GE_GS_A_VEL = data.First(item => item.Node.Name == "GE_GS_A_VEL");
+        var GE_GS_H_VEL = data.First(item => item.Node.Name == "GE_GS_H_VEL");
+        var GE_GS_V_VEL = data.First(item => item.Node.Name == "GE_GS_V_VEL");
+
+        var GE_RS_A_VEL = data.First(item => item.Node.Name == "GE_RS_A_VEL");
+        var GE_RS_H_VEL = data.First(item => item.Node.Name == "GE_RS_H_VEL");
+        var GE_RS_V_VEL = data.First(item => item.Node.Name == "GE_RS_V_VEL");
+
+        var MB_A_VEL = data.First(item => item.Node.Name == "MB_A_VEL");
+        var MB_H_VEL = data.First(item => item.Node.Name == "MB_H_VEL");
+        var MB_V_VEL = data.First(item => item.Node.Name == "MB_V_VEL");
+
+        // MainBearing, GearBox_MainBearing, GearBox_Generator, Generator
+        Times.Clear();
+        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
+        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
+        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
+        
+        Nodes.Clear();
+        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { MB_A_VEL, MB_H_VEL, MB_V_VEL } });
+        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
+        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_GS_H_VEL, GE_GS_V_VEL } });
     }
 
 
@@ -61,6 +90,31 @@ public class GeneratorMotion : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Nodes.Count == 0)
+        {
+            return;
+        }
 
+        for (int group = 0; group < Bearing.Count; group++)
+        {
+
+            for (int bearing = 0; bearing < Bearing[group].list.Count; bearing++)
+            {
+                Vector3 vec = new Vector3();
+                for (int i = 0; i < 3; i++)
+                {
+                    Times[group].list[i] += Time.deltaTime;
+                    if (Times[group].list[i] > Nodes[group].list[i].Chart.Duration)
+                    {
+                        Times[group].list[i] -= Nodes[group].list[i].Chart.Duration;
+                    }
+                    int idx = (int)((Times[group].list[i] / Nodes[group].list[i].Chart.Duration) * Nodes[group].list[i].Chart.Data.Length);
+                    idx = Mathf.Min(idx, Nodes[group].list[i].Chart.Data.Length);
+                    vec[i] = (float)(Nodes[group].list[i].Chart.Data[idx] * Magn);
+                }
+
+                Bearing[group].list[bearing].transform.localPosition = vec;
+            }
+        }
     }
 }

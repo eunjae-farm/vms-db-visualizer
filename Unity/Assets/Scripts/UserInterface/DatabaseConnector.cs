@@ -33,6 +33,10 @@ public class DatabaseConnector : MonoBehaviour
                 Node = Server.Instance.Node()
                     //.Select(item => $"{item.NodeId}_{item.Name}")
                     .ToList();
+
+                var www = Node.Select(item => item.Name).ToList();
+                Debug.Log(string.Join("\n", www.ToArray()));
+                
                 Alarm = Server.Instance.Alarm(100, 0)
                     .Select(item => new VMSAlarmWithNode(item, Node.First(i => i.NodeId == item.Node).Name))
                     //.Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")
