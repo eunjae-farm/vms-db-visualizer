@@ -77,6 +77,8 @@ public class GeneratorMotion : MonoBehaviour
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { MB_A_VEL, MB_H_VEL, MB_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_GS_H_VEL, GE_GS_V_VEL } });
+
+        GetComponent<RandomVibrator>().enabled = false;
     }
 
 
