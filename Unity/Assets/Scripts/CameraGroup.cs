@@ -6,8 +6,7 @@ using UnityEngine;
 [Serializable]
 public class CameraGroup
 {
-    public List<Camera> Cameras;
-
+    public List<Camera> Cameras = new List<Camera>();
 
     private bool _enabled = false;
     public bool enabled {

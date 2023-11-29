@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class OverviewManager : SceneManager
 {
-    public GameObject Images;
+    //public GameObject Images;
     public GameObject Alarm;
     public Button Replay;
     public Button CurrentView;
@@ -13,7 +13,7 @@ public class OverviewManager : SceneManager
 
     public override void Disable()
     {
-        Images.SetActive(true);
+        //Images?.SetActive(true);
         Alarm.GetComponent<AlarmUpdate>().Disable();
         Alarm.SetActive(false);
         Replay.gameObject.SetActive(false);
@@ -22,7 +22,7 @@ public class OverviewManager : SceneManager
 
     public override void Enable()
     {
-        Images.SetActive(false);
+        //Images?.SetActive(false);
         Alarm.GetComponent<AlarmUpdate>().Enable();
         Alarm.SetActive(true);
         Replay.gameObject.SetActive(true);
