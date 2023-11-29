@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class CameraSceneMove : MonoBehaviour
 {
-    public List<Camera> Cameras;
+    public List<CameraGroup> Cameras;
     public List<SceneManager> Callback;
 
     int current = 0;
@@ -14,6 +14,7 @@ public class CameraSceneMove : MonoBehaviour
         index = index % Cameras.Count;
         if (current != index)
         {
+            
             Cameras[index].enabled = true;
             Cameras[current].enabled = false;
 

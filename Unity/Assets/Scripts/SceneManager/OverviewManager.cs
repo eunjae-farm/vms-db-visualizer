@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class OverviewManager : SceneManager
 {
+    public GameObject Images;
     public GameObject Alarm;
 
 
     public override void Disable()
     {
+        Images.SetActive(true);
         Alarm.GetComponent<AlarmUpdate>().Disable();
         Alarm.SetActive(false);
     }
 
     public override void Enable()
     {
+        Images.SetActive(false);
         Alarm.GetComponent<AlarmUpdate>().Enable();
         Alarm.SetActive(true);
     }
