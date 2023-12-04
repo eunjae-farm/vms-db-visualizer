@@ -8,10 +8,11 @@ public class AlarmUpdate : MonoBehaviour
     public GameObject Content;
     public GameObject Prefab;
 
-    public float RefreshTick = 1800;
-    public float currentTick = 1800;
+    public float RefreshTick = 5;
     public List<GameObject> g;
     public GameObject Alarm;
+
+    private WaitForSeconds waitSeconds;
 
     public void Disable()
     {
@@ -23,19 +24,22 @@ public class AlarmUpdate : MonoBehaviour
         Alarm.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Start()
     {
-        
-        currentTick += Time.deltaTime;
+        waitSeconds = new WaitForSeconds(RefreshTick);
+        StartCoroutine(UpdateForView());
+    }
 
-        if (currentTick >= RefreshTick) {
-            foreach(var item in g)
+    IEnumerator UpdateForView()
+    {
+        while(true)
+        {
+            foreach (var item in g)
             {
                 Destroy(item);
             }
             g.Clear();
-            currentTick -= RefreshTick;
+
 
             if (Connector.Alarm != null)
             {
@@ -47,8 +51,10 @@ public class AlarmUpdate : MonoBehaviour
                     g.Add(myInstance);
                 }
             }
+            yield return waitSeconds;
         }
     }
+
 
     private void AlarmUpdate_MouseClick(GameObject self, VMSAlarmWithNode data)
     {
