@@ -7,27 +7,30 @@ public class OverviewTurbineSelect : MonoBehaviour
 
     public void PreviousButton()
     {
-
+        Debug.Log("Previous");
     }
-
 
     public void NextButton()
     {
+        Debug.Log("NextButton");
 
     }
 
     public void SelectButton()
     {
+        Debug.Log("SelectButton");
 
     }
 
     public void AddButton()
     {
+        Debug.Log("AddButton");
 
     }
 
     public void DeleteButton()
     {
+        Debug.Log("DeleteButton");
 
     }
 
