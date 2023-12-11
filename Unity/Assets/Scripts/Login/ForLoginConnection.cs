@@ -12,16 +12,6 @@ public class ForLoginConnection : MonoBehaviour
     public TMPro.TMP_InputField UserId;
     public TMPro.TMP_InputField Password;
 
-    public void ProgramExit()
-    {
-#if UNITY_EDITOR
-        // Application.Quit() does not work in the editor so
-        // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
     private string GetPlaceholderText(TMPro.TMP_InputField field)
     {
         return field.placeholder.GetComponent<TMPro.TMP_Text> ().text.Split(" ")[1];
@@ -63,6 +53,10 @@ public class ForLoginConnection : MonoBehaviour
         return true;
     }
 
+    public void ProgramExit()
+    {
+
+    }
     public void DatabaseConnect()
     {
         if (Validate(out LoginObject result))
@@ -74,7 +68,6 @@ public class ForLoginConnection : MonoBehaviour
         {
             Debug.Log("ELSE!?");
         }
-    
     }
 
     // Start is called before the first frame update
