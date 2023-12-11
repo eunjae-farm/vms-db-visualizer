@@ -24,7 +24,7 @@ public class DatabaseConnector : MonoBehaviour
     void UpdateNode()
     {
         Wind.GetComponent<GeneratorMotion>().OutterBody(false);
-        
+
         Task.Run(() =>
         {
             while (true)
