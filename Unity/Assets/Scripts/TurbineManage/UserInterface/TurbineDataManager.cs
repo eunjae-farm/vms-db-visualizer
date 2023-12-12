@@ -11,6 +11,7 @@ public class TurbineDataManager : MonoBehaviour
     public TMPro.TMP_InputField InformationDBName;
     public TMPro.TMP_InputField InformationId;
     public TMPro.TMP_InputField InformationPw;
+    public TMPro.TMP_InputField InformationWindTurbine;
 
     public GameObject ContentFromScrollView;
     public GameObject Prefab;
@@ -26,16 +27,15 @@ public class TurbineDataManager : MonoBehaviour
     {
         Task.Run(() =>
         {
+            Server.Instance.Login(new LoginObject());
             var node = Server.Instance.Node();
             Debug.Log("load for node data from server");
-
+            
             foreach(var n in node)
             {
                 Debug.Log($"{n.NodeType} : {n.Name} : {n}");
             }
-
         });
-
     }
 
     public void Add()
@@ -114,6 +114,7 @@ public class TurbineDataManager : MonoBehaviour
         InformationDBName.text = data.DBName;
         InformationId.text = data.ID;
         InformationPw.text = data.PW;
+        InformationWindTurbine.text = $"{data.NodeName}:${data.NodeId}";
         Server.Instance.Login(new LoginObject());
     }
 }
