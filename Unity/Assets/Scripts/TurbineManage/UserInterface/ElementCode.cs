@@ -6,16 +6,27 @@ public class ElementCode : MonoBehaviour
 {
     public TMPro.TMP_Text NameAlias;
     public TMPro.TMP_Text NameTurbine;
+    int index;
+    string alias;
+    string turbine;
 
-    // Start is called before the first frame update
-    void Start()
+    public event ElementOnClickEvent Click;
+
+    public void OnClick()
     {
-        var color = this.GetComponent<UnityEngine.UI.Image>();
+        Click?.Invoke(alias, turbine, index);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Setup(string alias_name, string turbine_name, int idx)
     {
-        
+        this.alias = alias_name;
+        this.turbine = turbine_name;
+
+        this.NameAlias.text = $"이름 : {alias_name}";
+        this.NameTurbine.text = $"발전기 이름 : {turbine_name}";
+
+        index = idx;
     }
 }
+
+public delegate void ElementOnClickEvent(string alias_name, string turbine_name, int idx);
