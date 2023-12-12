@@ -626,5 +626,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AutoClose: 0
   AutoCloseTime: 3
-  Type: 2
+  Title: {fileID: 7199712964518791871}
   ImageColor: {fileID: 4031857749103233103}

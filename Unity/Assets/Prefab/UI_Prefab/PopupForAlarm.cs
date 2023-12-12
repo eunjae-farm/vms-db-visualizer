@@ -4,22 +4,12 @@ using UnityEngine;
 
 public class PopupForAlarm : MonoBehaviour
 {
-    TMPro.TMP_Text Title;
     public bool AutoClose = false;
     public int AutoCloseTime = 3;
-    public ButtonType Type = ButtonType.Default;
 
-    private WaitForSeconds wait;
-
+    public TMPro.TMP_Text Title;
     public UnityEngine.UI.Image ImageColor;
 
-    public void Start()
-    {
-        if (AutoClose)
-        {
-            wait = new WaitForSeconds(AutoCloseTime);
-        }
-    }
     public enum ButtonType
     {
         Warring,
@@ -32,25 +22,30 @@ public class PopupForAlarm : MonoBehaviour
         Title.text = text;
     }
 
-    public void Open()
+    public void Open(ButtonType type, string text)
     {
-        switch (Type)
+        UnityThread.executeInUpdate(() =>
         {
-            case ButtonType.Default:
-                this.ImageColor.color = new Color(127 / 255, 127 / 255, 127 / 255);
-                break;
-            case ButtonType.Error:
-                this.ImageColor.color = new Color(255 / 255, 134 / 255, 134 / 255);
-                break;
-            case ButtonType.Warring:
-                this.ImageColor.color = new Color(255 / 255, 248 / 255, 134 / 255);
-                break;
-        }
-        this.gameObject.SetActive(true);
-        if (AutoClose)
-        {
-            StartCoroutine(AutoCloseFunc());
-        }
+            SetText(text);
+            switch (type)
+            {
+                case ButtonType.Default:
+                    this.ImageColor.color = new Color(127 / 255, 127 / 255, 127 / 255);
+                    break;
+                case ButtonType.Error:
+                    this.ImageColor.color = new Color(255 / 255, 134 / 255, 134 / 255);
+                    break;
+                case ButtonType.Warring:
+                    this.ImageColor.color = new Color(255 / 255, 248 / 255, 134 / 255);
+                    break;
+            }
+
+            this.gameObject.SetActive(true);
+            if (AutoClose)
+            {
+                StartCoroutine(AutoCloseFunc());
+            }
+        });
     }
 
     public void Close()
@@ -60,7 +55,7 @@ public class PopupForAlarm : MonoBehaviour
 
     public IEnumerator AutoCloseFunc()
     {
-        yield return wait;
+        yield return new WaitForSeconds(AutoCloseTime);
         Close();
     }
 

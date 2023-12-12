@@ -16,7 +16,7 @@ public class TurbineDataManager : MonoBehaviour
     public GameObject PopupSave;
     public GameObject PopupDelete;
 
-
+    public PopupForAlarm Alarm;
 
     public void ConnectionTest()
     {
@@ -29,8 +29,10 @@ public class TurbineDataManager : MonoBehaviour
     }
     public void Delete()
     {
+        Alarm.Open(PopupForAlarm.ButtonType.Error, "삭제할 데이터를 선택하지 않으셨습니다.");
+
         Debug.Log("Delete");
-        PopupDelete.SetActive(true);
+        //PopupDelete.SetActive(true);
     }
     public void Edit()
     {
@@ -42,7 +44,6 @@ public class TurbineDataManager : MonoBehaviour
         Debug.Log("Back");
         PopupSave.SetActive(true);
     }
-
 
     public void PopupSaveYes()
     {
@@ -68,6 +69,8 @@ public class TurbineDataManager : MonoBehaviour
 
     private void Start()
     {
+        TurbineConnectionDataManager.Instance.Load();
+
         //foreach (var item in g)
         //{
         //    Destroy(item);
