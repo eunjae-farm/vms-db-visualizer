@@ -25,6 +25,7 @@ public abstract class SingleTon<T> where T: class, new() {
                     }
                 }
             }
+
             return _instance;
         }
     }

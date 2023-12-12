@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TurbineConnectionDataManager : SingleTon<TurbineConnectionDataManager>
 {
-    public List<TurbineConnectionData> Data;
+    public List<TurbineConnectionData> Data = new List<TurbineConnectionData>();
 
     public readonly string dataPath = Application.persistentDataPath;
     public readonly string fileName = "connection_information_for_vms.json";
@@ -19,6 +19,7 @@ public class TurbineConnectionDataManager : SingleTon<TurbineConnectionDataManag
 
     public void Load()
     {
+        Reset();
         var path = Path.Combine(dataPath, fileName);
         if (!File.Exists(path))
         {
@@ -27,5 +28,16 @@ public class TurbineConnectionDataManager : SingleTon<TurbineConnectionDataManag
 
         var data = File.ReadAllText(path);
         Data = JsonUtility.FromJson<List<TurbineConnectionData>>(data);
+        
+    }
+
+    public void Reset()
+    {
+        var path = Path.Combine(dataPath, fileName);
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+        Save();
     }
 }
