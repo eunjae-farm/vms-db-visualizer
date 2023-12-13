@@ -36,6 +36,23 @@ public class Server
 
     private string Token = "NULL";
 
+    public (bool, string) HealthyCheck(string ip, int port)
+    {
+        try
+        {
+            var response = client.GetAsync($"http://{ip}:{port}/healthy").Result;
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<JObject>(responseString);
+            var ver = json["version"].Value<string>();
+            Debug.Log(json);
+            return (true, ver);
+        }
+        catch
+        {
+            return (false, "");
+        }
+    }
+
 
     public bool Login(LoginObject data)
     {

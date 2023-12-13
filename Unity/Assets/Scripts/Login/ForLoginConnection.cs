@@ -6,79 +6,46 @@ using UnityEngine.SceneManagement;
 
 public class ForLoginConnection : MonoBehaviour
 {
-    public TMPro.TMP_InputField IpOfApiWithPort;
-    public TMPro.TMP_InputField DatabaseIP;
-    public TMPro.TMP_InputField DatabaseName;
-    public TMPro.TMP_InputField UserId;
-    public TMPro.TMP_InputField Password;
-
-    private string GetPlaceholderText(TMPro.TMP_InputField field)
-    {
-        return field.placeholder.GetComponent<TMPro.TMP_Text> ().text.Split(" ")[1];
-    }
-
-    private string GetValue(TMPro.TMP_InputField field)
-    {
-        return field.text == "" ? GetPlaceholderText(field) : field.text;
-    }
-
-    private bool Validate(out LoginObject result)
-    {
-        result = new LoginObject();
-
-        var ipPort = GetValue(IpOfApiWithPort).Split(":");
-        var db = GetValue(DatabaseIP);
-        var dbName = GetValue(DatabaseName);
-        var id = GetValue(UserId);
-        var pw = GetValue(Password);
-
-        if (ipPort.Length == 2)
-        {
-            if (!int.TryParse(ipPort[1], out int apiPort))
-            {
-                return false;
-            }
-
-            result.IP = ipPort[0];
-            result.Port = apiPort;
-            result.DatabaseIP = db;
-            result.DatabaseName = dbName;
-            result.DatabaseId = id;
-            result.DatabasePw = pw;
-        }
-        else
-        {
-            return false;
-        }
-        return true;
-    }
+    public GameObject Exit;
+    public PopupForAlarm Alarm;
+    public TMPro.TMP_InputField FieldOfAPI;
 
     public void ProgramExit()
     {
-
+        Exit.SetActive(true);
     }
-    public void DatabaseConnect()
+
+    public void Connect()
     {
-        if (Validate(out LoginObject result))
+        if (FieldOfAPI.text == "")
         {
-            Server.Instance.Login(result);
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Visualizer");
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "API의 주소 값을 공백으로 나타낼 수 없습니다.");
+            return;
+        }
+
+        var text = FieldOfAPI.text.Split(":");
+        if (text.Length != 2)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "서버의 주소가 IP:Port 구조로 나타나야 합니다.");
+            return;
+        }
+
+        var ip = text[0];
+        if (int.TryParse(text[1], out int port))
+        {
+            var (result, version) = Server.Instance.HealthyCheck(ip, port);
+            if (result)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Visualizer");
+            }
+            else
+            {
+                Alarm.Open(PopupForAlarm.ButtonType.Error, "서버와 통신에 실패하였습니다.");
+            }
         }
         else
         {
-            Debug.Log("ELSE!?");
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "포트의 주소 값은 정수형 이어야 합니다.");
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

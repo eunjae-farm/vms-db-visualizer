@@ -3,6 +3,9 @@ from datareceiver import database
 from auth import Authorization
 from convert import convert_spectra 
 import numpy as np
+import datetime
+
+__VERSION__ = '0.1.5'
 
 author = Authorization()
 app = Flask(__name__)
@@ -112,7 +115,10 @@ def logout():
     params = request.get_json()
     r = author.logout(params['token'])
     return jsonify({"result": r})
-    
-    
+
+@app.route("/healthy", methods=["GET"])
+def healthyCheck():
+    return jsonify({"time": datetime.datetime.now().isoformat(), "version": __VERSION__})
+
 if __name__ == "__main__":
     app.run(port=5001, host="0.0.0.0")
