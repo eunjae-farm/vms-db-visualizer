@@ -30,13 +30,13 @@ public class PopupForAlarm : MonoBehaviour
             switch (type)
             {
                 case ButtonType.Default:
-                    this.ImageColor.color = new Color(127 / 255, 127 / 255, 127 / 255);
+                    this.ImageColor.color = new Color(127f / 255, 127f / 255, 127f / 255);
                     break;
                 case ButtonType.Error:
-                    this.ImageColor.color = new Color(255 / 255, 134 / 255, 134 / 255);
+                    this.ImageColor.color = new Color(255f / 255, 134f / 255, 134f / 255);
                     break;
                 case ButtonType.Warring:
-                    this.ImageColor.color = new Color(255 / 255, 248 / 255, 134 / 255);
+                    this.ImageColor.color = new Color(255f / 255, 248f / 255, 134f / 255);
                     break;
             }
 

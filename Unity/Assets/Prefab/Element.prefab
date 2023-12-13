@@ -326,10 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameAlias: {fileID: 6351179986853074071}
-  NameTurbine: {fileID: 0}
-  ClickDown: {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
-  ClickHover: {r: 0.5764706, g: 0.5764706, b: 0.5764706, a: 1}
-  ClickDefault: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  NameTurbine: {fileID: 4146805286081170890}
 --- !u!114 &4617111368340806343
 MonoBehaviour:
   m_ObjectHideFlags: 0

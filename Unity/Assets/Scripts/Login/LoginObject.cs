@@ -3,7 +3,7 @@
 
 public class LoginObject
 {
-    public string IP = "home.udon.party";
+    public string IP = "zip.udon.party";
     public int Port = 8000;
 
     public string DatabaseIP = "59.28.91.19";
