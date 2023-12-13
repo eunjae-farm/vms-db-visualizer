@@ -31,6 +31,8 @@ public class TurbineDataManager : MonoBehaviour
     private List<GameObject> contentOfScrollView = new List<GameObject>();
     private List<GameObject> contentOfScrollViewToAddingWindTurbine = new List<GameObject>();
 
+    private int EditTurbineIndex = -1;
+
     bool ValidateInformation()
     {
         var list = new List<TMPro.TMP_InputField>
@@ -121,7 +123,7 @@ public class TurbineDataManager : MonoBehaviour
         }
         if (!int.TryParse(data[0], out int port))
         {
-
+            return;
         }
 
         Debug.Log("Add");
@@ -151,14 +153,33 @@ public class TurbineDataManager : MonoBehaviour
 
     public void Delete()
     {
-        Alarm.Open(PopupForAlarm.ButtonType.Error, "삭제할 데이터를 선택하지 않으셨습니다.");
+        if (EditTurbineIndex == -1)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "삭제할 데이터를 선택하지 않으셨습니다.");
+        }
+        
         Debug.Log("Delete");
-        //PopupDelete.SetActive(true);
+        PopupDelete.SetActive(true);
+        Start();
     }
-    public void Edit()
-    {
-        Debug.Log("Edit");
 
+
+    public void PopupDeleteYes()
+    {
+        TurbineConnectionDataManager.Instance.Data.RemoveAt(EditTurbineIndex);
+        EditTurbineIndex = -1;
+        PopupDelete.SetActive(false);
+    }
+
+    public void PopupDeleteNo()
+    {
+        PopupDelete.SetActive(false);
+    }
+
+    public void Save()
+    {
+        TurbineConnectionDataManager.Instance.Save();
+        Alarm.Open(PopupForAlarm.ButtonType.Default, "성공적으로 데이터를 저장하였습니다.");
     }
     public void Back()
     {
@@ -169,24 +190,13 @@ public class TurbineDataManager : MonoBehaviour
     public void PopupSaveYes()
     {
         PopupSave.SetActive(false);
-        TurbineConnectionDataManager.Instance.Save();
         UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Visualizer");
     }
     public void PopupSaveNo()
     {
         PopupSave.SetActive(false);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Visualizer");
     }
 
-    public void PopupDeleteYes()
-    {
-        PopupDelete.SetActive(false);
-    }
-
-    public void PopupDeleteNo()
-    {
-        PopupDelete.SetActive(false);
-    }
 
     private void Awake()
     {
@@ -223,7 +233,7 @@ public class TurbineDataManager : MonoBehaviour
         InformationDBName.text = data.DBName;
         InformationId.text = data.ID;
         InformationPw.text = data.PW;
-        InformationWindTurbine.text = $"{data.NodeName}:${data.NodeId}";
-        Server.Instance.Login(new LoginObject());
+        InformationWindTurbine.text = $"{data.NodeId}:{data.NodeName}";
+        EditTurbineIndex = idx;
     }
 }

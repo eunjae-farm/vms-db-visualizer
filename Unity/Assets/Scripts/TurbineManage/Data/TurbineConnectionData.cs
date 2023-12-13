@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
 public class TurbineConnectionData
 {
-    public string Name;
-    public string DBIP;
-    public string DBName;
-    public string ID;
-    public string PW;
-    public int NodeId;
-    public string NodeName;
+    public string Name { get; set; }
+    public string DBIP { get; set; }
+    public string DBName { get; set; }
+    public string ID { get; set; }
+    public string PW { get; set; }
+    public int NodeId { get; set; }
+    public string NodeName { get; set; }
 }

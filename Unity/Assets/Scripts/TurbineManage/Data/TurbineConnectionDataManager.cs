@@ -12,14 +12,13 @@ public class TurbineConnectionDataManager : SingleTon<TurbineConnectionDataManag
 
     public void Save()
     {
-        string json = JsonUtility.ToJson(Data);
+        string json = Newtonsoft.Json.JsonConvert.SerializeObject(Data);
         var path = Path.Combine(dataPath, fileName);
         File.WriteAllText(path, json);
     }
 
     public void Load()
     {
-        Reset();
         var path = Path.Combine(dataPath, fileName);
         if (!File.Exists(path))
         {
@@ -27,8 +26,7 @@ public class TurbineConnectionDataManager : SingleTon<TurbineConnectionDataManag
         }
 
         var data = File.ReadAllText(path);
-        Data = JsonUtility.FromJson<List<TurbineConnectionData>>(data);
-        
+        Data = Newtonsoft.Json.JsonConvert.DeserializeObject<List<TurbineConnectionData>>(data);
     }
 
     public void Reset()
