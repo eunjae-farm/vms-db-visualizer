@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: bd3bb44df01e242b1bcac29708ffaeb9, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -758,11 +758,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7832674075007561354, guid: b9c8704a3ab594418ab0031f736c4966, type: 3}
   m_PrefabInstance: {fileID: 467810603}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &467810605 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7940380117605976081, guid: b9c8704a3ab594418ab0031f736c4966, type: 3}
+--- !u!114 &467810606 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1494143856098286887, guid: b9c8704a3ab594418ab0031f736c4966, type: 3}
   m_PrefabInstance: {fileID: 467810603}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cb2e40cccae9491fba7bf4a27356c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &499942365
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,7 +918,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Exit: {fileID: 1461397725}
-  Alarm: {fileID: 467810605}
+  Alarm: {fileID: 467810606}
+  FieldOfAPI: {fileID: 1979637885}
 --- !u!1 &674879651
 GameObject:
   m_ObjectHideFlags: 0
