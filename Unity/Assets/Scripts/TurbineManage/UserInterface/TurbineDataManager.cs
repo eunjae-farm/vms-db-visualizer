@@ -78,7 +78,14 @@ public class TurbineDataManager : MonoBehaviour
             result.DatabaseId = InformationId.text;
             result.DatabasePw = InformationPw.text;
 
-            Server.Instance.Login(result);
+            if (!Server.Instance.Login(result))
+            {
+                UnityThread.executeInUpdate(() =>
+                {
+                    Alarm.Open(PopupForAlarm.ButtonType.Error, "서버 접속에 실패하였습니다.");
+                });
+                return;
+            }
             var node = Server.Instance.Node();
             Debug.Log("load for node data from server");
 
@@ -156,6 +163,7 @@ public class TurbineDataManager : MonoBehaviour
         if (EditTurbineIndex == -1)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Error, "삭제할 데이터를 선택하지 않으셨습니다.");
+            return;
         }
         
         Debug.Log("Delete");
@@ -169,6 +177,7 @@ public class TurbineDataManager : MonoBehaviour
         TurbineConnectionDataManager.Instance.Data.RemoveAt(EditTurbineIndex);
         EditTurbineIndex = -1;
         PopupDelete.SetActive(false);
+        Start();
     }
 
     public void PopupDeleteNo()

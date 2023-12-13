@@ -162,16 +162,21 @@ public class Server
         {
             { "token", Token },
         };
-
-        var send = JsonConvert.SerializeObject(values);
-        var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/node", content).Result;
-        //Debug.Log(send);
-        var responseString = response.Content.ReadAsStringAsync().Result;
-        var json = JsonConvert.DeserializeObject<List<VMSNode>>(responseString);
-        //Token = json["token"].Value<string>();
-        //Debug.Log(Token);
-        return json;
+        try
+        {
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/node", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSNode>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
+            return json;
+        }catch
+        {
+            return null;
+        }
     }
 
     public List<VMSNodeData> Search(int id, int size, int offset)
