@@ -5848,6 +5848,38 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 9092392254097509477, guid: 57ae07aaa5c7c454198a5c2b600acf3b, type: 3}
+--- !u!1 &1995838161162117216
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9123689845876384588}
+  m_Layer: 0
+  m_Name: Normal GreenBearing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9123689845876384588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995838161162117216}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 81.083, z: 2.343}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1614117054789246666}
+  m_Father: {fileID: 130790176506474539}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2081719937499763905
 GameObject:
   m_ObjectHideFlags: 0
@@ -8266,7 +8298,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3096667473335751366}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -9.8}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15371,12 +15403,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6193084051377880939}
   m_LocalRotation: {x: -0.034899585, y: -0, z: -0, w: 0.99939084}
-  m_LocalPosition: {x: 0, y: 81.083, z: 2.3430004}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6830248097059369136}
-  m_Father: {fileID: 130790176506474539}
+  m_Father: {fileID: 9123689845876384588}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -4, y: 0, z: 0}
 --- !u!1 &6204205381199596484
@@ -16310,6 +16342,38 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5696234951464177065, guid: 62d98e778b392f44ca396e9a9604dbd3, type: 3}
+--- !u!1 &6414226516036989857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5989271146970541004}
+  m_Layer: 0
+  m_Name: Normal BlackBearing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5989271146970541004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6414226516036989857}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 81.329, z: 5.908}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1780780524186622836}
+  m_Father: {fileID: 130790176506474539}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6497089501260236640
 GameObject:
   m_ObjectHideFlags: 0
@@ -16652,12 +16716,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6562056100983002104}
   m_LocalRotation: {x: -0.034899585, y: -0, z: -0, w: 0.99939084}
-  m_LocalPosition: {x: 0, y: 81.329, z: 5.908}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2566595490736051595}
-  m_Father: {fileID: 130790176506474539}
+  m_Father: {fileID: 5989271146970541004}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -4, y: 0, z: 0}
 --- !u!1 &6571165638679449626
@@ -22387,8 +22451,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3519665994330779478}
-  - {fileID: 1614117054789246666}
-  - {fileID: 1780780524186622836}
+  - {fileID: 5989271146970541004}
+  - {fileID: 9123689845876384588}
   - {fileID: 1849139916735349820}
   - {fileID: 4413857412822692487}
   - {fileID: 4862752248795636671}
@@ -22447,11 +22511,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outter_body: {fileID: 3096667473335751366}
-  Magn: 5
+  Magn: 1
   Bearing:
-  - list: []
-  - list: []
-  - list: []
+  - list:
+    - {fileID: 6562056100983002104}
+    - {fileID: 8885213544930867303}
+    - {fileID: 7947660561523485179}
+    - {fileID: 5550577517522968585}
+  - list:
+    - {fileID: 6193084051377880939}
+    - {fileID: 8634079270031768570}
+    - {fileID: 8635528090471274221}
+  - list:
+    - {fileID: 3072371688232193870}
   Times: []
   Nodes: []
 --- !u!1 &8518881783690681279

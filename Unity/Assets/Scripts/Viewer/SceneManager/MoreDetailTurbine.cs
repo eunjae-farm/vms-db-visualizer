@@ -9,6 +9,7 @@ public class MoreDetailTurbine : SceneManager
     public GameObject UI;
     public CameraSceneMove Cameras;
     public PopupForAlarm PopupAlarm;
+    public GeneratorMotion TurbineMotion;
 
     public override void Enable()
     {
@@ -28,6 +29,7 @@ public class MoreDetailTurbine : SceneManager
     {
         PopupAlarm.AutoClose = false;
         PopupAlarm.Open(PopupForAlarm.ButtonType.Warring, "데이터 로딩중");
+        TurbineMotion.OutterBody(false);
         Task.Run(() =>
         {
             var s = new System.Diagnostics.Stopwatch();
@@ -66,6 +68,8 @@ public class MoreDetailTurbine : SceneManager
             UnityThread.executeInUpdate(() =>
             {
                 PopupAlarm.Close();
+                TurbineMotion.OutterBody(true);
+                TurbineMotion.SetData(nodeData);
             });
         });
     }
