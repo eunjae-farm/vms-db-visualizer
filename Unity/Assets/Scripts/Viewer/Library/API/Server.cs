@@ -33,10 +33,18 @@ public class Server
             return _instance;
         }
     }
+    private string IP;
+    private int Port;
 
     LoginObject LoginData;
 
     private string Token = "NULL";
+
+    public void Setup(string ip, int port)
+    {
+        IP = ip;
+        Port = port;
+    }
 
     public (bool, string) HealthyCheck(string ip, int port)
     {
@@ -73,7 +81,7 @@ public class Server
             var send = JsonConvert.SerializeObject(values);
             var content = new StringContent(send, Encoding.UTF8, "application/json");
             //Debug.Log(send);
-            var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/login", content).Result;
+            var response = client.PostAsync($"http://{IP}:{Port}/login", content).Result;
             var responseString = response.Content.ReadAsStringAsync().Result;
             var json = JsonConvert.DeserializeObject<JObject>(responseString);
             Token = json["token"].Value<string>();
@@ -94,7 +102,7 @@ public class Server
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/logout", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/logout", content).Result;
         //Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<JObject>(responseString);
@@ -117,7 +125,7 @@ public class Server
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/alarm", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/alarm", content).Result;
         //Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(responseString);
@@ -139,7 +147,7 @@ public class Server
         {
             var send = JsonConvert.SerializeObject(values);
             var content = new StringContent(send, Encoding.UTF8, "application/json");
-            var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/fft", content).Result;
+            var response = client.PostAsync($"http://{IP}:{Port}/fft", content).Result;
             //Debug.Log(send);
             var responseString = response.Content.ReadAsStringAsync().Result;
             //Debug.Log(responseString);
@@ -165,7 +173,7 @@ public class Server
         {
             var send = JsonConvert.SerializeObject(values);
             var content = new StringContent(send, Encoding.UTF8, "application/json");
-            var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/charts", content).Result;
+            var response = client.PostAsync($"http://{IP}:{Port}/charts", content).Result;
             //Debug.Log(send);
             var responseString = response.Content.ReadAsStringAsync().Result;
             var json = JsonConvert.DeserializeObject<VMSCharts>(responseString);
@@ -186,7 +194,7 @@ public class Server
         {
             var send = JsonConvert.SerializeObject(values);
             var content = new StringContent(send, Encoding.UTF8, "application/json");
-            var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/node", content).Result;
+            var response = client.PostAsync($"http://{IP}:{Port}/node", content).Result;
             //Debug.Log(send);
             var responseString = response.Content.ReadAsStringAsync().Result;
             var json = JsonConvert.DeserializeObject<List<VMSNode>>(responseString);
@@ -211,7 +219,7 @@ public class Server
 
         var send = JsonConvert.SerializeObject(values);
         var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{LoginData.IP}:{LoginData.Port}/search", content).Result;
+        var response = client.PostAsync($"http://{IP}:{Port}/search", content).Result;
         //Debug.Log(send);
         var responseString = response.Content.ReadAsStringAsync().Result;
         var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);

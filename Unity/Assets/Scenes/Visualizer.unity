@@ -3118,6 +3118,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameTag: {fileID: 1638673244}
+  AlarmComponent: {fileID: 4572034711452900574, guid: 34e4ef37b4f9a4394a222cbb61bc9e27, type: 3}
+  ContentOfListView: {fileID: 1203773770}
 --- !u!1 &2032603412
 GameObject:
   m_ObjectHideFlags: 0

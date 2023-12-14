@@ -42,6 +42,7 @@ public class ForLoginConnection : MonoBehaviour
             var (result, version) = Server.Instance.HealthyCheck(ip, port);
             if (result)
             {
+                Server.Instance.Setup(ip, port);
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Scenes/Visualizer");
             }
             else
