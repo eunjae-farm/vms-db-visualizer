@@ -34,3 +34,4 @@ public class RotateTurbine : MonoBehaviour
         //this.Propeller.transform.RotateAround(Vector3.forward, WingRotatePerSeconds * Time.deltaTime * 3.6f);
     }
 }
+1.941998 79.4879 7.546534

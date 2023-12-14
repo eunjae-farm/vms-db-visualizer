@@ -7,8 +7,12 @@ public class CameraSceneMove : MonoBehaviour
     public List<CameraGroup> Cameras;
     public List<SceneManager> Callback;
 
-    int current = 0;
+    public CameraGroup GetCameras()
+    {
+        return Cameras[current];
+    }
 
+    int current = 0;
     public void SetCamera(int index)
     {
         index = index % Cameras.Count;
