@@ -411,8 +411,8 @@ MonoBehaviour:
     - {fileID: 1074780801}
     - {fileID: 1282471708}
   Callback:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1839241527}
+  - {fileID: 1134596345}
 --- !u!1 &136270084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,11 +1851,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &774524659 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8501872129923287181, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
-  m_PrefabInstance: {fileID: 2141682120}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &821236620
 GameObject:
   m_ObjectHideFlags: 0
@@ -4669,21 +4664,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1839241525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8c714b2754c040f09b4a7231813c72c, type: 3}
+  m_Script: {fileID: 11500000, guid: 441529f6376544ae48d37e9a8a2f2d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   NameTag: {fileID: 1638673244}
-  index: 0
   AlarmComponent: {fileID: 4572034711452900574, guid: 34e4ef37b4f9a4394a222cbb61bc9e27, type: 3}
-  AlarmComponentInListView: []
   ContentOfListView: {fileID: 1203773770}
   WindTurbines:
-  - {fileID: 774524659}
+  - {fileID: 2141682122}
   - {fileID: 1055255416}
   - {fileID: 1931463043}
   moveAnimationCurve:
+    serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 3
+      time: 0
       value: 0
       inSlope: 2
       outSlope: 2
@@ -4691,15 +4686,17 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - time: 0.3344925
-      value: 0.91367006
-      inSlope: 1.1226817
-      outSlope: 1.1226817
+    - serializedVersion: 3
+      time: 0.48848212
+      value: 0.98415804
+      inSlope: 0.7813692
+      outSlope: 0.7813692
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
-    - time: 1
+    - serializedVersion: 3
+      time: 1
       value: 1
       inSlope: 0
       outSlope: 0
@@ -4711,8 +4708,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   moveDuration: 1
-  currentMoveDuration: 0
-  moveDirection: 0
   UI: {fileID: 952239276}
 --- !u!1001 &1931463041
 PrefabInstance:
@@ -5251,6 +5246,11 @@ PrefabInstance:
 --- !u!4 &2141682121 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 130790176506474539, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
+  m_PrefabInstance: {fileID: 2141682120}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2141682122 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8501872129923287181, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
   m_PrefabInstance: {fileID: 2141682120}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2146663566
