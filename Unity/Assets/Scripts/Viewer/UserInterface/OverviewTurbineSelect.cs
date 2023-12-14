@@ -22,13 +22,13 @@ public class OverviewTurbineSelect : MonoBehaviour
 
     }
 
-    public void AddButton()
+    public void ManageButton()
     {
         Debug.Log("AddButton");
 
     }
 
-    public void DeleteButton()
+    public void AlarmButton()
     {
         Debug.Log("DeleteButton");
 
