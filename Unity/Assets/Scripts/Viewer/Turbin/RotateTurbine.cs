@@ -41,7 +41,6 @@ public class RotateTurbine : MonoBehaviour
         this.TurbineFromSlow.transform.Rotate(Vector3.forward, Time.deltaTime * SlowRotateSpeed * 360);
         this.TurbineFromFast.transform.Rotate(Vector3.forward, Time.deltaTime * FastwRotateSpeed * 360);
 
-
         //var cur = this.Propeller.transform.eulerAngles;
         //this.Propeller.transform.RotateAround(Vector3.forward, WingRotatePerSeconds * Time.deltaTime * 3.6f);
     }
