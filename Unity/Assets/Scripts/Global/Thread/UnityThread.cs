@@ -1,3 +1,9 @@
+// This file is reused from a post on stackoverflow
+// https://stackoverflow.com/questions/41330771/use-unity-api-from-another-thread-or-call-a-function-in-the-main-thread/54184457#54184457
+// link to answer: https://stackoverflow.com/a/41333540
+// original answer by https://stackoverflow.com/users/3785314/programmer
+// edited by https://stackoverflow.com/users/8157029/jtth
+
 #define ENABLE_UPDATE_FUNCTION_CALLBACK
 #define ENABLE_LATEUPDATE_FUNCTION_CALLBACK
 #define ENABLE_FIXEDUPDATE_FUNCTION_CALLBACK

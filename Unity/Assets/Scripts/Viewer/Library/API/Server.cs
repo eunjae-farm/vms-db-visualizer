@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ public class Server
                     if (_instance == null)
                     {
                         _instance = new Server();
+                        Server.client.Timeout = TimeSpan.FromSeconds(3);
                     }
                 }
             }
@@ -43,6 +45,7 @@ public class Server
             var response = client.GetAsync($"http://{ip}:{port}/healthy").Result;
             var responseString = response.Content.ReadAsStringAsync().Result;
             var json = JsonConvert.DeserializeObject<JObject>(responseString);
+
             var ver = json["version"].Value<string>();
             Debug.Log(json);
             return (true, ver);

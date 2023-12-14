@@ -19,14 +19,20 @@ public class ForLoginConnection : MonoBehaviour
     {
         if (FieldOfAPI.text == "")
         {
-            Alarm.Open(PopupForAlarm.ButtonType.Error, "API의 주소 값을 공백으로 나타낼 수 없습니다.");
+            UnityThread.executeInUpdate(() =>
+            {
+                Alarm.Open(PopupForAlarm.ButtonType.Error, "API의 주소 값을 공백으로 나타낼 수 없습니다.");
+            });
             return;
         }
 
         var text = FieldOfAPI.text.Split(":");
         if (text.Length != 2)
         {
-            Alarm.Open(PopupForAlarm.ButtonType.Error, "서버의 주소가 IP:Port 구조로 나타나야 합니다.");
+            UnityThread.executeInUpdate(() =>
+            {
+                Alarm.Open(PopupForAlarm.ButtonType.Error, "서버의 주소가 IP:Port 구조로 나타나야 합니다.");
+            });
             return;
         }
 
@@ -40,12 +46,18 @@ public class ForLoginConnection : MonoBehaviour
             }
             else
             {
-                Alarm.Open(PopupForAlarm.ButtonType.Error, "서버와 통신에 실패하였습니다.");
+                UnityThread.executeInUpdate(() =>
+                {
+                    Alarm.Open(PopupForAlarm.ButtonType.Error, "서버와 통신에 실패하였습니다.");
+                });
             }
         }
         else
         {
-            Alarm.Open(PopupForAlarm.ButtonType.Error, "포트의 주소 값은 정수형 이어야 합니다.");
+            UnityThread.executeInUpdate(() =>
+            {
+                Alarm.Open(PopupForAlarm.ButtonType.Error, "포트의 주소 값은 정수형 이어야 합니다.");
+            });
         }
     }
 }
