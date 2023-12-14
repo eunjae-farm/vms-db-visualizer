@@ -36,12 +36,16 @@ public class MoreDetailTurbine : SceneManager
                         if (raycastHit.transform != null)
                         {
                             Transform t = raycastHit.transform;
-
-                            while (t.gameObject.name.Split("_")[0] != "00000") {
-                                
+                            if (t.gameObject.name.Contains("Terrain"))
+                            {
+                                return;
                             }
 
-                            Debug.Log(.gameObject.name);
+                            while (t.gameObject.name.Split("_")[0] != "00000") {
+                                t = t.parent.transform;
+                            }
+
+                            Debug.Log(t.gameObject.name);
                         }
                     }
                 }
