@@ -22,7 +22,12 @@ public class OverviewTurbineSelect : MonoBehaviour
             return;
         }
 
-        var d = TurbineConnectionDataManager.Instance.Data[index % TurbineConnectionDataManager.Instance.Data.Count];
+        if (this.index < 0)
+        {
+            this.index = TurbineConnectionDataManager.Instance.Data.Count - 1;
+        }
+
+        var d = TurbineConnectionDataManager.Instance.Data[this.index % TurbineConnectionDataManager.Instance.Data.Count];
         NameTag.text = $"풍력발전기 : {d.Name}";
     }
 
