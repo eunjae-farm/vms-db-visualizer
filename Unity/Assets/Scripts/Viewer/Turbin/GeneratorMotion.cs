@@ -15,6 +15,7 @@ public class GeneratorMotion : MonoBehaviour
     public List<UnityList<float>> Times;
     public List<UnityList<NodeData>> Nodes;
 
+
     #region Removable Outter Body
     public void OutterBody(bool on)
     {

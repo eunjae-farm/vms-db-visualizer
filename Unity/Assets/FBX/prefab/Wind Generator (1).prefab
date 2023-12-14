@@ -17652,19 +17652,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8501872129923287181}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0dd5d5eefbab67741ba7067bdf44a8c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FisrtBearing: {fileID: 0}
-  SecondBearing: {fileID: 0}
-  Generator: {fileID: 0}
-  BaseObject: {fileID: 0}
-  RedPivot: {fileID: 0}
-  Hole: {fileID: 0}
-  Body: {fileID: 0}
-  Electro: {fileID: 0}
+  FisrtBearing: {fileID: 8885213544930867303}
+  SecondBearing: {fileID: 7947660561523485179}
+  Generator: {fileID: 8634079270031768570}
+  BaseObject: {fileID: 8045566729509775073}
+  RedPivot: {fileID: 5550577517522968585}
+  Hole: {fileID: 149462847062573033}
+  Body: {fileID: 3096667473335751366}
+  Electro: {fileID: 3072371688232193870}
   RefreshTick: 2
   Amp: 5
 --- !u!114 &3575631673718389339
@@ -17679,9 +17679,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d00e28fc3504ec08b46b0b085604a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outter_body: {fileID: 0}
+  outter_body: {fileID: 3096667473335751366}
   Magn: 5
-  Bearing: []
+  Bearing:
+  - list: []
+  - list: []
+  - list: []
   Times: []
   Nodes: []
 --- !u!1 &8531381909474842425

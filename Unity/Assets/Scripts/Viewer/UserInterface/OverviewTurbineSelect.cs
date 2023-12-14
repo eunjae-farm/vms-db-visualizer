@@ -11,6 +11,55 @@ public class OverviewTurbineSelect : MonoBehaviour
     public GameObject AlarmComponent;
     private List<GameObject> AlarmComponentInListView = new List<GameObject>();
     public GameObject ContentOfListView;
+    public List<GameObject> WindTurbines;
+
+    [SerializeField]
+    private AnimationCurve moveAnimationCurve;
+
+    [SerializeField]
+    private float moveDuration;
+    private float currentMoveDuration = 0;
+    private int moveDirection = 0; // -1 <<, 1 >> 
+
+    private void Update()
+    {
+        if (moveDirection != 0)
+        {
+            currentMoveDuration += Time.deltaTime;
+
+            if (currentMoveDuration >= moveDuration)
+            {
+                currentMoveDuration = moveDuration;
+            }
+
+            var evals = moveAnimationCurve.Evaluate(currentMoveDuration / moveDuration);
+            bool isThreshold = false;
+            if (evals > 0.4)
+            {
+                isThreshold = true;
+            }
+            for (int i = 0; i < WindTurbines.Count; i++)
+            {
+                var item = WindTurbines[i];
+                // convert to 0 1 2 => 1, 0, -1
+                //-1 0 1 
+                float x = 300 * -(i - 1);
+                x += 300 * evals * moveDirection;
+                if (isThreshold)
+                {
+                    x += -moveDirection * 300;
+                }
+
+                item.transform.position = new Vector3(x, 0, 0);
+            }
+
+            if (Mathf.Abs(currentMoveDuration - moveDuration) < float.Epsilon)
+            {
+                moveDirection = 0;
+                currentMoveDuration = 0;
+            }
+        }
+    }
 
     private void Load()
     {
@@ -18,8 +67,14 @@ public class OverviewTurbineSelect : MonoBehaviour
         index = 0;
         Set(index);
     }
+
     private void Set(int index)
     {
+        if (moveDirection != 0)
+        {
+            return;
+        }
+
         this.index += index;
         if (TurbineConnectionDataManager.Instance.Data.Count == 0)
         {
@@ -32,11 +87,9 @@ public class OverviewTurbineSelect : MonoBehaviour
             this.index = TurbineConnectionDataManager.Instance.Data.Count - 1;
         }
 
+        moveDirection = index;
         var d = TurbineConnectionDataManager.Instance.Data[this.index % TurbineConnectionDataManager.Instance.Data.Count];
-
         NameTag.text = $"풍력발전기 : {d.Name}";
-
-        
     }
 
     private TurbineConnectionData Get()
@@ -48,6 +101,8 @@ public class OverviewTurbineSelect : MonoBehaviour
 
         return TurbineConnectionDataManager.Instance.Data[this.index % TurbineConnectionDataManager.Instance.Data.Count];
     }
+
+
 
     private void Start()
     {
@@ -112,7 +167,6 @@ public class OverviewTurbineSelect : MonoBehaviour
 
             UnityThread.executeInUpdate(() =>
             {
-
                 for (int i = AlarmComponentInListView.Count; i < Alarm.Count; i++)
                 {
                     GameObject myInstance = Instantiate(AlarmComponent, ContentOfListView.transform);
