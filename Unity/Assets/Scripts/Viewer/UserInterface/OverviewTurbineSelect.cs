@@ -130,8 +130,6 @@ public class OverviewTurbineSelect : MonoBehaviour
                 {
                     AlarmComponentInListView[i].SetActive(false);
                 }
-
-
             });
 
             Server.Instance.Logout();
