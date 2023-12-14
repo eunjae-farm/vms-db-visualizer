@@ -9,7 +9,6 @@ public class RandomVibrator : MonoBehaviour
     public GameObject Generator;
     public GameObject BaseObject;
     public GameObject RedPivot;
-    public GameObject Hole;
     public GameObject Body;
     public GameObject Electro;
 
@@ -29,7 +28,6 @@ public class RandomVibrator : MonoBehaviour
             (0, 0, Generator),
             (0, 0, BaseObject),
             (0, 0, RedPivot),
-            (0, 0, Hole),
             (0, 0, Body),
             (0, 0, Electro),
         };

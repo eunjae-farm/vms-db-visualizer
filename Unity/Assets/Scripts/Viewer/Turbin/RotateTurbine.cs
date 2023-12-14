@@ -7,6 +7,13 @@ public class RotateTurbine : MonoBehaviour
     public GameObject Propeller;
     public float WingRotatePerSeconds = 1;
 
+    public GameObject TurbineFromSlow;
+    public GameObject TurbineFromFast;
+
+    public float SlowRotateSpeed = 3;
+    public float FastwRotateSpeed = 100;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +37,12 @@ public class RotateTurbine : MonoBehaviour
     {
         var (center, _) = ComputeCenterPosition(Propeller);
         this.Propeller.transform.RotateAround(center, Vector3.forward, Time.deltaTime * WingRotatePerSeconds * 360);
+
+        this.TurbineFromSlow.transform.Rotate(Vector3.forward, Time.deltaTime * SlowRotateSpeed * 360);
+        this.TurbineFromFast.transform.Rotate(Vector3.forward, Time.deltaTime * FastwRotateSpeed * 360);
+
+
         //var cur = this.Propeller.transform.eulerAngles;
         //this.Propeller.transform.RotateAround(Vector3.forward, WingRotatePerSeconds * Time.deltaTime * 3.6f);
     }
 }
-1.941998 79.4879 7.546534
