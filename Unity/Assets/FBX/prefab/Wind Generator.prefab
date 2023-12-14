@@ -17711,7 +17711,7 @@ MonoBehaviour:
   WingRotatePerSeconds: 0.1
   TurbineFromSlow: {fileID: 6562056100983002104}
   TurbineFromFast: {fileID: 6193084051377880939}
-  SlowRotateSpeed: 3
+  SlowRotateSpeed: 0.3
   FastwRotateSpeed: 100
 --- !u!114 &8376536954463546874
 MonoBehaviour:
