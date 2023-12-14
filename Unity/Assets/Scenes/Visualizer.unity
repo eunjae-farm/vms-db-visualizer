@@ -364,6 +364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 123099219}
+  - component: {fileID: 123099220}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -384,9 +385,34 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1839241526}
+  - {fileID: 1134596344}
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &123099220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123099218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 029b6626581474f34ad73941e7ced3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Cameras:
+  - Cameras:
+    - {fileID: 217407675}
+    - {fileID: 963194227}
+  - Cameras:
+    - {fileID: 332242055}
+    - {fileID: 1479604954}
+    - {fileID: 1074780801}
+    - {fileID: 1282471708}
+  Callback:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &136270084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,8 +1046,8 @@ Camera:
     y: 0
     width: 0.5
     height: 0.5
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 2000
   field of view: 58.70759
   orthographic: 0
   orthographic size: 5
@@ -1140,7 +1166,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 503607635}
-  - component: {fileID: 503607636}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1166,21 +1191,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &503607636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503607634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 029b6626581474f34ad73941e7ced3af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Cameras:
-  - Cameras:
-    - {fileID: 963194227}
 --- !u!1 &513259925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,6 +2505,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6712976642980510884, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8376536954463546874, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
       propertyPath: Amp
       value: 8
@@ -2594,8 +2608,8 @@ Camera:
     y: 0
     width: 0.5
     height: 0.5
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -2749,6 +2763,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1101287109}
   m_CullTransparentMesh: 1
+--- !u!1 &1134596342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1134596344}
+  - component: {fileID: 1134596345}
+  m_Layer: 0
+  m_Name: Dummy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1134596344
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134596342}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 123099219}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1134596345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134596342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a474d0c558f4468f8c150d1cae83098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI: {fileID: 840523611}
 --- !u!1 &1143864647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3421,8 +3480,8 @@ Camera:
     y: 0.5
     width: 0.5
     height: 0.5
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -3604,8 +3663,8 @@ Camera:
     y: 0.5
     width: 0.5
     height: 0.5
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.01
+  far clip plane: 2000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -3639,7 +3698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1489926620
 Transform:
   m_ObjectHideFlags: 0
@@ -4614,17 +4673,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameTag: {fileID: 1638673244}
+  index: 0
   AlarmComponent: {fileID: 4572034711452900574, guid: 34e4ef37b4f9a4394a222cbb61bc9e27, type: 3}
+  AlarmComponentInListView: []
   ContentOfListView: {fileID: 1203773770}
   WindTurbines:
   - {fileID: 774524659}
   - {fileID: 1055255416}
   - {fileID: 1931463043}
   moveAnimationCurve:
-    serializedVersion: 2
     m_Curve:
-    - serializedVersion: 3
-      time: 0
+    - time: 0
       value: 0
       inSlope: 2
       outSlope: 2
@@ -4632,8 +4691,7 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.3344925
+    - time: 0.3344925
       value: 0.91367006
       inSlope: 1.1226817
       outSlope: 1.1226817
@@ -4641,8 +4699,7 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
+    - time: 1
       value: 1
       inSlope: 0
       outSlope: 0
@@ -4654,6 +4711,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   moveDuration: 1
+  currentMoveDuration: 0
+  moveDirection: 0
+  UI: {fileID: 952239276}
 --- !u!1001 &1931463041
 PrefabInstance:
   m_ObjectHideFlags: 0
