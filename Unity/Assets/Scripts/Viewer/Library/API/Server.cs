@@ -184,6 +184,7 @@ public class Server
             return null;
         }
     }
+
     public List<VMSNode> Node()
     {
         var values = new Dictionary<object, object>
@@ -209,23 +210,29 @@ public class Server
 
     public List<VMSNodeData> Search(int id, int size, int offset)
     {
-        var values = new Dictionary<object, object>
+        try
         {
-            { "token", Token },
-            { "id", id },
-            { "size", size },
-            { "offset", offset },
-        };
+            var values = new Dictionary<object, object>
+            {
+                { "token", Token },
+                { "id", id },
+                { "size", size },
+                { "offset", offset },
+            };
 
-        var send = JsonConvert.SerializeObject(values);
-        var content = new StringContent(send, Encoding.UTF8, "application/json");
-        var response = client.PostAsync($"http://{IP}:{Port}/search", content).Result;
-        //Debug.Log(send);
-        var responseString = response.Content.ReadAsStringAsync().Result;
-        var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);
-        //Token = json["token"].Value<string>();
-        //Debug.Log(Token);
-        return json;
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/search", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
+            return json;
+        }catch
+        {
+            return null;
+        }
     }
 
 

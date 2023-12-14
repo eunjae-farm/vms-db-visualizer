@@ -21,7 +21,10 @@ public class OverviewTurbineSelect : SceneManager
     private float currentMoveDuration = 0;
     private int moveDirection = 0; // -1 <<, 1 >> 
 
+    public CameraSceneMove CameraManager;
+    public MoreDetailTurbine DataThrou;
     public GameObject UI;
+    public PopupForAlarm PopupAlarm;
 
     public override void Enable()
     {
@@ -103,6 +106,8 @@ public class OverviewTurbineSelect : SceneManager
         moveDirection = index;
         var d = TurbineConnectionDataManager.Instance.Data[this.index % TurbineConnectionDataManager.Instance.Data.Count];
         NameTag.text = $"풍력발전기 : {d.Name}";
+        currentNode = null;
+        currentAlarm = null;
     }
 
     private TurbineConnectionData Get()
@@ -116,11 +121,9 @@ public class OverviewTurbineSelect : SceneManager
     }
 
 
-
     private void Start()
     {
         Load();
-
     }
 
 
@@ -139,6 +142,15 @@ public class OverviewTurbineSelect : SceneManager
     public void SelectButton()
     {
         Debug.Log("SelectButton");
+        if (currentNode == null || currentAlarm == null)
+        {
+            PopupAlarm.AutoClose = true;
+            PopupAlarm.Open(PopupForAlarm.ButtonType.Error, "먼저 알람 정보를 불러와주세요.");
+            return;
+        }
+
+        CameraManager.SetCamera(1);
+        DataThrou.LoadForVibData(Get(), currentNode, currentAlarm);
     }
 
     public void ManageButton()
@@ -153,6 +165,8 @@ public class OverviewTurbineSelect : SceneManager
         UpdateForView();
     }
 
+    List<VMSNode> currentNode = null;
+    List<VMSAlarmWithNode> currentAlarm = null;
 
     void UpdateForView()
     {
@@ -172,34 +186,32 @@ public class OverviewTurbineSelect : SceneManager
                 DatabasePw = turbine.PW
             });
 
-            var Node = Server.Instance.Node();
-            var Alarm = Server.Instance.Alarm(100, 0)
-                    .Select(item => new VMSAlarmWithNode(item, Node.First(i => i.NodeId == item.Node).Name))
+            currentNode = Server.Instance.Node();
+            currentAlarm = Server.Instance.Alarm(100, 0)
+                    .Select(item => new VMSAlarmWithNode(item, currentNode.First(i => i.NodeId == item.Node).Name))
                     //.Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")
                     .ToList();
 
             UnityThread.executeInUpdate(() =>
             {
-                for (int i = AlarmComponentInListView.Count; i < Alarm.Count; i++)
+                for (int i = AlarmComponentInListView.Count; i < currentAlarm.Count; i++)
                 {
                     GameObject myInstance = Instantiate(AlarmComponent, ContentOfListView.transform);
                     myInstance.GetComponent<Setting_For_Panel>().MouseClick += OverviewTurbineSelect_MouseClick;
                     AlarmComponentInListView.Add(myInstance);
                 }
 
-                for (int i = 0; i < Alarm.Count; i++)
+                for (int i = 0; i < currentAlarm.Count; i++)
                 {
-                    AlarmComponentInListView[i].GetComponent<Setting_For_Panel>().SetAlarm(Alarm[i]);
+                    AlarmComponentInListView[i].GetComponent<Setting_For_Panel>().SetAlarm(currentAlarm[i]);
                     AlarmComponentInListView[i].SetActive(true);
                 }
 
-                for (int i = Alarm.Count; i < AlarmComponentInListView.Count; i++)
+                for (int i = currentAlarm.Count; i < AlarmComponentInListView.Count; i++)
                 {
                     AlarmComponentInListView[i].SetActive(false);
                 }
             });
-
-            Server.Instance.Logout();
         });
     }
 
