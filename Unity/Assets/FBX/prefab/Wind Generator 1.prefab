@@ -18079,7 +18079,7 @@ GameObject:
   - component: {fileID: 8376536954463546874}
   - component: {fileID: 3575631673718389339}
   m_Layer: 0
-  m_Name: Wind Generator
+  m_Name: Wind Generator 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -35,7 +35,13 @@ public class MoreDetailTurbine : SceneManager
                     {
                         if (raycastHit.transform != null)
                         {
-                            Debug.Log(raycastHit.transform.gameObject);
+                            Transform t = raycastHit.transform;
+
+                            while (t.gameObject.name.Split("_")[0] != "00000") {
+                                
+                            }
+
+                            Debug.Log(.gameObject.name);
                         }
                     }
                 }
