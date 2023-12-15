@@ -108,6 +108,11 @@ public class OverviewTurbineSelect : SceneManager
         NameTag.text = $"풍력발전기 : {d.Name}";
         currentNode = null;
         currentAlarm = null;
+
+        foreach (var item in AlarmComponentInListView)
+        {
+            item.SetActive(false);
+        }
     }
 
     private TurbineConnectionData Get()
