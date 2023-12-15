@@ -186,7 +186,7 @@ public class OverviewTurbineSelect : SceneManager
                 DatabasePw = turbine.PW
             });
 
-            currentNode = Server.Instance.Node();
+            currentNode = Server.Instance.Node(turbine.NodeId);
             currentAlarm = Server.Instance.Alarm(100, 0)
                     .Select(item => new VMSAlarmWithNode(item, currentNode.First(i => i.NodeId == item.Node).Name))
                     //.Select(item => $"{item.Date}_{item.Title}_{item.Node}_{item.Status}")

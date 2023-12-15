@@ -185,7 +185,47 @@ public class Server
         }
     }
 
-    public List<VMSNode> Node()
+    // i need some more idea.
+    // how to implement algorithm for get a child node using node id?
+    // 1. tree
+    // 2. running many loop for each node.
+    // number 2 seems good idea to me.
+    // So,,,, I implement number 2. Trees annoy me and make me work hard.
+    // Writing date : 2023. 12. 15. by J.H Cha
+    private List<VMSNode> ChildNodes(List<VMSNode> node, int nodeId)
+    {
+        List<VMSNode> result = new List<VMSNode>();
+
+        // find a node id
+        var root = node.First(n => n.NodeId == nodeId);
+
+        List<VMSNode> temp = new List<VMSNode>();
+        temp.Add(root);
+
+        int count = 0;
+        do
+        {
+            count = 0;
+            var t = temp.SelectMany(item =>
+            {
+                return node.Where(n => n.Parent == item.NodeId);
+            }).Distinct().ToList();
+
+            result.AddRange(temp);
+            temp.Clear();
+
+            t.ForEach(item =>
+            {
+                node.Remove(item);
+                count += 1;
+            });
+            temp = t;
+        } while (count != 0);
+
+        return result;
+    }
+
+    public List<VMSNode> Node(int nodeId = -1)
     {
         var values = new Dictionary<object, object>
         {
@@ -201,7 +241,14 @@ public class Server
             var json = JsonConvert.DeserializeObject<List<VMSNode>>(responseString);
             //Token = json["token"].Value<string>();
             //Debug.Log(Token);
-            return json;
+
+            if (nodeId == -1)
+            {
+                return json;
+            }else
+            {
+                return ChildNodes(json, nodeId);
+            }
         }catch
         {
             return null;
