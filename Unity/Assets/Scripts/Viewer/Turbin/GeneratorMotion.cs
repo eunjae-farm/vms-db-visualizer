@@ -54,6 +54,7 @@ public class GeneratorMotion : MonoBehaviour
         outter_body.transform.localPosition = get_curret_position(e);
     }
     #endregion
+
     public void SetData(List<NodeData> data)
     {
         //var GE_GS_A_VEL = data.First(item => item.Node.Name == "GE_GS_A_VEL");
@@ -81,8 +82,6 @@ public class GeneratorMotion : MonoBehaviour
 
         GetComponent<RandomVibrator>().enabled = false;
     }
-
-
 
     // Start is called before the first frame update
     void Start()
