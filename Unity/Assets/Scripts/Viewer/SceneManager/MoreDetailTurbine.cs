@@ -10,6 +10,7 @@ public class MoreDetailTurbine : SceneManager
     public CameraSceneMove Cameras;
     public PopupForAlarm PopupAlarm;
     public GeneratorMotion TurbineMotion;
+    public DrawChartsManager ChartManager;
 
     public override void Enable()
     {
@@ -70,6 +71,7 @@ public class MoreDetailTurbine : SceneManager
                 PopupAlarm.Close();
                 TurbineMotion.OutterBody(true);
                 TurbineMotion.SetData(nodeData);
+                ChartManager.Setup(nodeData, turbineConnection);
             });
         });
     }
