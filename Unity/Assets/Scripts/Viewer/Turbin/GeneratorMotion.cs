@@ -55,7 +55,12 @@ public class GeneratorMotion : MonoBehaviour
     }
     #endregion
 
-    public void SetData(List<NodeData> data)
+    public List<UnityList<NodeData>> CurrentConvetedData()
+    {
+        return Nodes;
+    }
+
+    public List<UnityList<NodeData>> ConvertData(List<NodeData> data)
     {
         //var GE_GS_A_VEL = data.First(item => item.Node.Name == "GE_GS_A_VEL");
         var GE_GS_H_VEL = data.First(item => item.Node.Name == "GE_GS_H_VEL");
@@ -69,17 +74,25 @@ public class GeneratorMotion : MonoBehaviour
         var MB_H_VEL = data.First(item => item.Node.Name == "MB_H_VEL");
         var MB_V_VEL = data.First(item => item.Node.Name == "MB_V_VEL");
 
-        // MainBearing, GearBox_MainBearing, GearBox_Generator, Generator
-        Times.Clear();
-        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
-        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
-        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
-        
         Nodes.Clear();
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { MB_A_VEL, MB_H_VEL, MB_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_GS_H_VEL, GE_GS_V_VEL } });
 
+        return Nodes;
+    }
+
+    
+
+    public void SetData(List<NodeData> data)
+    {
+        // MainBearing, GearBox_MainBearing, GearBox_Generator, Generator
+        Times.Clear();
+        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
+        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
+        Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
+
+        ConvertData(data);
         GetComponent<RandomVibrator>().enabled = false;
     }
 

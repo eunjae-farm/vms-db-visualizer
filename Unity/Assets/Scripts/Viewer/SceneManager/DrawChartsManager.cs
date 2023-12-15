@@ -13,9 +13,40 @@ public class DrawChartsManager : MonoBehaviour
     public GameObject InfoUI;
 
     public LineChart Charts;
+    public GeneratorMotion WindTurbine;
 
-    List<NodeData> nodeData;
-    TurbineConnectionData turbineConnection;
+    [SerializeField]
+    private List<NodeData> nodeData;
+    [SerializeField]
+    private TurbineConnectionData turbineConnection;
+
+    private bool _isOpenChart = false;
+    private bool isOpenChart {
+        get {
+
+            return _isOpenChart;
+        }
+        set {
+            if (value)
+            {
+                ButtonViewChart.text = "차트 닫기";
+            }
+            else
+            {
+                ButtonViewChart.text = "차트 보기";
+            }
+
+            InfoUI.SetActive(value);
+            _isOpenChart = value;
+        }
+    }
+
+    public TMPro.TMP_Text ButtonViewChart;
+
+    public void ChartButton()
+    {
+        isOpenChart = !isOpenChart;
+    }
 
     public void Setup(List<NodeData> nodeData, TurbineConnectionData connection)
     {
@@ -23,28 +54,56 @@ public class DrawChartsManager : MonoBehaviour
         this.turbineConnection = connection;
     }
 
-    [Button]
-    public void ShowLeft()
+    public void ShowEvent(int click, string name)
     {
-        InfoUI.SetActive(true);
-        InfoUI.transform.SetParent(LeftSideUI.transform);
+        if (click == 0)
+        {
+            return;
+        }
+        var pos = Input.mousePosition;
+
+        var width = pos.x / Screen.width;
+        //var height = pos.y / Screen.height;
+
+        var nodes = WindTurbine.CurrentConvetedData();
+
+        isOpenChart = true;
+        if (width <= 0.5)
+        {
+            InfoUI.transform.SetParent(RightSideUI.transform);
+        }
+        else
+        {
+            InfoUI.transform.SetParent(LeftSideUI.transform);
+        }
         InfoUI.GetComponent<RectTransform>().offsetMin = new Vector2();
         InfoUI.GetComponent<RectTransform>().offsetMax = new Vector2();
+
+        DrawChart(nodes[click - 1]);
     }
 
-    [Button]
-    public void ShowRight()
+    public void DrawChart(UnityList<NodeData> nodes)
     {
-        InfoUI.SetActive(true);
-        InfoUI.transform.SetParent(RightSideUI.transform);
-        InfoUI.GetComponent<RectTransform>().offsetMin = new Vector2();
-        InfoUI.GetComponent<RectTransform>().offsetMax= new Vector2();
-    }
+        Charts.RemoveData();
+        for (int i = 0; i < nodes.list.Count; i++)
+        {
+            var fft = Charts.AddSerie<Line>($"FFT {i:D2}");
+            //var chart = Charts.AddSerie<Line>($"Chart {i:D2}");
 
-    [Button]
-    public void Close()
-    {
-        InfoUI.SetActive(false);
+            var fftData = nodes.list[i].FFT;
+
+            //var chartData = nodes.list[i].Chart;
+            //var chartTime = time.list[i];
+            for (int c = 0; c < fftData.Frequency.Length; c++)
+            {
+                fft.AddXYData(fftData.Frequency[c], fftData.Intensity[c]);
+            }
+            //for (int c = 0; c < fftData.Frequency.Length; c++)
+            //{
+            //    var t = (c / chartData.Data.Length) * chartData.Duration;
+            //    chart.AddXYData(t, chartData.Data[i]);
+            //}
+        }
     }
 
 }

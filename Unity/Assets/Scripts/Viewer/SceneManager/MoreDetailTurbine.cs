@@ -12,6 +12,11 @@ public class MoreDetailTurbine : SceneManager
     public GeneratorMotion TurbineMotion;
     public DrawChartsManager ChartManager;
 
+    public void BackToMain()
+    {
+        Cameras.SetCamera(0);
+    }
+
     public override void Enable()
     {
         UI.SetActive(true);
@@ -103,6 +108,8 @@ public class MoreDetailTurbine : SceneManager
                             while (t.gameObject.name.Split("_")[0] != "00000") {
                                 t = t.parent.transform;
                             }
+                            int id = int.Parse(t.gameObject.name.Split("_")[1]);
+                            ChartManager.ShowEvent(id, t.gameObject.name);
 
                             Debug.Log(t.gameObject.name);
                         }
