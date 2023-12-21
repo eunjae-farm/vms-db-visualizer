@@ -64,9 +64,9 @@ public class DrawChartsManager : MonoBehaviour
 
         var width = pos.x / Screen.width;
         //var height = pos.y / Screen.height;
-
+        
         var nodes = WindTurbine.CurrentConvetedData();
-
+        
         isOpenChart = true;
         if (width <= 0.5)
         {

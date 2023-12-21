@@ -11,7 +11,7 @@ public class OverviewTurbineSelect : SceneManager
     public GameObject AlarmComponent;
     private List<GameObject> AlarmComponentInListView = new List<GameObject>();
     public GameObject ContentOfListView;
-    public List<GameObject> WindTurbines;
+    public GameObject WindTurbines;
 
     [SerializeField]
     private AnimationCurve moveAnimationCurve;
@@ -54,20 +54,19 @@ public class OverviewTurbineSelect : SceneManager
             {
                 isThreshold = true;
             }
-            for (int i = 0; i < WindTurbines.Count; i++)
-            {
-                var item = WindTurbines[i];
-                // convert to 0 1 2 => 1, 0, -1
-                //-1 0 1 
-                float x = 300 * -(i - 1);
-                x += 300 * evals * moveDirection;
-                if (isThreshold)
-                {
-                    x += -moveDirection * 300;
-                }
 
-                item.transform.position = new Vector3(x, 0, 0);
+            var item = WindTurbines;
+            // convert to 0 1 2 => 1, 0, -1
+            //-1 0 1 
+            float x = 300 * -(1 - 1);
+            x += 300 * evals * moveDirection;
+            if (isThreshold)
+            {
+                x += -moveDirection * 300;
             }
+
+            item.transform.position = new Vector3(x, 0, 0);
+
 
             if (Mathf.Abs(currentMoveDuration - moveDuration) < float.Epsilon)
             {
@@ -109,6 +108,11 @@ public class OverviewTurbineSelect : SceneManager
         currentNode = null;
         currentAlarm = null;
 
+        WindTurbines.GetComponent<RotateTurbine>().SlowRotateSpeed = d.SlowRotateSpeed;
+        WindTurbines.GetComponent<RotateTurbine>().FastwRotateSpeed = d.FastRotateSpeed;
+        WindTurbines.GetComponent<RotateTurbine>().WingRotatePerSeconds = d.WingRotatePerSeconds;
+        WindTurbines.GetComponent<GeneratorMotion>().Magn = d.MagnitudeForMotion;
+        
         foreach (var item in AlarmComponentInListView)
         {
             item.SetActive(false);
