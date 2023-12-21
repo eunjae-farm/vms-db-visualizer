@@ -208,7 +208,7 @@ public class TurbineDataManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("Add");
+        Debug.Log("Edit");
         TurbineConnectionDataManager.Instance.Data[EditTurbineIndex] = new TurbineConnectionData
         {
             DBIP = InformationDBIP.text,
