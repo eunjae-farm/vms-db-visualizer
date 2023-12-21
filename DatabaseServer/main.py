@@ -63,7 +63,6 @@ def get_fft():
         return jsonify({"freq": x, "itensitiy": y})
     else:
         return jsonify({"error": "this log data has not stored charts data"})
-    
 
 @app.route('/charts', methods=["POST"])
 def get_charts():

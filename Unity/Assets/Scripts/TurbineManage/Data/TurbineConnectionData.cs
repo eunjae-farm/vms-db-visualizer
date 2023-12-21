@@ -12,4 +12,9 @@ public class TurbineConnectionData
     public string PW { get; set; }
     public int NodeId { get; set; }
     public string NodeName { get; set; }
+
+    public float WingRotatePerSeconds { get; set; }
+    public float SlowRotateSpeed { get; set; }
+    public float FastRotateSpeed { get; set; }
+    public float MagnitudeForMotion { get; set; }
 }

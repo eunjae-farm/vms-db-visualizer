@@ -14,6 +14,12 @@ public class TurbineDataManager : MonoBehaviour
     public TMPro.TMP_InputField InformationPw;
     public TMPro.TMP_InputField InformationWindTurbine;
 
+    [Header("Additional Information")]
+    public TMPro.TMP_InputField WingSpeed;
+    public TMPro.TMP_InputField SlowSpeed;
+    public TMPro.TMP_InputField FastSpeed;
+    public TMPro.TMP_InputField Magnitude;
+    
     [Header("Seted Turbine List")]
     public GameObject ContentFromScrollView;
     public GameObject Prefab;
@@ -41,9 +47,26 @@ public class TurbineDataManager : MonoBehaviour
             InformationDBIP,
             InformationDBName,
             InformationId,
-            InformationPw
+            InformationPw,
         };
 
+        var floatList = new List<TMPro.TMP_InputField>
+        {
+            WingSpeed,
+            SlowSpeed,
+            FastSpeed,
+            Magnitude,
+        };
+
+        foreach (var f in floatList)
+        {
+            if (!float.TryParse(f.text, out _))
+            {
+                Alarm.Open(PopupForAlarm.ButtonType.Error, "정보의 데이터가 모두 기입이 되지 않았습니다.");
+                return false;
+            }
+        }
+        
         foreach (var l in list)
         {
             if (l.text == "")
@@ -54,7 +77,6 @@ public class TurbineDataManager : MonoBehaviour
         }
         return true;
     }
-
 
     public void ConnectionTest()
     {
@@ -77,7 +99,7 @@ public class TurbineDataManager : MonoBehaviour
             result.DatabaseName = InformationDBName.text;
             result.DatabaseId = InformationId.text;
             result.DatabasePw = InformationPw.text;
-
+            
             if (!Server.Instance.Login(result))
             {
                 UnityThread.executeInUpdate(() =>
@@ -142,7 +164,11 @@ public class TurbineDataManager : MonoBehaviour
             ID = InformationId.text,
             PW = InformationPw.text,
             NodeId = port,
-            NodeName = string.Join(":", data[1..])
+            NodeName = string.Join(":", data[1..]),
+            WingRotatePerSeconds = float.Parse(WingSpeed.text),
+            SlowRotateSpeed = float.Parse(SlowSpeed.text),
+            FastRotateSpeed = float.Parse(FastSpeed.text),
+            MagnitudeForMotion = float.Parse(Magnitude.text)
         });
         Start();
     }
@@ -156,6 +182,48 @@ public class TurbineDataManager : MonoBehaviour
     {
         PopupTurbine.SetActive(false);
         InformationWindTurbine.text = "";
+    }
+
+    public void Edit()
+    {
+        if (EditTurbineIndex == -1)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "수정할 데이터를 선택하지 않으셨습니다.");
+            return;
+        }
+        
+        if (!ValidateInformation())
+        {
+            return;
+        }
+        var data = InformationWindTurbine.text.Split(":");
+        if (data.Length == 1)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "풍력발전기가 선택이되지 않았습니다.");
+            return;
+        }
+        
+        if (!int.TryParse(data[0], out int port))
+        {
+            return;
+        }
+
+        Debug.Log("Add");
+        TurbineConnectionDataManager.Instance.Data[EditTurbineIndex] = new TurbineConnectionData
+        {
+            DBIP = InformationDBIP.text,
+            Name = InformationName.text,
+            DBName = InformationDBName.text,
+            ID = InformationId.text,
+            PW = InformationPw.text,
+            NodeId = port,
+            NodeName = string.Join(":", data[1..]),
+            WingRotatePerSeconds = float.Parse(WingSpeed.text),
+            SlowRotateSpeed = float.Parse(SlowSpeed.text),
+            FastRotateSpeed = float.Parse(FastSpeed.text),
+            MagnitudeForMotion = float.Parse(Magnitude.text)
+        };
+        Start();
     }
 
     public void Delete()
@@ -243,6 +311,11 @@ public class TurbineDataManager : MonoBehaviour
         InformationId.text = data.ID;
         InformationPw.text = data.PW;
         InformationWindTurbine.text = $"{data.NodeId}:{data.NodeName}";
+        WingSpeed.text = data.WingRotatePerSeconds.ToString();
+        SlowSpeed.text = data.SlowRotateSpeed.ToString();
+        FastSpeed.text = data.FastRotateSpeed.ToString();
+        Magnitude.text = data.MagnitudeForMotion.ToString();
+        
         EditTurbineIndex = idx;
     }
 }
