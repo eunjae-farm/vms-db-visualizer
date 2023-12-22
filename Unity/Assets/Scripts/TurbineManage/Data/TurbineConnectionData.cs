@@ -17,4 +17,7 @@ public class TurbineConnectionData
     public float SlowRotateSpeed { get; set; }
     public float FastRotateSpeed { get; set; }
     public float MagnitudeForMotion { get; set; }
+
+    public List<string> ObserveBearing = new List<string>();
+    
 }

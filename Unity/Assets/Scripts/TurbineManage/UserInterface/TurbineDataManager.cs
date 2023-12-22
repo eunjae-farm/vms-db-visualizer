@@ -28,15 +28,19 @@ public class TurbineDataManager : MonoBehaviour
     public GameObject ContentFromTurbineScrollView;
     public GameObject PrefabForContentFromTurbineScrollView;
 
-    [Header("Popup")]
+    [Header("Popup")] 
     public GameObject PopupTurbine;
     public GameObject PopupSave;
     public GameObject PopupDelete;
+    public GameObject PopiAxis;
     public PopupForAlarm Alarm;
 
     private List<GameObject> contentOfScrollView = new List<GameObject>();
     private List<GameObject> contentOfScrollViewToAddingWindTurbine = new List<GameObject>();
 
+    [Header("Additional Info for Axis")] 
+    public List<TMPro.TMP_InputField> BearingAxises;
+    
     private int EditTurbineIndex = -1;
 
     bool ValidateInformation()
@@ -138,6 +142,28 @@ public class TurbineDataManager : MonoBehaviour
         InformationWindTurbine.text = $"{nodeId}:{name}";
     }
 
+    public void ChangeObservableAxis()
+    {
+        
+    }
+
+    public void BearingAxisSave()
+    {
+        var result = BearingAxises.Select(item => item.text).ToList();
+
+        if (result.Count != 9)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "시스템 오류 입니다. 오류 확인 이후에 오브젝트 설정이 정상적인지 확인해주시길 바랍니다.");
+            return;
+        }
+        PopiAxis.SetActive(false);
+    }
+    public void BearingAxisCancel()
+    {
+        PopiAxis.SetActive(false);
+        return;
+    }
+    
     public void Add()
     {
         if (!ValidateInformation())
@@ -168,7 +194,8 @@ public class TurbineDataManager : MonoBehaviour
             WingRotatePerSeconds = float.Parse(WingSpeed.text),
             SlowRotateSpeed = float.Parse(SlowSpeed.text),
             FastRotateSpeed = float.Parse(FastSpeed.text),
-            MagnitudeForMotion = float.Parse(Magnitude.text)
+            MagnitudeForMotion = float.Parse(Magnitude.text),
+            ObserveBearing = BearingAxises.Select(item => item.text).ToList()
         });
         Start();
     }
@@ -221,7 +248,8 @@ public class TurbineDataManager : MonoBehaviour
             WingRotatePerSeconds = float.Parse(WingSpeed.text),
             SlowRotateSpeed = float.Parse(SlowSpeed.text),
             FastRotateSpeed = float.Parse(FastSpeed.text),
-            MagnitudeForMotion = float.Parse(Magnitude.text)
+            MagnitudeForMotion = float.Parse(Magnitude.text),
+            ObserveBearing = BearingAxises.Select(item => item.text).ToList()
         };
         Start();
     }
@@ -315,7 +343,17 @@ public class TurbineDataManager : MonoBehaviour
         SlowSpeed.text = data.SlowRotateSpeed.ToString();
         FastSpeed.text = data.FastRotateSpeed.ToString();
         Magnitude.text = data.MagnitudeForMotion.ToString();
-        
+
+        if (data.ObserveBearing.Count != 9)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Warring, "해당 데이터는 오류가 난 풍력발전기 입니다. 삭제 및 수정하여 오류를 수정해주시길 바랍니다.");
+        }
+
+        for (int i = 0; i < data.ObserveBearing.Count; i++)
+        {
+            BearingAxises[i].text = data.ObserveBearing[i];
+        }
+            
         EditTurbineIndex = idx;
     }
 }
