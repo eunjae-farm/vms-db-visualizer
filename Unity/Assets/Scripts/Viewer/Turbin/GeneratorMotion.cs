@@ -55,6 +55,27 @@ public class GeneratorMotion : MonoBehaviour
     }
     #endregion
 
+    public void OnOutline(int id, bool value)
+    {
+        foreach (var b in Bearing[id].list)
+        {
+            b.GetComponent<Outline>().enabled = value;
+        }
+    }
+
+    public void Awake()
+    {
+        foreach (var b in Bearing)
+        {
+            foreach (var obj in b.list)
+            {
+                var o = obj.AddComponent<Outline>();
+                o.OutlineWidth = 3;
+                o.enabled = false;
+            }
+        }
+    }
+        
     public List<UnityList<NodeData>> CurrentConvetedData()
     {
         return Nodes;

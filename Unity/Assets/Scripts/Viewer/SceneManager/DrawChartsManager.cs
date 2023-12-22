@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using EasyButtons;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using XCharts.Runtime;
@@ -27,31 +28,23 @@ public class DrawChartsManager : MonoBehaviour
             return _isOpenChart;
         }
         set {
-            if (value)
-            {
-                ButtonViewChart.text = "차트 닫기";
-            }
-            else
-            {
-                ButtonViewChart.text = "차트 보기";
-            }
-
             InfoUI.SetActive(value);
             _isOpenChart = value;
         }
     }
 
-    public TMPro.TMP_Text ButtonViewChart;
-
+    private int MachineIndex = 0;
     public void ChartButton()
     {
-        isOpenChart = !isOpenChart;
+        isOpenChart = false;
+        WindTurbine.GetComponent<GeneratorMotion>().OnOutline(MachineIndex, false);
     }
 
     public void Setup(List<NodeData> nodeData, TurbineConnectionData connection)
     {
         this.nodeData = nodeData;
         this.turbineConnection = connection;
+        
     }
 
     public void ShowEvent(int click, string name)
@@ -64,9 +57,7 @@ public class DrawChartsManager : MonoBehaviour
 
         var width = pos.x / Screen.width;
         //var height = pos.y / Screen.height;
-        
-        var nodes = WindTurbine.CurrentConvetedData();
-        
+
         isOpenChart = true;
         if (width <= 0.5)
         {
@@ -78,31 +69,42 @@ public class DrawChartsManager : MonoBehaviour
         }
         InfoUI.GetComponent<RectTransform>().offsetMin = new Vector2();
         InfoUI.GetComponent<RectTransform>().offsetMax = new Vector2();
+        MachineIndex = click - 1;
+        WindTurbine.GetComponent<GeneratorMotion>().OnOutline(MachineIndex, true);
 
-        DrawChart(nodes[click - 1]);
+        DrawChart(true);
     }
-
-    public void DrawChart(UnityList<NodeData> nodes)
+    
+    // mode "TRUE" is FFT
+    // mode "FALSE" is Charts
+    public void DrawChart(bool mode)
     {
+        var nodes = WindTurbine.CurrentConvetedData()[MachineIndex];
+        
         Charts.RemoveData();
+        var axis = "XYZ";
+        
         for (int i = 0; i < nodes.list.Count; i++)
         {
-            var fft = Charts.AddSerie<Line>($"FFT {i:D2}");
-            //var chart = Charts.AddSerie<Line>($"Chart {i:D2}");
-
-            var fftData = nodes.list[i].FFT;
-
-            //var chartData = nodes.list[i].Chart;
-            //var chartTime = time.list[i];
-            for (int c = 0; c < fftData.Frequency.Length; c++)
+            if (mode)
             {
-                fft.AddXYData(fftData.Frequency[c], fftData.Intensity[c]);
+                var fft = Charts.AddSerie<Line>($"FFT {axis[i]}");            
+                var fftData = nodes.list[i].FFT;
+                for (int c = 0; c < fftData.Frequency.Length; c++)
+                {
+                    fft.AddXYData(fftData.Frequency[c], fftData.Intensity[c]);
+                }
             }
-            //for (int c = 0; c < fftData.Frequency.Length; c++)
-            //{
-            //    var t = (c / chartData.Data.Length) * chartData.Duration;
-            //    chart.AddXYData(t, chartData.Data[i]);
-            //}
+            else
+            {
+                var chart = Charts.AddSerie<Line>($"Chart {axis[i]}");
+                var chartData = nodes.list[i].Chart;
+                for (int c = 0; c < chartData.Data.Length; c++)
+                {
+                    var t = (c / chartData.Data.Length) * chartData.Duration;
+                    chart.AddXYData(t, chartData.Data[i]);
+                }
+            }
         }
     }
 

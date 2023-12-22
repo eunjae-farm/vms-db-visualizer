@@ -78,6 +78,7 @@ public class MoreDetailTurbine : SceneManager
                 PopupAlarm.Close();
                 TurbineMotion.OutterBody(true);
                 TurbineMotion.SetData(nodeData, data.ObserveBearing);
+                
                 ChartManager.Setup(nodeData, turbineConnection);
             });
         });
@@ -112,7 +113,7 @@ public class MoreDetailTurbine : SceneManager
                             }
                             int id = int.Parse(t.gameObject.name.Split("_")[1]);
                             ChartManager.ShowEvent(id, t.gameObject.name);
-
+                            
                             Debug.Log(t.gameObject.name);
                         }
                     }
