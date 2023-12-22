@@ -22,6 +22,24 @@ def get_node():
     node = data.nodes()    
     return jsonify(node)
 
+
+# 1달 단위로, 데이터가 있는 정보를 추출하여 반환함.
+@app.route('/month', methods=[""])
+def date():
+    pass
+
+# 1달 단위로, 24시간 기준으로 데이터가 있는 정보를 추출하여 반환함.
+@app.route('/date', methods=[""])
+def date():
+    pass
+
+# 선택된 시간을 기준으로 아래의 /search API와 동일하게 값을 반환시킴.
+# 단, 시간 + 범위 정보가 넘어와야함.
+# 그 이유로는 센서 데이터는 동시에 입력이 되는 것이 아니므로 ><
+@app.route('/find_search', methods=[""])
+def date():
+    pass
+
 @app.route('/search', methods=["POST"])
 def get_search():
     params = request.get_json()
