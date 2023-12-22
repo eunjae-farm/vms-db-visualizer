@@ -142,9 +142,9 @@ public class TurbineDataManager : MonoBehaviour
         InformationWindTurbine.text = $"{nodeId}:{name}";
     }
 
-    public void ChangeObservableAxis()
+    public void BearingOpen()
     {
-        
+        PopiAxis.SetActive(true);
     }
 
     public void BearingAxisSave()
