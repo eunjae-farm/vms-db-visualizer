@@ -40,13 +40,15 @@ public class MoreDetailTurbine : SceneManager
         {
             var s = new System.Diagnostics.Stopwatch();
             s.Start();
-
+            
             var p = node.AsParallel()
-                        .Where(node => !node.Name.ToLower().Contains("low"))
-                        .Where(node => !node.Name.ToLower().Contains("high"))
-                        .Where(node => !node.Name.ToLower().Contains("env"))
-                        .Where(node => !node.Name.ToLower().Contains("polar"))
-                        .Where(node => !node.Name.ToLower().Contains("hz"))
+                        .Where(node => data.ObserveBearing.Select(item => item.ToLower())
+                                                .Contains(node.Name.ToLower()))
+                        // .Where(node => !node.Name.ToLower().Contains("low"))
+                        // .Where(node => !node.Name.ToLower().Contains("high"))
+                        // .Where(node => !node.Name.ToLower().Contains("env"))
+                        // .Where(node => !node.Name.ToLower().Contains("polar"))
+                        // .Where(node => !node.Name.ToLower().Contains("hz"))
                         .Select(node => (node, Server.Instance.Search(node.NodeId, 1, 0)))
                         .Where(item => item.Item2 != null && item.Item2.Any())
                         .Select(item =>
@@ -75,7 +77,7 @@ public class MoreDetailTurbine : SceneManager
             {
                 PopupAlarm.Close();
                 TurbineMotion.OutterBody(true);
-                TurbineMotion.SetData(nodeData);
+                TurbineMotion.SetData(nodeData, data.ObserveBearing);
                 ChartManager.Setup(nodeData, turbineConnection);
             });
         });
