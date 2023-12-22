@@ -7,11 +7,14 @@ using UnityEngine;
 public class MoreDetailTurbine : SceneManager
 {
     public GameObject UI;
+    public GameObject SelectDateFor;
+    
     public CameraSceneMove Cameras;
     public PopupForAlarm PopupAlarm;
     public GeneratorMotion TurbineMotion;
     public DrawChartsManager ChartManager;
-
+    
+    
     public void BackToMain()
     {
         Cameras.SetCamera(0);
@@ -26,6 +29,7 @@ public class MoreDetailTurbine : SceneManager
     {
         UI.SetActive(false);
     }
+    
     List<NodeData> nodeData;
     TurbineConnectionData turbineConnection;
     List<VMSNode> vmsNode;
