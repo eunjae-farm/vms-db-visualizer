@@ -46,7 +46,6 @@ public class Setting_For_Panel : MonoBehaviour
         this.NodeNmae.text = $"Node : {data.NodeName}";
         this.Title.text = $"Title : {data.Title}";
         this.Status.text = $"Status : {data.GetStatus()}";
-        Date.color
         this.GetComponent<Image>().color = ConvertStatusToColor((ColorsForStatus)data.Status);
     }
 
