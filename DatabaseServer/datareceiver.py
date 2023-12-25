@@ -51,7 +51,54 @@ class database:
                 result.append(row)
             else:
                 return convertSearch(result)
-            
+    
+    def date(self, node_ids: [int], year: int, month: int):
+        alarm = []
+        meas = []
+        i = ""
+        for id in node_ids:
+            i += "IDNode = {0} AND".format(id)
+
+        self.cursor.execute('''SELECT 
+                                    CONVERT(DATE, AlarmDate) AS AlarmDate,
+                                    AlarmStatus
+                                FROM 
+                                    Alarm
+                                WHERE 
+                                    {0}
+                                    '{1}-{2}-01' <= AlarmDate and AlarmDate <= '{1}-{2}-31' 
+                                GROUP BY 
+                                    CONVERT(DATE, AlarmDate), AlarmStatus
+                                ORDER BY
+                                    AlarmDate;'''.format(i, year, month))
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                alarm.append(row)
+            else:
+                break
+
+        self.cursor.execute('''SELECT 
+                                    CONVERT(DATE, MeasDate) AS MeasDate
+                                FROM 
+                                    Measurement
+                                WHERE 
+                                    IDNode = 6 
+                                    AND '{1}-{2}-01' <= MeasDate and MeasDate <= '{1}-{2}-31' 
+                                GROUP BY 
+                                    CONVERT(DATE, MeasDate)
+                                ORDER BY
+                                    MeasDate;'''.format(i, year, month))
+        
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                meas.append(row)
+            else:
+                return {"alarm": alarm, "meas": meas}
+
+
+
     def raw(self, measure_id):
         result = []
         self.cursor.execute('''SELECT * FROM MeasurementBinaryRaw WHERE IDMeasurement={0}'''.format(measure_id))

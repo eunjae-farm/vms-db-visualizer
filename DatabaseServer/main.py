@@ -24,9 +24,17 @@ def get_node():
 
 
 # 1달 단위로, 데이터가 있는 정보를 추출하여 반환함.
-@app.route('/month', methods=[""])
+# Need to Search item from Node Id
+@app.route('/month', methods=["POST"])
 def date():
-    pass
+    params = request.get_json()
+    if not author.valid(params['token']):
+        return jsonify({"error": "token is not matching from database"})
+    db = author.get(params['token'])
+    data = database(db['name'], db['ip'], db['id'], db['pw'])
+    data.connect()
+
+    
 
 # 1달 단위로, 24시간 기준으로 데이터가 있는 정보를 추출하여 반환함.
 @app.route('/date', methods=[""])
