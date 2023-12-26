@@ -32,13 +32,13 @@ public class CalendarManager : MonoBehaviour
         foreach (var datas in result.MeasurementDate)
         {
             var dateTime = DateTime.Parse(datas);
-            picker.SetButton(dateTime.Day,Color.blue);
+            picker.SetButton(dateTime.Day, new Color(0.7f,0.7f, 1f));
         }
         
         foreach (var alarm in result.Alarm)
         {
             var dateTime = DateTime.Parse(alarm.Date);
-            picker.SetButton(dateTime.Day,Color.red);
+            picker.SetButton(dateTime.Day, new Color(1f,0.7f, 0.7f));
         }
         
     }
