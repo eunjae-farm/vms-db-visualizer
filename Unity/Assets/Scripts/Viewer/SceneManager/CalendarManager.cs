@@ -76,7 +76,28 @@ public class CalendarManager : MonoBehaviour
 
     public void LoadFromHourPanel()
     {
+        if (ClickDateTimeFromHours == DateTime.MinValue)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "관측하실 데이터를 선택하여 주시길 바랍니다.");
+            return;
+        }
+        
         // MoreDetailTurbine
+        MoreDetailTurbine.LoadForVibData(
+            MoreDetailTurbine.turbineConnection, 
+            MoreDetailTurbine.vmsNode,
+            MoreDetailTurbine.vmsAlarm,
+            ClickedDateTime.AddHours(-1),
+            ClickedDateTime.AddHours(+1));
+        
+        Close();
+        CloseSelectVibDataInScrollView();
+    }
+
+    private DateTime ClickDateTimeFromHours;
+    private void OnClicked(DateTime obj)
+    {
+        ClickDateTimeFromHours = obj;
     }
     
     public void Load()
@@ -86,7 +107,8 @@ public class CalendarManager : MonoBehaviour
             Alarm.Open(PopupForAlarm.ButtonType.Error, "날짜를 선택하여 주시길 바랍니다.");
             return;
         }
-        
+        ClickDateTimeFromHours = DateTime.MinValue;
+        ;
         SelectVibDataInScrollView.SetActive(true);
         var nodes = MoreDetailTurbine.nodeData;
         var hour = Server.Instance.AvailableHourData(nodes.Select(item => item.Node.NodeId).ToList(),
@@ -130,6 +152,7 @@ public class CalendarManager : MonoBehaviour
                 data[i].Item3,
                 data[i].Item4,
                 data[i].Item5);
+            SelectVibData[i].GetComponent<ElementFromVibDbForHour>().Clicked += OnClicked; 
             
             SelectVibData[i].SetActive(true);
         }
@@ -140,4 +163,5 @@ public class CalendarManager : MonoBehaviour
         }
 
     }
+
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,11 @@ public class MoreDetailTurbine : SceneManager
     }
     
     public List<NodeData> nodeData { get; private set; }
-    TurbineConnectionData turbineConnection;
-    private List<VMSNode> vmsNode;
-    List<VMSAlarmWithNode> vmsAlarm;
+    public TurbineConnectionData turbineConnection;
+    public  List<VMSNode> vmsNode;
+    public List<VMSAlarmWithNode> vmsAlarm;
 
-    public void LoadForVibData(TurbineConnectionData data, List<VMSNode> node, List<VMSAlarmWithNode> alarm)
+    public void LoadForVibData(TurbineConnectionData data, List<VMSNode> node, List<VMSAlarmWithNode> alarm, DateTime start, DateTime end)
     {
         PopupAlarm.AutoClose = false;
         PopupAlarm.Open(PopupForAlarm.ButtonType.Warring, "데이터 로딩중");
@@ -44,16 +45,18 @@ public class MoreDetailTurbine : SceneManager
         {
             var s = new System.Diagnostics.Stopwatch();
             s.Start();
-            
+
             var p = node.AsParallel()
-                        .Where(node => data.ObserveBearing.Select(item => item.ToLower())
-                                                .Contains(node.Name.ToLower()))
+                .Where(node => data.ObserveBearing.Select(item => item.ToLower())
+                    .Contains(node.Name.ToLower()))
                         // .Where(node => !node.Name.ToLower().Contains("low"))
                         // .Where(node => !node.Name.ToLower().Contains("high"))
                         // .Where(node => !node.Name.ToLower().Contains("env"))
                         // .Where(node => !node.Name.ToLower().Contains("polar"))
                         // .Where(node => !node.Name.ToLower().Contains("hz"))
-                        .Select(node => (node, Server.Instance.Search(node.NodeId, 1, 0)))
+                        .Select(node => (start == DateTime.MinValue && end == DateTime.MinValue)
+                                            ? (node, Server.Instance.Search(node.NodeId, 1, 0))
+                                            : (node, Server.Instance.Search(node.NodeId, start, end)))
                         .Where(item => item.Item2 != null && item.Item2.Any())
                         .Select(item =>
                         {

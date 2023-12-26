@@ -12929,6 +12929,8 @@ MonoBehaviour:
   PopupAlarm: {fileID: 1486826111}
   TurbineMotion: {fileID: 1735812619}
   ChartManager: {fileID: 821817657}
+  vmsNode: []
+  vmsAlarm: []
 --- !u!114 &1134596346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21378,7 +21380,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2048309439}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1134596346}
+        m_TargetAssemblyTypeName: CalendarManager, Assembly-CSharp
+        m_MethodName: LoadFromHourPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2048309439
 MonoBehaviour:
   m_ObjectHideFlags: 0

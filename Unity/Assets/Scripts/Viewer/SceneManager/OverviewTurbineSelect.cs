@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -160,7 +161,7 @@ public class OverviewTurbineSelect : SceneManager
         }
 
         CameraManager.SetCamera(1);
-        DataThrou.LoadForVibData(Get(), currentNode, currentAlarm);
+        DataThrou.LoadForVibData(Get(), currentNode, currentAlarm, DateTime.MinValue, DateTime.MinValue);
     }
 
     public void ManageButton()
