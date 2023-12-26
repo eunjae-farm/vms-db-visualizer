@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MoreDetailTurbine : SceneManager
 {
@@ -197,6 +198,11 @@ public class MoreDetailTurbine : SceneManager
         //마우스 클릭시
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log("this object is ui");
+                return;
+            }
             Vector3 clickPosition = Input.mousePosition;
             var cameras = Cameras.GetCameras();
 
@@ -206,12 +212,14 @@ public class MoreDetailTurbine : SceneManager
                 if (rect.Contains(clickPosition))
                 {
                     Ray ray = camera.ScreenPointToRay(clickPosition);
+                    
                     if (Physics.Raycast(ray, out var raycastHit, 1000f))
                     {
                         if (raycastHit.transform != null)
                         {
                             Transform t = raycastHit.transform;
-                            if (t.gameObject.name.Contains("Terrain"))
+                            
+                            if (t.gameObject.layer == 5 || t.gameObject.name.Contains("Terrain"))
                             {
                                 return;
                             }

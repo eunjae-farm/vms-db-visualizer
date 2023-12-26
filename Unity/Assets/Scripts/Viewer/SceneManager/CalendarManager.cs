@@ -153,8 +153,6 @@ public class CalendarManager : MonoBehaviour
             SelectVibData.Add(myInstance);
         }
 
-     
-
         data = data.OrderBy(d => d.Item1).ToList();
         
         for (int i = 0; i < total_count; i++)

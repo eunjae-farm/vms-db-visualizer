@@ -57,9 +57,12 @@ public class GeneratorMotion : MonoBehaviour
 
     public void OnOutline(int id, bool value)
     {
-        foreach (var b in Bearing[id].list)
+        for (int i = 0; i < Bearing.Count; i++)
         {
-            b.GetComponent<Outline>().enabled = value;
+            foreach (var b in Bearing[id].list)
+            {
+                b.GetComponent<Outline>().enabled =((id == i) ? value : false);
+            }
         }
     }
 
@@ -70,7 +73,7 @@ public class GeneratorMotion : MonoBehaviour
             foreach (var obj in b.list)
             {
                 var o = obj.AddComponent<Outline>();
-                o.OutlineWidth = 3;
+                o.OutlineWidth = 7;
                 o.enabled = false;
             }
         }
