@@ -83,17 +83,17 @@ public class GeneratorMotion : MonoBehaviour
 
     public List<UnityList<NodeData>> ConvertData(List<NodeData> data, List<string> bearingSequnence)
     {
-        var GE_GS_A_VEL = data.First(item => item.Node.Name == bearingSequnence[0]);
-        var GE_GS_H_VEL = data.First(item => item.Node.Name == bearingSequnence[1]);
-        var GE_GS_V_VEL = data.First(item => item.Node.Name == bearingSequnence[2]);
+        var GE_GS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[0]);
+        var GE_GS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[1]);
+        var GE_GS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[2]);
 
-        var GE_RS_A_VEL = data.First(item => item.Node.Name == bearingSequnence[3]);
-        var GE_RS_H_VEL = data.First(item => item.Node.Name == bearingSequnence[4]);
-        var GE_RS_V_VEL = data.First(item => item.Node.Name == bearingSequnence[5]);
+        var GE_RS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[3]);
+        var GE_RS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[4]);
+        var GE_RS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[5]);
 
-        var MB_A_VEL = data.First(item => item.Node.Name == bearingSequnence[6]);
-        var MB_H_VEL = data.First(item => item.Node.Name == bearingSequnence[7]);
-        var MB_V_VEL = data.First(item => item.Node.Name == bearingSequnence[8]);
+        var MB_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[6]);
+        var MB_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[7]);
+        var MB_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[8]);
 
         Nodes.Clear();
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { MB_A_VEL, MB_H_VEL, MB_V_VEL } });
@@ -133,22 +133,26 @@ public class GeneratorMotion : MonoBehaviour
 
         for (int group = 0; group < Bearing.Count; group++)
         {
-
+            Vector3 vec = new Vector3();
+            for (int i = 0; i < 3; i++)
+            {
+                if (Nodes[group].list[i] == null)
+                {
+                    vec[i] = 0;
+                    continue;
+                }
+                Times[group].list[i] += Time.deltaTime;
+                if (Times[group].list[i] > Nodes[group].list[i].Chart.Duration)
+                {
+                    Times[group].list[i] -= Nodes[group].list[i].Chart.Duration;
+                }
+                int idx = (int)((Times[group].list[i] / Nodes[group].list[i].Chart.Duration) * Nodes[group].list[i].Chart.Data.Length);
+                idx = Mathf.Min(idx, Nodes[group].list[i].Chart.Data.Length);
+                vec[i] = (float)(Nodes[group].list[i].Chart.Data[idx] * Magn);
+            }
+            
             for (int bearing = 0; bearing < Bearing[group].list.Count; bearing++)
             {
-                Vector3 vec = new Vector3();
-                for (int i = 0; i < 3; i++)
-                {
-                    Times[group].list[i] += Time.deltaTime;
-                    if (Times[group].list[i] > Nodes[group].list[i].Chart.Duration)
-                    {
-                        Times[group].list[i] -= Nodes[group].list[i].Chart.Duration;
-                    }
-                    int idx = (int)((Times[group].list[i] / Nodes[group].list[i].Chart.Duration) * Nodes[group].list[i].Chart.Data.Length);
-                    idx = Mathf.Min(idx, Nodes[group].list[i].Chart.Data.Length);
-                    vec[i] = (float)(Nodes[group].list[i].Chart.Data[idx] * Magn);
-                }
-
                 Bearing[group].list[bearing].transform.localPosition = vec;
             }
         }

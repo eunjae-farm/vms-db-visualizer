@@ -118,6 +118,7 @@ public class CalendarManager : MonoBehaviour
         for (int i = SelectVibData.Count; i < total_count; i++)
         {
             GameObject myInstance = Instantiate(SelectVibDataInPrefab, SelectVibDataInContentView.transform);
+            myInstance.GetComponent<ElementFromVibDbForHour>().Clicked += OnClicked;
             SelectVibData.Add(myInstance);
         }
 
@@ -152,7 +153,6 @@ public class CalendarManager : MonoBehaviour
                 data[i].Item3,
                 data[i].Item4,
                 data[i].Item5);
-            SelectVibData[i].GetComponent<ElementFromVibDbForHour>().Clicked += OnClicked; 
             
             SelectVibData[i].SetActive(true);
         }

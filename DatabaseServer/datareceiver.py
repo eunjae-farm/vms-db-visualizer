@@ -150,8 +150,8 @@ class database:
                                     SpeedMax, SpeedBegin, SpeedEnd, TimesignalLines, SpectraScaling, SpectraEUType
                                 FROM Measurement
                                 WHERE IDNode = {0}
-                                And ('{1}' <= MeasDate and MeasDate <= '{2}}')
-                                ORDER BY (SELECT NULL), IDMeasurement DESC'''.format(node_id, index * size, size))
+                                And ('{1}' <= MeasDate and MeasDate <= '{2}')
+                                ORDER BY (SELECT NULL), IDMeasurement DESC'''.format(node_id, start, end))
         
         while True:
             row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴

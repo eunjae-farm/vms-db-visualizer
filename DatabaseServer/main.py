@@ -60,13 +60,8 @@ def find_date():
     data = database(db['name'], db['ip'], db['id'], db['pw'])
     data.connect()
     result = data.find(params["node"], 
-                       params["year"], 
-                       params["month"], 
-                       params["day"], 
-                       params["hour"],
-                       params["min"],
-                       params["sec"],
-                       params["dur"])
+                       params["start"], 
+                       params["end"])
     
     return jsonify(result)
 

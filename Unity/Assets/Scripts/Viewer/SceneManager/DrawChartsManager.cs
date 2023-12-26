@@ -86,6 +86,10 @@ public class DrawChartsManager : MonoBehaviour
         
         for (int i = 0; i < nodes.list.Count; i++)
         {
+            if (nodes.list[i] == null)
+            {
+                continue;
+            }
             if (mode)
             {
                 var fft = Charts.AddSerie<Line>($"FFT {axis[i]}");            
