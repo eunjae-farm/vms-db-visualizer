@@ -6466,7 +6466,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Dec 2023
+  m_text: "2023\uB144 12\uC6D4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e639817f0e34647509639eb955276c80, type: 2}
   m_sharedMaterial: {fileID: -5848982140935437643, guid: e639817f0e34647509639eb955276c80, type: 2}

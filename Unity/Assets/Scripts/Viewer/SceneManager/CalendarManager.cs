@@ -8,21 +8,50 @@ using UnityEngine;
 public class CalendarManager : MonoBehaviour
 {
     public GameObject Calendar;
-    public DatePicker picker;
-    public MoreDetailTurbine MoreDetailTurbine; 
+    public DateForPicker picker;
+    public MoreDetailTurbine MoreDetailTurbine;
+
+    private void Awake()
+    {
+        picker.Clicked += PickerOnClicked; 
+        picker.DateTimeChanged += PickerOnDateTimeChanged;
+    }
+
+    private void PickerOnDateTimeChanged(DateTime obj)
+    {
+        var nodes = MoreDetailTurbine.nodeData;
+        var o = obj.AddMonths(1);
+        var result = Server.Instance.AvailableMonthData(nodes.Select(item => item.Node.NodeId).ToList(),
+            obj.Year,
+            obj.Month,
+            o.Year,
+            o.Month);
+        Debug.Log(result);
+        
+        
+        foreach (var datas in result.MeasurementDate)
+        {
+            var dateTime = DateTime.Parse(datas);
+            picker.SetButton(dateTime.Day,Color.blue);
+        }
+        
+        foreach (var alarm in result.Alarm)
+        {
+            var dateTime = DateTime.Parse(alarm.Date);
+            picker.SetButton(dateTime.Day,Color.red);
+        }
+        
+    }
+
+    private void PickerOnClicked(DateTime obj)
+    {
+    }
 
     public void Open()
     {
         Calendar.SetActive(true);
-        var nodes = MoreDetailTurbine.nodeData;
-        var result = Server.Instance.AvailableMonthData(nodes.Select(item => item.Node.NodeId).ToList(),
-                                            picker.VisibleDate.Date.Year,
-                                            picker.VisibleDate.Date.Month);
-        Debug.Log(result);
-        
-        
-        
-
+        var now = DateTime.Now;
+        picker.Set(now.Year, now.Month);
     }
 
     public void Close()

@@ -19,12 +19,16 @@ public class DateForPicker : MonoBehaviour
     [SerializeField] private GameObject SixWeek;
     [SerializeField] GameObject DateForCalendar;
 
+    public event Action<DateTime> Clicked;
+    public event Action<DateTime> DateTimeChanged;
+
     public void PrevYear()
     {
         var y = new DateTime(Year, Month, 1).AddYears(-1);
         Year = y.Year;
         Month = y.Month;
         Load();
+        DateTimeChanged?.Invoke(y);
     }
     
     public void PrevMonth()
@@ -33,6 +37,7 @@ public class DateForPicker : MonoBehaviour
         Year = y.Year;
         Month = y.Month;
         Load();
+        DateTimeChanged?.Invoke(y);
     }
     
     public void NextYear()
@@ -41,6 +46,7 @@ public class DateForPicker : MonoBehaviour
         Year = y.Year;
         Month = y.Month;
         Load();
+        DateTimeChanged?.Invoke(y);
     }
     
     public void NextMonth()
@@ -49,12 +55,24 @@ public class DateForPicker : MonoBehaviour
         Year = y.Year;
         Month = y.Month;
         Load();
+        DateTimeChanged?.Invoke(y);
+    }
+
+    public void Set(int year, int month)
+    {
+        Year = year;
+        Month = month;
+        Load();
+        DateTimeChanged?.Invoke(new DateTime(year, month, 1));
     }
     
     List<List<Button>> buttons = new ();
 
     public void Awake()
     {
+        Year = DateTime.Now.Year;
+        Month = DateTime.Now.Month;
+            
         int week = DateForCalendar.transform.childCount;
         for (int w = 0; w < week; w++)
         {
@@ -66,11 +84,12 @@ public class DateForPicker : MonoBehaviour
                 var button = week_object.GetChild(d).GetComponent<Button>();
                 button.onClick.AddListener(() =>
                 {
-                    if (button.tag == "O")
+                    if (button.interactable)
                     {
                         int day = int.Parse(button.GetComponentInChildren<TMP_Text>().text);
+                        SelectTime = new(Year, Month, day);                        
+                        Clicked?.Invoke(SelectTime);
                     }
-                    SelectTime = new(Year, Month, day);
                 });
                 b.Add(button);
             }
@@ -81,19 +100,18 @@ public class DateForPicker : MonoBehaviour
     [EasyButtons.Button("Load")]
     public void Load()
     {
+        Title.text = $"{Year}년 {Month}월";
+        
         SixWeek.SetActive(false);
         int countOfSat = 0;
         // Entry Start
-        int count = 0;
         // 전날 부터 날짜 측정하여, 이전의 토요일을 찾을 때 까지 증감시킴
 
         for (var t = new DateTime(Year, Month, 1).AddDays(-1);
              t.DayOfWeek != DayOfWeek.Saturday;
-             t = t.AddDays(-1), count += 1)
+             t = t.AddDays(-1))
         {
             buttons[countOfSat][(int)t.DayOfWeek].GetComponentInChildren<TMP_Text>().text = $"{t.Day}";
-            buttons[countOfSat][(int)t.DayOfWeek].tag = "X";
-
             buttons[countOfSat][(int)t.DayOfWeek].interactable = false;
         }
 
@@ -107,13 +125,14 @@ public class DateForPicker : MonoBehaviour
 
             if (t.Month == Month)
             {
-                buttons[countOfSat][(int)t.DayOfWeek].interactable = true;    
-                buttons[countOfSat][(int)t.DayOfWeek].tag = "O";
+                buttons[countOfSat][(int)t.DayOfWeek].interactable = true;
+                var c = buttons[countOfSat][(int)t.DayOfWeek].colors;
+                c.normalColor = Color.white;
+                buttons[countOfSat][(int)t.DayOfWeek].colors = c;
             }
             else
             {
                 buttons[countOfSat][(int)t.DayOfWeek].interactable = false;
-                buttons[countOfSat][(int)t.DayOfWeek].tag = "X";
             }
             
             switch (t.DayOfWeek)
@@ -132,6 +151,25 @@ public class DateForPicker : MonoBehaviour
     // 정말 구현하기 귀찮아서 구현하는 방식입니다.
     // 실제로는 구현할 때, 수학적인 모델링을 통해 구해야 하지만,, 저는 뇌 빼고 개발하고 싶은걸요.
     // 그래서 모든 반복문을 돌아서 찾을겁니다 하하!
-    
-    
+
+    public bool SetButton(int day, Color color)
+    {
+        foreach (var list in buttons)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].interactable == true &&
+                    list[i].GetComponentInChildren<TMP_Text>().text == $"{day}")
+                {
+                    var b = list[i]; 
+                    var c = b.colors;
+                    c.normalColor = color;
+                    b.colors = c;
+                    return true;
+                }
+            }
+                
+        }
+        return false;
+    }
 }

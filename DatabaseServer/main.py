@@ -33,7 +33,7 @@ def month():
     db = author.get(params['token'])
     data = database(db['name'], db['ip'], db['id'], db['pw'])
     data.connect()
-    result = data.date(params["node"], params["year"], params["month"])
+    result = data.date(params["node"], params["year"], params["month"], params["ny"], params["nm"])
     return jsonify(result)
 
 # 1달 단위로, 24시간 기준으로 데이터가 있는 정보를 추출하여 반환함.

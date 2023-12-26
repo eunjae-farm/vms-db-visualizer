@@ -191,7 +191,7 @@ public class Server
         }
     }
 
-    public VMSMonth AvailableMonthData(List<int> nodes, int year, int month)
+    public VMSMonth AvailableMonthData(List<int> nodes, int year, int month, int next_year, int next_month)
     {
         var values = new Dictionary<object, object>
         {
@@ -199,6 +199,8 @@ public class Server
             { "node", nodes },
             { "year", year },
             { "month", month },
+            { "ny", next_year },
+            { "nm", next_month },
         };
         
         try

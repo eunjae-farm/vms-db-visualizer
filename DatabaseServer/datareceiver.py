@@ -52,12 +52,12 @@ class database:
             else:
                 return convertSearch(result)
     
-    def date(self, node_ids: [int], year: int, month: int):
+    def date(self, node_ids: [int], year: int, month: int, ny: int, nm: int):
         alarm = []
         meas = []
-        i = ""
-        for id in node_ids:
-            i += "IDNode = {0} AND ".format(id)
+        i = list(map(lambda x: "IDNode = {0}".format(x), node_ids))
+        i = " OR ".join(i)
+        i = "({0})".format(i)
 
         self.cursor.execute('''SELECT 
                                     CONVERT(DATE, AlarmDate) AS AlarmDate,
@@ -65,16 +65,16 @@ class database:
                                 FROM 
                                     Alarm
                                 WHERE 
-                                    {0}
-                                    '{1}-{2}-01' <= AlarmDate and AlarmDate <= '{1}-{2}-31' 
+                                    {0} AND
+                                    '{1}-{2}-01' <= AlarmDate and AlarmDate < '{3}-{4}-1' 
                                 GROUP BY 
                                     CONVERT(DATE, AlarmDate), AlarmStatus
                                 ORDER BY
-                                    AlarmDate;'''.format(i, year, month))
+                                    AlarmDate;'''.format(i, year, month, ny, nm))
         while True:
             row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
             if row != None:
-                alarm.append({"alarm":row[0], "status":row[1]})
+                alarm.append({"date":row[0], "status":row[1]})
             else:
                 break
 
@@ -83,12 +83,12 @@ class database:
                                 FROM 
                                     Measurement
                                 WHERE 
-                                    {0}
-                                    '{1}-{2}-01' <= MeasDate and MeasDate <= '{1}-{2}-31' 
+                                    {0} AND
+                                    '{1}-{2}-01' <= MeasDate and MeasDate < '{3}-{4}-1' 
                                 GROUP BY 
                                     CONVERT(DATE, MeasDate)
                                 ORDER BY
-                                    MeasDate;'''.format(i, year, month))
+                                    MeasDate;'''.format(i, year, month, ny, nm))
         
         while True:
             row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
