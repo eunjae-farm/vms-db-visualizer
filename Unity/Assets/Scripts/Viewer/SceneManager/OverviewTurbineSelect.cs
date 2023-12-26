@@ -230,7 +230,15 @@ public class OverviewTurbineSelect : SceneManager
 
     private void OverviewTurbineSelect_MouseClick(GameObject arg1, VMSAlarmWithNode arg2)
     {
+        if (currentNode == null || currentAlarm == null)
+        {
+            PopupAlarm.AutoClose = true;
+            PopupAlarm.Open(PopupForAlarm.ButtonType.Error, "먼저 알람 정보를 불러와주세요.");
+            return;
+        }
 
+        CameraManager.SetCamera(1);
+        var date = DateTime.Parse(arg2.Date);
+        DataThrou.LoadForVibData(Get(), currentNode, currentAlarm, date.AddHours(-1), date.AddHours(+1));
     }
-
 }

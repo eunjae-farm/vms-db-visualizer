@@ -151,6 +151,9 @@ public class Server
         {
             end = DateTime.Now;
         }
+
+        start = start;
+        end = end;
         
         var values = new Dictionary<object, object>
         {

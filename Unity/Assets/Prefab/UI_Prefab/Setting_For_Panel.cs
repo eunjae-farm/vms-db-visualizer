@@ -42,7 +42,7 @@ public class Setting_For_Panel : MonoBehaviour
     public void SetAlarm(VMSAlarmWithNode data)
     {
         this.data = data;
-        this.Date.text = data.Date;
+        this.Date.text = DateTime.Parse(data.Date).ToString("yyyy년 MM월 dd일 HH시 mm분 ss초");
         this.NodeNmae.text = $"Node : {data.NodeName}";
         this.Title.text = $"Title : {data.Title}";
         this.Status.text = $"Status : {data.GetStatus()}";
