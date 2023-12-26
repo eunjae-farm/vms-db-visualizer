@@ -80,6 +80,60 @@ public class MoreDetailTurbine : SceneManager
                 .OrderBy(item => item)
                 .ToList();
             
+            var nodeIds = node.AsParallel()
+                .Where(node => data.ObserveBearing.Select(item => item.ToLower())
+                    .Contains(node.Name.ToLower()))
+                .Select(item => item.NodeId)
+                .ToList();
+
+            if (time.Count == 0)
+            {
+                UnityThread.executeInUpdate(() => 
+                {
+                    InformationDeviceStatus.text = "장비 상태 : 데이터 없음";    
+                });
+            }
+            else
+            {
+                var tt = time[time.Count / 2];
+                var stt = tt.AddHours(-1);
+                var ett = tt.AddHours(+1);
+                
+                var alarms = Server.Instance.Alarm(start, end, nodeIds);
+                string device_name = "";
+                string status = "";
+                int stat = 0;
+                
+                for (int i = 0; i < alarms.Count; i++)
+                {
+                    var date = DateTime.Parse(alarms[i].Date);
+
+                    if (stt < date && date < ett)
+                    {
+                        if (alarms[i].Status > stat)
+                        {
+                            status = alarms[i].GetStatus();
+                            device_name = alarm[i].NodeName;
+                        }                        
+                    }
+                }
+
+                UnityThread.executeInUpdate(() =>
+                {
+                    if (stat != 0)
+                    {
+                        InformationDeviceStatus.text = $"장비 상태 : {device_name} : ({status})";    
+                    }
+                    else
+                    {
+                        InformationDeviceStatus.text = $"장비 상태 : 알림 없음";
+                    }
+                    
+                });
+            }
+            
+            
+            
             turbineConnection = data;
             nodeData = p;
             vmsNode = node;
@@ -92,11 +146,11 @@ public class MoreDetailTurbine : SceneManager
             {
                 if (time.Count == 0)
                 {
-                    InformationDateTime.text = "데이터를 찾을 수 없습니다.";                    
+                    InformationDateTime.text = "날짜 : " + "데이터를 찾을 수 없습니다.";                    
                 }
                 else
                 {
-                    InformationDateTime.text = time[time.Count / 2].ToString("yyyy년 MM월 dd일 HH시 mm분 ss초");
+                    InformationDateTime.text = "날짜 : " + time[time.Count / 2].ToString("yyyy년 MM월 dd일 HH시 mm분 ss초");
                 }
                 
                 PopupAlarm.Close();
@@ -117,44 +171,26 @@ public class MoreDetailTurbine : SceneManager
                 var error = new List<string>();
                 for (int g = 0; g < nodes.Count; g++)
                 {
+                    string tmp = $"{dev[g]} (";
+                    bool isAdd = false;
                     for (int d = 0; d < nodes[g].list.Count; d++)
                     {
+                        List<string> ax = new();
+                        
                         if (nodes[g].list[d] == null)
                         {
-                            var dd = dev[g];
-                            var aa = axis[d];
-                            error.Add($"{dev[g]} ({axis[d]})");
+                            ax.Add($"{axis[d]}");
+                            isAdd = true;
                         }
                     }
-                }
-
-                var nodeIds = node.AsParallel()
-                    .Where(node => data.ObserveBearing.Select(item => item.ToLower())
-                        .Contains(node.Name.ToLower()))
-                    .Select(item => item.NodeId)
-                    .ToList();
-                var alarms = Server.Instance.Alarm(start, end, nodeIds);
-                if (alarms.Count == 0)
-                {
-                    InformationDeviceStatus.text = "정상";
-                }else
-                {
-                    string device_name;
-                    string status = "정상";
-                    int stat = 0;
-                    for (int i = 0; i < alarms.Count; i++)
+                    tmp += ")";
+                    if (isAdd)
                     {
-                        if (alarms[i].Status > stat)
-                        {
-                            status = alarms[i].GetStatus();
-                            device_name = alarm[i].NodeName;
-                        }
+                        error.Add(tmp);    
                     }
-
-                    InformationDeviceStatus.text = status;
                 }
 
-                InformationProblem.text = string.Join(", ", error);
+                InformationProblem.text = "문제 : " + (error.Count == 0 ? "없음" : string.Join(", ", error));
             });
         });
     }

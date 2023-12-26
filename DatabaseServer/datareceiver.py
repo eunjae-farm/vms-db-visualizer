@@ -201,13 +201,18 @@ class database:
             else:
                 return convertAlarm(result)
             
-    def search_alarm_date(self, node_id: int, start: str, end: str):
+    def search_alarm_date(self, node_id: [int], start: str, end: str):
         result = []
-        self.cursor.execute('''SELECT * FROM Alarm 
-                                WHERE IDNode = {0} 
+        i = list(map(lambda x: "IDNode = {0}".format(x), node_id))
+        i = " OR ".join(i)
+        i = "({0})".format(i)
+        q = '''SELECT TOP(200) * FROM Alarm 
+                                WHERE {0} 
                                     And ('{1}' <= AlarmDate and AlarmDate <= '{2}')
                                 Order By IDAlarm DESC
-                            '''.format(node_id, start,end))
+                            '''.format(i, start,end)
+        print(q)
+        self.cursor.execute(q)
         
         while True:
             row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴

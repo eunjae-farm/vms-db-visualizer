@@ -142,6 +142,16 @@ public class Server
     
     public List<VMSAlarm> Alarm(DateTime start, DateTime end, List<int> node)
     {
+        if (start == DateTime.MinValue)
+        {
+            start = new DateTime(1980, 01, 01);
+        }
+        
+        if (end == DateTime.MinValue)
+        {
+            end = DateTime.Now;
+        }
+        
         var values = new Dictionary<object, object>
         {
             { "token", Token },

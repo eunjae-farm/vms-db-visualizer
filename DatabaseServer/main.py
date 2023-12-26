@@ -146,7 +146,7 @@ def get_alarm():
     return jsonify(search)
 
 @app.route("/alarm_date", methods=["POST"])
-def get_alarm():
+def get_alarm_date():
     params = request.get_json()
     if not author.valid(params['token']):
         return jsonify({"error": "token is not matching from database"})
@@ -154,8 +154,8 @@ def get_alarm():
     data = database(db['name'], db['ip'], db['id'], db['pw'])
     data.connect()
     search = data.search_alarm_date(params['node'], 
-                                params['size'], 
-                                params['offset'])
+                                params['start'], 
+                                params['end'])
     return jsonify(search)
 
 @app.route('/login', methods=["POST"])
