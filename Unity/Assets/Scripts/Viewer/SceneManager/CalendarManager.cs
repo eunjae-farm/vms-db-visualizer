@@ -39,13 +39,13 @@ public class CalendarManager : MonoBehaviour
         
         foreach (var datas in result.MeasurementDate)
         {
-            var dateTime = DateTime.Parse(datas);
+            var dateTime = DateTime.Parse(datas).AddHours(-9);
             picker.SetButton(dateTime.Day, new Color(0.7f,0.7f, 1f));
         }
         
         foreach (var alarm in result.Alarm)
         {
-            var dateTime = DateTime.Parse(alarm.Date);
+            var dateTime = DateTime.Parse(alarm.Date).AddHours(-9);
             picker.SetButton(dateTime.Day, new Color(1f,0.7f, 0.7f));
         }
         
@@ -125,7 +125,7 @@ public class CalendarManager : MonoBehaviour
         foreach (var item in hour.Alarm)
         {
             data.Add(new ValueTuple<DateTime, string, string, string, Color>(
-                DateTime.Parse(item.Date),
+                DateTime.Parse(item.Date).AddHours(-9),
                 nodes.Find(i => i.Node.NodeId == item.NodeId).Node.Name,
                 "알림",
                 VMSAlarm.GetStatus(item.Status),
@@ -134,7 +134,7 @@ public class CalendarManager : MonoBehaviour
         foreach (var item in hour.MeasurementDate)
         {
             data.Add(new ValueTuple<DateTime, string, string, string, Color>(
-                DateTime.Parse(item.MeasDate),
+                DateTime.Parse(item.MeasDate).AddHours(-9),
                 nodes.Find(i => i.Node.NodeId == item.NodeId).Node.Name,
                 "데이터",
                 item.MeasValue.ToString("F3"),
