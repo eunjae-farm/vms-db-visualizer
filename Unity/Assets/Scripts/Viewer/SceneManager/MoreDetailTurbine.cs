@@ -114,7 +114,7 @@ public class MoreDetailTurbine : SceneManager
                         {
                             status = alarms[i].GetStatus();
                             device_name = alarm[i].NodeName;
-                        }                        
+                        }
                     }
                 }
 

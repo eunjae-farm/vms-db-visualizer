@@ -132,8 +132,16 @@ public class CalendarManager : MonoBehaviour
                 VMSAlarm.GetStatus(item.Status),
                 new Color(1f,0.7f, 0.7f)));
         }
-        foreach (var item in hour.MeasurementDate)
+
+        // 500개로 고정시키기 ->
+        // 3000 -> 6
+        // 2500 -> 5
+        var step = (hour.MeasurementDate.Length / 500f);
+        for (var i = 0f; i < hour.MeasurementDate.Length; i += step)
         {
+            var idx = (int)i;
+            var item = hour.MeasurementDate[idx];
+            
             data.Add(new ValueTuple<DateTime, string, string, string, Color>(
                 DateTime.Parse(item.MeasDate).AddHours(-9),
                 nodes.Find(i => i.Node.NodeId == item.NodeId).Node.Name,
