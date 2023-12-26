@@ -139,6 +139,34 @@ public class Server
             return null;
         }
     }
+    
+    public List<VMSAlarm> Alarm(DateTime start, DateTime end, List<int> node)
+    {
+        var values = new Dictionary<object, object>
+        {
+            { "token", Token },
+            { "start", start.ToString("yyyy-MM-dd HH:mm:ss") },
+            { "end", end.ToString("yyyy-MM-dd HH:mm:ss") },
+            { "node", node },
+        };
+
+        try
+        {
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/alarm_date", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
+            return json;
+        }catch
+        {
+            return null;
+        }
+    }
+    
 
     public VMSFFT fft(int id, int timeline, int end_freq)
     {

@@ -3,18 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class MoreDetailTurbine : SceneManager
 {
     public GameObject UI;
-    public GameObject SelectDateFor;
     
     public CameraSceneMove Cameras;
     public PopupForAlarm PopupAlarm;
     public GeneratorMotion TurbineMotion;
     public DrawChartsManager ChartManager;
-    
+
+    public TMP_Text InformationDateTime;
+    public TMP_Text InformationDeviceStatus;
+    public TMP_Text InformationProblem;
     
     public void BackToMain()
     {
@@ -72,6 +75,11 @@ public class MoreDetailTurbine : SceneManager
                         .OrderBy(item => item.Node.Name)
                         .ToList();
 
+            var time = p.Select(item => item.Search.Date)
+                .Select(item => DateTime.Parse(item))
+                .OrderBy(item => item)
+                .ToList();
+            
             turbineConnection = data;
             nodeData = p;
             vmsNode = node;
@@ -82,11 +90,71 @@ public class MoreDetailTurbine : SceneManager
 
             UnityThread.executeInUpdate(() =>
             {
+                if (time.Count == 0)
+                {
+                    InformationDateTime.text = "데이터를 찾을 수 없습니다.";                    
+                }
+                else
+                {
+                    InformationDateTime.text = time[time.Count / 2].ToString("yyyy년 MM월 dd일 HH시 mm분 ss초");
+                }
+                
                 PopupAlarm.Close();
                 TurbineMotion.OutterBody(true);
                 TurbineMotion.SetData(nodeData, data.ObserveBearing);
                 
                 ChartManager.Setup(nodeData, turbineConnection);
+
+                var nodes = TurbineMotion.Nodes;
+                var axis = "XYZ";
+                var dev = new List<string>
+                {
+                    "MB",
+                    "RS",
+                    "GS"
+                };
+                
+                var error = new List<string>();
+                for (int g = 0; g < nodes.Count; g++)
+                {
+                    for (int d = 0; d < nodes[g].list.Count; d++)
+                    {
+                        if (nodes[g].list[d] == null)
+                        {
+                            var dd = dev[g];
+                            var aa = axis[d];
+                            error.Add($"{dev[g]} ({axis[d]})");
+                        }
+                    }
+                }
+
+                var nodeIds = node.AsParallel()
+                    .Where(node => data.ObserveBearing.Select(item => item.ToLower())
+                        .Contains(node.Name.ToLower()))
+                    .Select(item => item.NodeId)
+                    .ToList();
+                var alarms = Server.Instance.Alarm(start, end, nodeIds);
+                if (alarms.Count == 0)
+                {
+                    InformationDeviceStatus.text = "정상";
+                }else
+                {
+                    string device_name;
+                    string status = "정상";
+                    int stat = 0;
+                    for (int i = 0; i < alarms.Count; i++)
+                    {
+                        if (alarms[i].Status > stat)
+                        {
+                            status = alarms[i].GetStatus();
+                            device_name = alarm[i].NodeName;
+                        }
+                    }
+
+                    InformationDeviceStatus.text = status;
+                }
+
+                InformationProblem.text = string.Join(", ", error);
             });
         });
     }

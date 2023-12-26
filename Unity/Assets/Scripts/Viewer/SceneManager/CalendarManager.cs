@@ -108,7 +108,7 @@ public class CalendarManager : MonoBehaviour
             return;
         }
         ClickDateTimeFromHours = DateTime.MinValue;
-        ;
+        
         SelectVibDataInScrollView.SetActive(true);
         var nodes = MoreDetailTurbine.nodeData;
         var hour = Server.Instance.AvailableHourData(nodes.Select(item => item.Node.NodeId).ToList(),
