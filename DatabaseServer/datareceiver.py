@@ -57,7 +57,7 @@ class database:
         meas = []
         i = ""
         for id in node_ids:
-            i += "IDNode = {0} AND".format(id)
+            i += "IDNode = {0} AND ".format(id)
 
         self.cursor.execute('''SELECT 
                                     CONVERT(DATE, AlarmDate) AS AlarmDate,
