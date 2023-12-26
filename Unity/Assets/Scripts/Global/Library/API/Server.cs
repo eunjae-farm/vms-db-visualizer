@@ -343,6 +343,33 @@ public class Server
             return null;
         }
     }
+    
+    public List<VMSNodeData> Search(int id, DateTime start, DateTime end)
+    {
+        try
+        {
+            var values = new Dictionary<object, object>
+            {
+                { "token", Token },
+                {  "id", id } ,
+                { "start", start.ToString("yyyy-MM-dd HH:mm:ss") },
+                { "end", end.ToString("yyyy-MM-dd HH:mm:ss") }
+            };
+
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/search", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
+            return json;
+        }catch
+        {
+            return null;
+        }
+    }
 
 
     // Start is called before the first frame update
