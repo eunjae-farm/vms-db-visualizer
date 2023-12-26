@@ -97,6 +97,49 @@ class database:
             else:
                 return {"alarm": alarm, "meas": meas}
 
+    def hour(self, node_ids: [int], year: int, month: int, day: int):
+        alarm = []
+        meas = []
+        i = list(map(lambda x: "IDNode = {0}".format(x), node_ids))
+        i = " OR ".join(i)
+        i = "({0})".format(i)
+
+        self.cursor.execute('''SELECT 
+                                    IDNode,
+                                    AlarmDate,
+                                    AlarmStatus
+                                FROM 
+                                    Alarm
+                                WHERE 
+                                    {0} AND
+                                    '{1}-{2}-{3}' = CONVERT(DATE, AlarmDate)
+                                ORDER BY
+                                    AlarmDate;'''.format(i, year, month, day))
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                alarm.append({"node_id":row[0], "date": row[1], "status": row[2]})
+            else:
+                break
+
+        self.cursor.execute('''SELECT 
+                                    IDNode,
+                                    MeasValue,
+                                    MeasDate
+                                FROM 
+                                    Measurement
+                                WHERE 
+                                    {0} AND
+                                    '{1}-{2}-{3}' = CONVERT(DATE, MeasDate)
+                                ORDER BY
+                                    MeasDate;'''.format(i, year, month, day))
+        
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                meas.append({"node_id":row[0], "meas_value": row[1], "meas_date": row[2]})
+            else:
+                return {"alarm": alarm, "meas": meas}
 
 
     def raw(self, measure_id):

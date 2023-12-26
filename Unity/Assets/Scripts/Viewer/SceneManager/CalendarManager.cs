@@ -10,7 +10,13 @@ public class CalendarManager : MonoBehaviour
     public GameObject Calendar;
     public DateForPicker picker;
     public MoreDetailTurbine MoreDetailTurbine;
-
+    
+    [Header("Select Vibrarte")]
+    public GameObject SelectVibDataInScrollView;
+    public GameObject SelectVibDataInContentView;
+    public GameObject SelectVibDataInPrefab;
+    public List<GameObject> SelectVibData;
+    
     private void Awake()
     {
         picker.Clicked += PickerOnClicked; 

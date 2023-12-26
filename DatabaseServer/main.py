@@ -37,9 +37,16 @@ def month():
     return jsonify(result)
 
 # 1달 단위로, 24시간 기준으로 데이터가 있는 정보를 추출하여 반환함.
-# @app.route('/date', methods=[""])
-# def date():
-#     pass
+@app.route('/date', methods=["POST"])
+def date():
+    params = request.get_json()
+    if not author.valid(params['token']):
+        return jsonify({"error": "token is not matching from database"})
+    db = author.get(params['token'])
+    data = database(db['name'], db['ip'], db['id'], db['pw'])
+    data.connect()
+    result = data.hour(params["node"], params["year"], params["month"], params["day"])
+    return jsonify(result)
 
 # 선택된 시간을 기준으로 아래의 /search API와 동일하게 값을 반환시킴.
 # 단, 시간 + 범위 정보가 넘어와야함.
