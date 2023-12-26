@@ -19,7 +19,7 @@ class database:
                              password=self.password, 
                              database=self.db)
         self.cursor = conn.cursor() # 쿼리 생성과 결과 조회를 위해 사용
-
+        
     def nodes(self):
         result = []
         self.cursor.execute('''SELECT IDNode, IDParent, TreeType,
@@ -141,6 +141,25 @@ class database:
             else:
                 return {"alarm": alarm, "meas": meas}
 
+    def find(self, node_id: int, start: str, end:str):
+        result = []
+
+        self.cursor.execute('''SELECT IDMeasurement, IDNode, MeasDate,
+                                    MeasValue, StartFreq, EndFreq,
+                                    SampleRate, Speed, SpeedMin,
+                                    SpeedMax, SpeedBegin, SpeedEnd, TimesignalLines, SpectraScaling, SpectraEUType
+                                FROM Measurement
+                                WHERE IDNode = {0}
+                                And ('{1}' <= MeasDate and MeasDate <= '{2}}')
+                                ORDER BY (SELECT NULL), IDMeasurement DESC'''.format(node_id, index * size, size))
+        
+        while True:
+            row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+            if row != None:
+                result.append(row)
+            else:
+                return convertSearch(result)
+        
 
     def raw(self, measure_id):
         result = []
@@ -181,3 +200,4 @@ class database:
                 result.append(row)
             else:
                 return convertAlarm(result)
+            

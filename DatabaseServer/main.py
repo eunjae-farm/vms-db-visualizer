@@ -51,9 +51,24 @@ def date():
 # 선택된 시간을 기준으로 아래의 /search API와 동일하게 값을 반환시킴.
 # 단, 시간 + 범위 정보가 넘어와야함.
 # 그 이유로는 센서 데이터는 동시에 입력이 되는 것이 아니므로 ><
-# @app.route('/find_search', methods=[""])
-# def date():
-#     pass
+@app.route('/find_search', methods=["POST"])
+def find_date():
+    params = request.get_json()
+    if not author.valid(params['token']):
+        return jsonify({"error": "token is not matching from database"})
+    db = author.get(params['token'])
+    data = database(db['name'], db['ip'], db['id'], db['pw'])
+    data.connect()
+    result = data.find(params["node"], 
+                       params["year"], 
+                       params["month"], 
+                       params["day"], 
+                       params["hour"],
+                       params["min"],
+                       params["sec"],
+                       params["dur"])
+    
+    return jsonify(result)
 
 @app.route('/search', methods=["POST"])
 def get_search():

@@ -19,6 +19,7 @@ public class CalendarManager : MonoBehaviour
 
     public PopupForAlarm Alarm;
     public DateTime ClickedDateTime;
+    
     private void Awake()
     {
         picker.Clicked += PickerOnClicked; 
@@ -73,6 +74,11 @@ public class CalendarManager : MonoBehaviour
         SelectVibDataInScrollView.SetActive(false);
     }
 
+    public void LoadFromHourPanel()
+    {
+        // MoreDetailTurbine
+    }
+    
     public void Load()
     {
         if (ClickedDateTime == DateTime.MinValue)
