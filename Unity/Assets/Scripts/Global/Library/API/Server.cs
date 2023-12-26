@@ -219,7 +219,7 @@ public class Server
         }
     }
     
-    public VMSHour AvailableHourData(List<int> nodes, int year, int month, int next_year, int next_month)
+    public VMSHour AvailableHourData(List<int> nodes, int year, int month, int day)
     {
         var values = new Dictionary<object, object>
         {
@@ -227,15 +227,14 @@ public class Server
             { "node", nodes },
             { "year", year },
             { "month", month },
-            { "ny", next_year },
-            { "nm", next_month },
+            { "day", day },
         };
         
         try
         {
             var send = JsonConvert.SerializeObject(values);
             var content = new StringContent(send, Encoding.UTF8, "application/json");
-            var response = client.PostAsync($"http://{IP}:{Port}/hour", content).Result;
+            var response = client.PostAsync($"http://{IP}:{Port}/date", content).Result;
             //Debug.Log(send);
             var responseString = response.Content.ReadAsStringAsync().Result;
             var json = JsonConvert.DeserializeObject<VMSHour>(responseString);

@@ -69,9 +69,11 @@ public class VMSAlarm
                 throw new Exception("Get Source Error!");
         }
     }
-    public string GetStatus()
+
+
+    public static string GetStatus(int value)
     {
-        switch (this.Status)
+        switch (value)
         {
             case (1 << 0):
                 return "Ok";
@@ -138,6 +140,10 @@ public class VMSAlarm
             default:
                 return "Unknown";
         }
+    }
+    public string GetStatus()
+    {
+        return GetStatus(this.Status);
     }
 
 }
