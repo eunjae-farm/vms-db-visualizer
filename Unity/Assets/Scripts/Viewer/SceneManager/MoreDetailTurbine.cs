@@ -30,9 +30,9 @@ public class MoreDetailTurbine : SceneManager
         UI.SetActive(false);
     }
     
-    List<NodeData> nodeData;
+    public List<NodeData> nodeData { get; private set; }
     TurbineConnectionData turbineConnection;
-    List<VMSNode> vmsNode;
+    private List<VMSNode> vmsNode;
     List<VMSAlarmWithNode> vmsAlarm;
 
     public void LoadForVibData(TurbineConnectionData data, List<VMSNode> node, List<VMSAlarmWithNode> alarm)

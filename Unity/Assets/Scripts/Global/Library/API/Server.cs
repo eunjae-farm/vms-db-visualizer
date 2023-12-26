@@ -191,6 +191,32 @@ public class Server
         }
     }
 
+    public VMSMonth AvailableMonthData(List<int> nodes, int year, int month)
+    {
+        var values = new Dictionary<object, object>
+        {
+            { "token", Token },
+            { "node", nodes },
+            { "year", year },
+            { "month", month },
+        };
+        
+        try
+        {
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/month", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<VMSMonth>(responseString);
+            //Debug.Log(Token);
+            return json;
+        }catch
+        {
+            return null;
+        }
+    }
+    
     // i need some more idea.
     // how to implement algorithm for get a child node using node id?
     // 1. tree

@@ -74,7 +74,7 @@ class database:
         while True:
             row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
             if row != None:
-                alarm.append(row)
+                alarm.append({"alarm":row[0], "status":row[1]})
             else:
                 break
 
@@ -83,8 +83,8 @@ class database:
                                 FROM 
                                     Measurement
                                 WHERE 
-                                    IDNode = 6 
-                                    AND '{1}-{2}-01' <= MeasDate and MeasDate <= '{1}-{2}-31' 
+                                    {0}
+                                    '{1}-{2}-01' <= MeasDate and MeasDate <= '{1}-{2}-31' 
                                 GROUP BY 
                                     CONVERT(DATE, MeasDate)
                                 ORDER BY
@@ -93,7 +93,7 @@ class database:
         while True:
             row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
             if row != None:
-                meas.append(row)
+                meas.append(row[0])
             else:
                 return {"alarm": alarm, "meas": meas}
 
