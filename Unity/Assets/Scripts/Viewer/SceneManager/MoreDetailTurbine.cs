@@ -95,10 +95,6 @@ public class MoreDetailTurbine : SceneManager
             }
             else
             {
-                var tt = time[time.Count / 2];
-                var stt = tt.AddHours(-1);
-                var ett = tt.AddHours(+1);
-                
                 var alarms = Server.Instance.Alarm(start, end, nodeIds);
                 string device_name = "";
                 string status = "";
@@ -108,12 +104,13 @@ public class MoreDetailTurbine : SceneManager
                 {
                     var date = DateTime.Parse(alarms[i].Date);
 
-                    if (stt < date && date < ett)
+                    if (start < date && date < end)
                     {
                         if (alarms[i].Status > stat)
                         {
                             status = alarms[i].GetStatus();
                             device_name = alarm[i].NodeName;
+                            stat = alarm[i].Status;
                         }
                     }
                 }

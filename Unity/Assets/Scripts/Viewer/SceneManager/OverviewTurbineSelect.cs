@@ -196,9 +196,13 @@ public class OverviewTurbineSelect : SceneManager
                 DatabaseId = turbine.ID,
                 DatabasePw = turbine.PW
             });
-
-            currentNode = Server.Instance.Node(turbine.NodeId);
-            currentAlarm = Server.Instance.Alarm(100, 0)
+            var data = Get();
+            currentNode = Server.Instance.Node(turbine.NodeId)
+                .Where(node => data.ObserveBearing.Select(item => item.ToLower())
+                    .Contains(node.Name.ToLower()))
+                .ToList();
+            
+            currentAlarm = Server.Instance.Alarm(100, 0, currentNode.Select(item => item.NodeId).ToList())
                     .Select(item => (item: item, name: currentNode.FirstOrDefault(i => i.NodeId == item.Node)?.Name))
                     .Where(item => item.name != null)
                     .Select(item => new VMSAlarmWithNode(item.item, item.name))

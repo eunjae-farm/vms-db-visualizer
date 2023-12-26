@@ -174,6 +174,7 @@ class database:
             
     def alarm(self, size: int = 50, offset: int = 0):
         result = []
+        
         self.cursor.execute('''SELECT * FROM Alarm 
                                 Order By IDAlarm DESC
                                 OFFSET {0} ROWS FETCH NEXT {1} ROWS ONLY
@@ -186,13 +187,17 @@ class database:
             else:
                 return convertAlarm(result)
             
-    def search_alarm(self, node_id: int, size: int = 50, offset: int = 0):
+    def search_alarm(self, node_id: [int], size: int = 50, offset: int = 0):
         result = []
+        i = list(map(lambda x: "IDNode = {0}".format(x), node_id))
+        i = " OR ".join(i)
+        i = "({0})".format(i)
+
         self.cursor.execute('''SELECT * FROM Alarm 
-                                WHERE IDNode = {0}
+                                WHERE {0}
                                 Order By IDAlarm DESC
                                 OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY
-                            '''.format(node_id, offset * size, size))
+                            '''.format(i, offset * size, size))
         
         while True:
             row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴

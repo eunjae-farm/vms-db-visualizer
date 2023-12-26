@@ -110,7 +110,7 @@ public class Server
         Debug.Log(json);
     }
 
-    public List<VMSAlarm> Alarm(int size, int offset, int node = -1)
+    public List<VMSAlarm> Alarm(int size, int offset, List<int> node = null)
     {
         var values = new Dictionary<object, object>
         {
@@ -118,7 +118,7 @@ public class Server
             { "size", size },
             { "offset", offset },
         };
-        if (node != -1)
+        if (node != null)
         {
             values["node"] = node;
         }
@@ -149,11 +149,11 @@ public class Server
         
         if (end == DateTime.MinValue)
         {
-            end = DateTime.Now;
+            end = DateTime.Now.AddHours(9);
         }
 
-        start = start;
-        end = end;
+        start = start.AddHours(-9);
+        end = end.AddHours(-9);
         
         var values = new Dictionary<object, object>
         {
@@ -393,8 +393,8 @@ public class Server
             {
                 { "token", Token },
                 {  "node", id } ,
-                { "start", start.ToString("yyyy-MM-dd HH:mm:ss") },
-                { "end", end.ToString("yyyy-MM-dd HH:mm:ss") }
+                { "start", start.AddHours(-9).ToString("yyyy-MM-dd HH:mm:ss") },
+                { "end", end.AddHours(-9).ToString("yyyy-MM-dd HH:mm:ss") }
             };
 
             var send = JsonConvert.SerializeObject(values);

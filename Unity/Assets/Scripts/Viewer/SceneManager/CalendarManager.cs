@@ -113,15 +113,7 @@ public class CalendarManager : MonoBehaviour
         var nodes = MoreDetailTurbine.nodeData;
         var hour = Server.Instance.AvailableHourData(nodes.Select(item => item.Node.NodeId).ToList(),
             ClickedDateTime.Year, ClickedDateTime.Month, ClickedDateTime.Day);
-        int total_count = hour.Alarm.Length + hour.MeasurementDate.Length;
         
-        for (int i = SelectVibData.Count; i < total_count; i++)
-        {
-            GameObject myInstance = Instantiate(SelectVibDataInPrefab, SelectVibDataInContentView.transform);
-            myInstance.GetComponent<ElementFromVibDbForHour>().Clicked += OnClicked;
-            SelectVibData.Add(myInstance);
-        }
-
         List<(DateTime, string, string, string, Color)> data = new ();
         foreach (var item in hour.Alarm)
         {
@@ -150,6 +142,18 @@ public class CalendarManager : MonoBehaviour
                 new Color(0.7f,0.7f, 1f)
             ));
         }
+        
+        
+        int total_count = data.Count;
+        
+        for (int i = SelectVibData.Count; i < total_count; i++)
+        {
+            GameObject myInstance = Instantiate(SelectVibDataInPrefab, SelectVibDataInContentView.transform);
+            myInstance.GetComponent<ElementFromVibDbForHour>().Clicked += OnClicked;
+            SelectVibData.Add(myInstance);
+        }
+
+     
 
         data = data.OrderBy(d => d.Item1).ToList();
         
