@@ -14,7 +14,7 @@ public class DrawChartsManager : MonoBehaviour
     public GameObject InfoUI;
 
     public LineChart Charts;
-    public GeneratorMotion WindTurbine;
+    public RandomGeneratorMotion WindTurbine;
 
     [SerializeField]
     private List<NodeData> nodeData;
@@ -37,7 +37,7 @@ public class DrawChartsManager : MonoBehaviour
     public void ChartButton()
     {
         isOpenChart = false;
-        WindTurbine.GetComponent<GeneratorMotion>().OnOutline(MachineIndex, false);
+        WindTurbine.GetComponent<RandomGeneratorMotion>().OnOutline(MachineIndex, false);
     }
 
     public void Setup(List<NodeData> nodeData, TurbineConnectionData connection)
@@ -70,7 +70,7 @@ public class DrawChartsManager : MonoBehaviour
         InfoUI.GetComponent<RectTransform>().offsetMin = new Vector2();
         InfoUI.GetComponent<RectTransform>().offsetMax = new Vector2();
         MachineIndex = click - 1;
-        WindTurbine.GetComponent<GeneratorMotion>().OnOutline(MachineIndex, true);
+        WindTurbine.GetComponent<RandomGeneratorMotion>().OnOutline(MachineIndex, true);
 
         DrawChart(true);
     }

@@ -13,7 +13,7 @@ public class MoreDetailTurbine : SceneManager
     
     public CameraSceneMove Cameras;
     public PopupForAlarm PopupAlarm;
-    public GeneratorMotion TurbineMotion;
+    public RandomGeneratorMotion TurbineMotion;
     public DrawChartsManager ChartManager;
 
     public TMP_Text InformationDateTime;

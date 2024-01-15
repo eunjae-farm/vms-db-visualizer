@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GeneratorMotion : MonoBehaviour
+public class LegacyGeneratorMotion : MonoBehaviour
 {
     public GameObject outter_body;
     public float Magn = 5.0F;
@@ -107,7 +107,7 @@ public class GeneratorMotion : MonoBehaviour
     }
 
     
-
+    // r
     public void SetData(List<NodeData> data, List<string> bearingSequnence)
     {
         // MainBearing, GearBox_MainBearing, GearBox_Generator, Generator
@@ -117,7 +117,6 @@ public class GeneratorMotion : MonoBehaviour
         Times.Add(new UnityList<float> { list = new List<float> { 0, 0, 0 } });
 
         ConvertData(data, bearingSequnence);
-        GetComponent<RandomVibrator>().enabled = false;
     }
 
     // Start is called before the first frame update
