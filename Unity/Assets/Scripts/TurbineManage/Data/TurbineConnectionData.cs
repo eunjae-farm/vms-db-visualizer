@@ -16,7 +16,8 @@ public class TurbineConnectionData
     public float WingRotatePerSeconds { get; set; }
     public float SlowRotateSpeed { get; set; }
     public float FastRotateSpeed { get; set; }
-    public float MagnitudeForMotion { get; set; }
+    public float MagnitudeOfCorrectForMotion { get; set; }
+    public float MagnitudeOfErrorForMotion { get; set; }
 
     public List<string> ObserveBearing = new List<string>();
     

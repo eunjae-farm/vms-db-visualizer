@@ -112,7 +112,7 @@ public class OverviewTurbineSelect : SceneManager
         WindTurbines.GetComponent<RotateTurbine>().SlowRotateSpeed = d.SlowRotateSpeed;
         WindTurbines.GetComponent<RotateTurbine>().FastwRotateSpeed = d.FastRotateSpeed;
         WindTurbines.GetComponent<RotateTurbine>().WingRotatePerSeconds = d.WingRotatePerSeconds;
-        WindTurbines.GetComponent<GeneratorMotion>().Magn = d.MagnitudeForMotion;
+        WindTurbines.GetComponent<GeneratorMotion>().Magn = d.MagnitudeOfErrorForMotion;
         
         foreach (var item in AlarmComponentInListView)
         {

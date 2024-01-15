@@ -18,7 +18,8 @@ public class TurbineDataManager : MonoBehaviour
     public TMPro.TMP_InputField WingSpeed;
     public TMPro.TMP_InputField SlowSpeed;
     public TMPro.TMP_InputField FastSpeed;
-    public TMPro.TMP_InputField Magnitude;
+    public TMPro.TMP_InputField MagnitudeOfCorrect;
+    public TMPro.TMP_InputField MagnitudeOfError;
     
     [Header("Seted Turbine List")]
     public GameObject ContentFromScrollView;
@@ -59,7 +60,8 @@ public class TurbineDataManager : MonoBehaviour
             WingSpeed,
             SlowSpeed,
             FastSpeed,
-            Magnitude,
+            MagnitudeOfCorrect,
+            MagnitudeOfError,
         };
 
         foreach (var f in floatList)
@@ -194,7 +196,8 @@ public class TurbineDataManager : MonoBehaviour
             WingRotatePerSeconds = float.Parse(WingSpeed.text),
             SlowRotateSpeed = float.Parse(SlowSpeed.text),
             FastRotateSpeed = float.Parse(FastSpeed.text),
-            MagnitudeForMotion = float.Parse(Magnitude.text),
+            MagnitudeOfCorrectForMotion = float.Parse(MagnitudeOfCorrect.text),
+            MagnitudeOfErrorForMotion = float.Parse(MagnitudeOfError.text),
             ObserveBearing = BearingAxises.Select(item => item.text).ToList()
         });
         Start();
@@ -214,44 +217,45 @@ public class TurbineDataManager : MonoBehaviour
     public void Edit()
     {
         if (EditTurbineIndex == -1)
-        {
-            Alarm.Open(PopupForAlarm.ButtonType.Error, "수정할 데이터를 선택하지 않으셨습니다.");
-            return;
-        }
+                {
+                    Alarm.Open(PopupForAlarm.ButtonType.Error, "수정할 데이터를 선택하지 않으셨습니다.");
+                    return;
+                }
+                
+                if (!ValidateInformation())
+                {
+                    return;
+                }
+                var data = InformationWindTurbine.text.Split(":");
+                if (data.Length == 1)
+                {
+                    Alarm.Open(PopupForAlarm.ButtonType.Error, "풍력발전기가 선택이되지 않았습니다.");
+                    return;
+                }
+                
+                if (!int.TryParse(data[0], out int port))
+                {
+                    return;
+                }
         
-        if (!ValidateInformation())
-        {
-            return;
-        }
-        var data = InformationWindTurbine.text.Split(":");
-        if (data.Length == 1)
-        {
-            Alarm.Open(PopupForAlarm.ButtonType.Error, "풍력발전기가 선택이되지 않았습니다.");
-            return;
-        }
-        
-        if (!int.TryParse(data[0], out int port))
-        {
-            return;
-        }
-
-        Debug.Log("Edit");
-        TurbineConnectionDataManager.Instance.Data[EditTurbineIndex] = new TurbineConnectionData
-        {
-            DBIP = InformationDBIP.text,
-            Name = InformationName.text,
-            DBName = InformationDBName.text,
-            ID = InformationId.text,
-            PW = InformationPw.text,
-            NodeId = port,
-            NodeName = string.Join(":", data[1..]),
-            WingRotatePerSeconds = float.Parse(WingSpeed.text),
-            SlowRotateSpeed = float.Parse(SlowSpeed.text),
-            FastRotateSpeed = float.Parse(FastSpeed.text),
-            MagnitudeForMotion = float.Parse(Magnitude.text),
-            ObserveBearing = BearingAxises.Select(item => item.text).ToList()
-        };
-        Start();
+                Debug.Log("Edit");
+                TurbineConnectionDataManager.Instance.Data[EditTurbineIndex] = new TurbineConnectionData
+                {
+                    DBIP = InformationDBIP.text,
+                    Name = InformationName.text,
+                    DBName = InformationDBName.text,
+                    ID = InformationId.text,
+                    PW = InformationPw.text,
+                    NodeId = port,
+                    NodeName = string.Join(":", data[1..]),
+                    WingRotatePerSeconds = float.Parse(WingSpeed.text),
+                    SlowRotateSpeed = float.Parse(SlowSpeed.text),
+                    FastRotateSpeed = float.Parse(FastSpeed.text),
+                    MagnitudeOfCorrectForMotion = float.Parse(MagnitudeOfCorrect.text), 
+                    MagnitudeOfErrorForMotion = float.Parse(MagnitudeOfError.text),
+                    ObserveBearing = BearingAxises.Select(item => item.text).ToList()
+                };
+                Start();
     }
 
     public void Delete()
@@ -283,6 +287,7 @@ public class TurbineDataManager : MonoBehaviour
 
     public void Save()
     {
+        Edit();
         TurbineConnectionDataManager.Instance.Save();
         Alarm.Open(PopupForAlarm.ButtonType.Default, "성공적으로 데이터를 저장하였습니다.");
     }
@@ -342,7 +347,8 @@ public class TurbineDataManager : MonoBehaviour
         WingSpeed.text = data.WingRotatePerSeconds.ToString();
         SlowSpeed.text = data.SlowRotateSpeed.ToString();
         FastSpeed.text = data.FastRotateSpeed.ToString();
-        Magnitude.text = data.MagnitudeForMotion.ToString();
+        MagnitudeOfCorrect.text = data.MagnitudeOfCorrectForMotion.ToString();
+        MagnitudeOfError.text = data.MagnitudeOfErrorForMotion.ToString();
 
         if (data.ObserveBearing.Count != 9)
         {
