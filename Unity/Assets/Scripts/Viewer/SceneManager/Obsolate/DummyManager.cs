@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class DummyManager : SceneManager
 {
-    public override void Disable()
+    public override void Enable(bool tomain)
     {
+        throw new NotImplementedException();
     }
 
-    public override void Enable()
+    public override void Disable(bool tomain)
     {
+        throw new NotImplementedException();
     }
 }

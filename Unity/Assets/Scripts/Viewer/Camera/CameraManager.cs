@@ -13,7 +13,7 @@ public class CameraSceneMove : MonoBehaviour
     }
 
     int current = 0;
-    public void SetCamera(int index)
+    public void SetCamera(int index, bool move)
     {
         index = index % Cameras.Count;
         if (current != index)
@@ -22,8 +22,8 @@ public class CameraSceneMove : MonoBehaviour
             Cameras[index].enabled = true;
             Cameras[current].enabled = false;
 
-            Callback[current].Disable();
-            Callback[index].Enable();
+            Callback[current].Disable(move);
+            Callback[index].Enable(move);
 
             current = index;
         }
@@ -38,32 +38,4 @@ public class CameraSceneMove : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.Q))
-        {
-            SetCamera(0);
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-            SetCamera(1);
-        }
-        else if (Input.GetKey(KeyCode.E))
-        {
-            SetCamera(2);
-        }
-        else if (Input.GetKey(KeyCode.R))
-        {
-            SetCamera(3);
-        }
-        else if (Input.GetKey(KeyCode.T))
-        {
-            SetCamera(4);
-        }
-        else if (Input.GetKey(KeyCode.Y))
-        {
-            SetCamera(5);
-        }
-    }
 }

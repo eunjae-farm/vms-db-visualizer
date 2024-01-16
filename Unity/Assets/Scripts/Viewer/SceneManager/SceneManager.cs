@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class SceneManager : MonoBehaviour
 {
-    public abstract void Enable();
-    public abstract void Disable();
+    public abstract void Enable(bool tomain);
+    public abstract void Disable(bool tomain);
 
 }

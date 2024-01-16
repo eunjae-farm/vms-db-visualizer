@@ -24,23 +24,22 @@ public class MoreDetailTurbine : SceneManager
     
     public void BackToMain()
     {
-        Cameras.SetCamera(0);
+        Cameras.SetCamera(0, true);
     }
 
     public void SetCam(int i)
     {
-        Cameras.SetCamera(i);
+        Cameras.SetCamera(i, false);
     }
     
-    
-    public override void Enable()
+    public override void Enable(bool tomain)
     {
         UI.SetActive(true);
     }
 
-    public override void Disable()
+    public override void Disable(bool tomain)
     {
-        UI.SetActive(false);
+        UI.SetActive(!tomain);
     }
     
     public List<NodeData> nodeData { get; private set; }

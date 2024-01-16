@@ -28,14 +28,14 @@ public class OverviewTurbineSelect : SceneManager
     public GameObject UI;
     public PopupForAlarm PopupAlarm;
 
-    public override void Enable()
+    public override void Enable(bool tomain)
     {
         UI.SetActive(true);
     }
 
-    public override void Disable()
+    public override void Disable(bool tomain)
     {
-        UI.SetActive(false);
+        UI.SetActive(!tomain);
     }
 
 
@@ -234,7 +234,7 @@ public class OverviewTurbineSelect : SceneManager
             return;
         }
 
-        CameraManager.SetCamera(1);
+        CameraManager.SetCamera(1, true);
         DataThrou.LoadForLatestTime(Get(), currentNode);
     }
     
@@ -247,7 +247,7 @@ public class OverviewTurbineSelect : SceneManager
             return;
         }
         
-        CameraManager.SetCamera(1);
+        CameraManager.SetCamera(1, true);
         var date = DateTimeOffset.Parse(arg2.Date, CultureInfo.InvariantCulture).UtcDateTime;
         DataThrou.LoadForAlarm(Get(), currentNode, arg2);
     }
