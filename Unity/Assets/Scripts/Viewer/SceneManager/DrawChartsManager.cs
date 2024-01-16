@@ -124,7 +124,7 @@ public class DrawChartsManager : MonoBehaviour
             }
             else
             {
-                var chart = Charts.AddSerie<Line>($"Chart {axis[i]}");
+                var chart = Charts.AddSerie<Line>($"Time {axis[i]}");
                 var chartData = nodes.list[i].Chart;
                 var time = Enumerable.Range(1, chartData.Data.Length)
                     .Select(i => (double)i / chartData.Data.Length * chartData.Duration)
