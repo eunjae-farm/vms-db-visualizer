@@ -17442,8 +17442,8 @@ MonoBehaviour:
   WingSpeed: {fileID: 860498732}
   SlowSpeed: {fileID: 1987224419}
   FastSpeed: {fileID: 250081615}
-  MagnitudeOfCorrect: {fileID: 0}
-  MagnitudeOfError: {fileID: 0}
+  MagnitudeOfCorrect: {fileID: 2036847910}
+  MagnitudeOfError: {fileID: 338110911}
   ContentFromScrollView: {fileID: 753040024}
   Prefab: {fileID: 8465498423229171001, guid: 374d2c1aa36ed42a889949b7978f361e, type: 3}
   ContentFromTurbineScrollView: {fileID: 484878059}

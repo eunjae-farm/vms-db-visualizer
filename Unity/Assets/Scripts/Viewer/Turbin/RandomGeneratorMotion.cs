@@ -134,7 +134,7 @@ public class RandomGeneratorMotion : MonoBehaviour
             CreateData();
         }
 
-        var ratio = CurrentCycleOfRefresh / CycleOfRefresh;
+        var ratio = 1 - (CurrentCycleOfRefresh / CycleOfRefresh);
         for (int group = 0; group < Bearing.Count; group++)
         {
             for (int l = 0; l < Bearing[group].list.Count; l++)
