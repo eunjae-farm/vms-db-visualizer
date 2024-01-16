@@ -19,6 +19,6 @@ public class TurbineConnectionData
     public float MagnitudeOfCorrectForMotion { get; set; }
     public float MagnitudeOfErrorForMotion { get; set; }
 
-    public List<string> ObserveBearing = new List<string>();
-    
+    public List<string> ObserveBearing { get; set; } = new List<string>();
+
 }

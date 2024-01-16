@@ -22511,7 +22511,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outter_body: {fileID: 3096667473335751366}
-  Magn: 1
+  RangeStart: -10
+  RangeEnd: 10
+  CycleOfRefresh: 1
+  MagnOfCorrect: 0.5
+  MagnOfError: 2
   Bearing:
   - list:
     - {fileID: 6562056100983002104}
@@ -22524,8 +22528,12 @@ MonoBehaviour:
     - {fileID: 8635528090471274221}
   - list:
     - {fileID: 3072371688232193870}
-  Times: []
-  Nodes: []
+  StatusOfTurbine:
+  - list: 000000
+  - list: 000000
+  - list: 000000
+  TargetOfPosition: []
+  OriginOfPosition: []
 --- !u!1 &8518881783690681279
 GameObject:
   m_ObjectHideFlags: 0

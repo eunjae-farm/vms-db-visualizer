@@ -20,8 +20,8 @@ public class RandomGeneratorMotion : MonoBehaviour
     
     public List<UnityList<GameObject>> Bearing;
     public List<UnityList<bool>> StatusOfTurbine;
-    public List<UnityList<Vector3>> TargetOfPosition;
-    public List<UnityList<Vector3>> OriginOfPosition;
+    public List<Vector3> TargetOfPosition;
+    public List<Vector3> OriginOfPosition;
 
     #region Removable Outter Body
     public void OutterBody(bool on)
@@ -76,6 +76,7 @@ public class RandomGeneratorMotion : MonoBehaviour
     public void SetData(List<UnityList<bool>> status)
     {
         StatusOfTurbine = status;
+        
     }
 
     public void Awake()
@@ -89,23 +90,36 @@ public class RandomGeneratorMotion : MonoBehaviour
                 o.enabled = false;
             }
         }
+        CreateData();
     }
 
     void CreateData()
     {
+        var arr = new List<List<Vector3>>
+        {
+            TargetOfPosition, OriginOfPosition
+        };
+
+        foreach (var obj in arr)
+        {
+            while (obj.Count < Bearing.Count)
+            {
+                obj.Add(new Vector3());
+            }
+        }
+
+
         for (int group = 0; group < Bearing.Count; group++)
         {
-            for (int l = 0; l < Bearing[group].list.Count; l++)
-            {
-                // var o = Bearing[group].list[l];
-                var vec = new Vector3(
-                    Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                    Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[1] ? MagnOfError : MagnOfCorrect),
-                    Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[2] ? MagnOfError : MagnOfCorrect)
-                );
-                TargetOfPosition[group].list[l] = vec;
-                OriginOfPosition[group].list[l] = Bearing[group].list[l].transform.localPosition;
-            }
+            // var o = Bearing[group].list[l];
+            var vec = new Vector3(
+                Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+                Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[1] ? MagnOfError : MagnOfCorrect),
+                Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[2] ? MagnOfError : MagnOfCorrect)
+            );
+
+            TargetOfPosition[group] = vec;
+            OriginOfPosition[group] = Bearing[group].list[0].transform.localPosition;
         }
     }
 
@@ -126,8 +140,8 @@ public class RandomGeneratorMotion : MonoBehaviour
             for (int l = 0; l < Bearing[group].list.Count; l++)
             {
                 Bearing[group].list[l].transform.localPosition = Vector3.Lerp(
-                    OriginOfPosition[group].list[l],
-                    TargetOfPosition[group].list[l],
+                    OriginOfPosition[group],
+                    TargetOfPosition[group],
                     ratio);
             }
         }

@@ -83,12 +83,12 @@ public class CalendarManager : MonoBehaviour
         }
         
         // MoreDetailTurbine
-        MoreDetailTurbine.LoadForVibData(
+        MoreDetailTurbine.LoadForSelectTime(
             MoreDetailTurbine.turbineConnection, 
             MoreDetailTurbine.vmsNode,
-            MoreDetailTurbine.vmsAlarm,
-            ClickedDateTime.AddHours(-1),
-            ClickedDateTime.AddHours(+1));
+            // MoreDetailTurbine.vmsAlarm,
+            ClickedDateTime,
+            60 /* 1 min */);
         
         Close();
         CloseSelectVibDataInScrollView();

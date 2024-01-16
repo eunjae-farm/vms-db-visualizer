@@ -106,13 +106,15 @@ public class OverviewTurbineSelect : SceneManager
         moveDirection = index;
         var d = TurbineConnectionDataManager.Instance.Data[this.index % TurbineConnectionDataManager.Instance.Data.Count];
         NameTag.text = $"풍력발전기 : {d.Name}";
+        
         currentNode = null;
         currentAlarm = null;
 
         WindTurbines.GetComponent<RotateTurbine>().SlowRotateSpeed = d.SlowRotateSpeed;
         WindTurbines.GetComponent<RotateTurbine>().FastwRotateSpeed = d.FastRotateSpeed;
         WindTurbines.GetComponent<RotateTurbine>().WingRotatePerSeconds = d.WingRotatePerSeconds;
-        WindTurbines.GetComponent<RandomGeneratorMotion>().Magn = d.MagnitudeOfErrorForMotion;
+        WindTurbines.GetComponent<RandomGeneratorMotion>().MagnOfCorrect = d.MagnitudeOfCorrectForMotion;
+        WindTurbines.GetComponent<RandomGeneratorMotion>().MagnOfError = d.MagnitudeOfErrorForMotion;
         
         foreach (var item in AlarmComponentInListView)
         {
@@ -150,19 +152,6 @@ public class OverviewTurbineSelect : SceneManager
         Set(+1);
     }
 
-    public void SelectButton()
-    {
-        Debug.Log("SelectButton");
-        if (currentNode == null || currentAlarm == null)
-        {
-            PopupAlarm.AutoClose = true;
-            PopupAlarm.Open(PopupForAlarm.ButtonType.Error, "먼저 알람 정보를 불러와주세요.");
-            return;
-        }
-
-        CameraManager.SetCamera(1);
-        DataThrou.LoadForVibData(Get(), currentNode, currentAlarm, DateTime.MinValue, DateTime.MinValue);
-    }
 
     public void ManageButton()
     {
@@ -196,6 +185,7 @@ public class OverviewTurbineSelect : SceneManager
                 DatabaseId = turbine.ID,
                 DatabasePw = turbine.PW
             });
+            
             var data = Get();
             currentNode = Server.Instance.Node(turbine.NodeId)
                 .Where(node => data.ObserveBearing.Select(item => item.ToLower())
@@ -232,8 +222,10 @@ public class OverviewTurbineSelect : SceneManager
         });
     }
 
-    private void OverviewTurbineSelect_MouseClick(GameObject arg1, VMSAlarmWithNode arg2)
+    
+    public void SelectButton()
     {
+        Debug.Log("SelectButton");
         if (currentNode == null || currentAlarm == null)
         {
             PopupAlarm.AutoClose = true;
@@ -242,7 +234,20 @@ public class OverviewTurbineSelect : SceneManager
         }
 
         CameraManager.SetCamera(1);
+        DataThrou.LoadForLatestTime(Get(), currentNode);
+    }
+    
+    private void OverviewTurbineSelect_MouseClick(GameObject arg1, VMSAlarmWithNode arg2)
+    {
+        if (currentNode == null || currentAlarm == null)
+        {
+            PopupAlarm.AutoClose = true;
+            PopupAlarm.Open(PopupForAlarm.ButtonType.Error, "먼저 알람 정보를 불러와주세요.");
+            return;
+        }
+        
+        CameraManager.SetCamera(1);
         var date = DateTime.Parse(arg2.Date);
-        DataThrou.LoadForVibData(Get(), currentNode, currentAlarm, date.AddHours(-1), date.AddHours(+1));
+        DataThrou.LoadForAlarm(Get(), currentNode, arg2);
     }
 }
