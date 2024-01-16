@@ -116,19 +116,23 @@ public class DrawChartsManager : MonoBehaviour
             {
                 var fft = Charts.AddSerie<Line>($"FFT {axis[i]}");            
                 var fftData = nodes.list[i].FFT;
-                for (int c = 0; c < fftData.Frequency.Length; c++)
+                for (int c = 0; c < fftData.Frequency.Length; c += 1)
                 {
-                    fft.AddXYData(fftData.Frequency[c], fftData.Intensity[c]);
+                    int p = (int)c;
+                    fft.AddXYData(fftData.Frequency[p], fftData.Intensity[p]);
                 }
             }
             else
             {
                 var chart = Charts.AddSerie<Line>($"Chart {axis[i]}");
                 var chartData = nodes.list[i].Chart;
-                for (int c = 0; c < chartData.Data.Length; c++)
+                var time = Enumerable.Range(1, chartData.Data.Length)
+                    .Select(i => (double)i / chartData.Data.Length * chartData.Duration)
+                    .ToArray();
+                for (float c = 0; c < chartData.Data.Length; c += (chartData.Data.Length / 1000f))
                 {
-                    var t = (c / chartData.Data.Length) * chartData.Duration;
-                    chart.AddXYData(t, chartData.Data[i]);
+                    int p = (int)c;
+                    chart.AddXYData(time[p], chartData.Data[p]);
                 }
             }
         }
