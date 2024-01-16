@@ -149,11 +149,8 @@ public class Server
         
         if (end == DateTime.MinValue)
         {
-            end = DateTime.Now.AddHours(9);
+            end = DateTime.UtcNow;
         }
-
-        start = start.AddHours(-9);
-        end = end.AddHours(-9);
         
         var values = new Dictionary<object, object>
         {
@@ -393,8 +390,8 @@ public class Server
             {
                 { "token", Token },
                 {  "node", id } ,
-                { "start", start.AddHours(-9).ToString("yyyy-MM-dd HH:mm:ss") },
-                { "end", end.AddHours(-9).ToString("yyyy-MM-dd HH:mm:ss") }
+                { "start", start.ToString("yyyy-MM-dd HH:mm:ss") },
+                { "end", end.ToString("yyyy-MM-dd HH:mm:ss") }
             };
 
             var send = JsonConvert.SerializeObject(values);

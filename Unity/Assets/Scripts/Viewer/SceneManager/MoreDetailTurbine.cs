@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
@@ -47,24 +48,15 @@ public class MoreDetailTurbine : SceneManager
         PopupAlarm.Open(PopupForAlarm.ButtonType.Warring, "데이터 로딩중");
         TurbineMotion.OutterBody(false);
     }
-    
-    public void LoadForAlarm(TurbineConnectionData data, List<VMSNode> node, VMSAlarmWithNode alarm, float seconds = 60)
-    {
-        InitSetup();
-        Task.Run(() =>
-        {
-            var s = new System.Diagnostics.Stopwatch();
-            s.Start();
 
-            var point = DateTime.Parse(alarm.Date);
-            LoadForSelectTime(data, node, point, seconds);
-            
-            // alarm에  대한 추가적인..! 만약에 알림이 여러개면 어쩌지
-            
-        });
+    public void LoadForAlarm(TurbineConnectionData data, List<VMSNode> node, VMSAlarmWithNode alarm,
+        float seconds = 600)
+    {
+        var point = DateTimeOffset.Parse(alarm.Date, CultureInfo.InvariantCulture).UtcDateTime;
+        LoadForSelectTime(data, node, point, seconds);
     }
 
-    public void LoadForSelectTime(TurbineConnectionData data, List<VMSNode> node, DateTime point, float seconds = 60)
+    public void LoadForSelectTime(TurbineConnectionData data, List<VMSNode> node, DateTime point, float seconds = 600)
     {
         InitSetup();
         Task.Run(() =>
@@ -118,7 +110,7 @@ public class MoreDetailTurbine : SceneManager
                 .OrderBy(item => item.Node.Name)
                 .ToList();
 
-            var point = DateTime.Parse(p.OrderBy(n => n.Node.Name).First().Search.Date);
+            var point = DateTimeOffset.Parse(p.OrderBy(n => n.Node.Name).First().Search.Date, CultureInfo.InvariantCulture).UtcDateTime;
 
             LoadForVibData(data, node, p, point);
         });
@@ -128,7 +120,7 @@ public class MoreDetailTurbine : SceneManager
     {
         // 파싱된 데이터들의 정확한 시간들
         var time = nodeData.Select(item => item.Search.Date)
-            .Select(item => DateTime.Parse(item))
+            .Select(item => DateTimeOffset.Parse(item, CultureInfo.InvariantCulture).UtcDateTime)
             .OrderBy(item => item)
             .ToList();
         
@@ -145,32 +137,29 @@ public class MoreDetailTurbine : SceneManager
             {
                 InformationDateTime.text = "날짜 : " + "데이터를 찾을 수 없습니다.";
                 InformationDeviceStatus.text = "장비 상태 : 데이터 없음";
-                InformationProblem.text = "문제 : 데이터 없음";
+                InformationProblem.text = "누락 문제 : 데이터 없음";
             });
             return;
         }
 
-        var alarms = Server.Instance.Alarm(point.AddSeconds(seconds), point.AddSeconds(-seconds), nodeIds);
+        var alarms = Server.Instance.Alarm(point.AddSeconds(-seconds), point.AddSeconds(seconds), nodeIds);
         string deviceName = "";
         string status = "";
         int stat = 0;
-
+        
         for (int i = 0; i < alarms.Count; i++)
         {
+            var name = node.First(id => alarms[i].Node == id.NodeId).Name;
+            deviceName += $"{name}({alarms[i].GetStatus()}), ";
             // var date = DateTime.Parse(alarms[i].Date);
-            status = alarms[i].GetStatus();
-            if (stat < alarms[i].Status)
-            {
-                deviceName = node.First(id => alarms[i].Node == id.NodeId).Name;
-                stat = alarms[i].Status;
-            }
         }
-
+        deviceName = deviceName.TrimEnd(", ");
+        
         UnityThread.executeInUpdate(() =>
         {
             if (stat != 0)
             {
-                InformationDeviceStatus.text = $"장비 상태 : {deviceName} : ({status})";
+                InformationDeviceStatus.text = $"장비 상태 : {deviceName}";
             }
             else
             {
@@ -201,7 +190,7 @@ public class MoreDetailTurbine : SceneManager
                 
                 for (int axiss = 0; axiss < 3; axiss++)
                 {
-                    var id = node.First(id => id.Name == data.ObserveBearing[0]);
+                    var id = node.First(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
                     var exists = alarms.Exists(alarm => alarm.Node == id.NodeId);
 
                     if (exists)
@@ -225,7 +214,7 @@ public class MoreDetailTurbine : SceneManager
             TurbineMotion.SetData(setData);
             ChartManager.Setup(nodeData, turbineConnection);
 
-            InformationProblem.text = "문제 : " + (error.Count == 0 ? "없음" : string.Join(", ", error));
+            InformationProblem.text = "누락 문제 : " + (error.Count == 0 ? "없음" : string.Join(", ", error));
         });
 
 

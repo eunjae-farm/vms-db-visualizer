@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -247,7 +248,7 @@ public class OverviewTurbineSelect : SceneManager
         }
         
         CameraManager.SetCamera(1);
-        var date = DateTime.Parse(arg2.Date);
+        var date = DateTimeOffset.Parse(arg2.Date, CultureInfo.InvariantCulture).UtcDateTime;
         DataThrou.LoadForAlarm(Get(), currentNode, arg2);
     }
 }

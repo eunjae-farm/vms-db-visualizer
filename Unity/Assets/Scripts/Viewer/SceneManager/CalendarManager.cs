@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using UI.Dates;
 using UnityEngine;
@@ -39,13 +40,13 @@ public class CalendarManager : MonoBehaviour
         
         foreach (var datas in result.MeasurementDate)
         {
-            var dateTime = DateTime.Parse(datas);
+            var dateTime = DateTimeOffset.Parse(datas, CultureInfo.InvariantCulture).UtcDateTime;
             picker.SetButton(dateTime.Day, new Color(0.7f,0.7f, 1f));
         }
         
         foreach (var alarm in result.Alarm)
         {
-            var dateTime = DateTime.Parse(alarm.Date);
+            var dateTime = DateTimeOffset.Parse(alarm.Date, CultureInfo.InvariantCulture).UtcDateTime;
             picker.SetButton(dateTime.Day, new Color(1f,0.7f, 0.7f));
         }
         
@@ -87,8 +88,8 @@ public class CalendarManager : MonoBehaviour
             MoreDetailTurbine.turbineConnection, 
             MoreDetailTurbine.vmsNode,
             // MoreDetailTurbine.vmsAlarm,
-            ClickedDateTime,
-            60 /* 1 min */);
+            ClickDateTimeFromHours,
+            60 * 10 /* 10 min */);
         
         Close();
         CloseSelectVibDataInScrollView();
@@ -118,7 +119,7 @@ public class CalendarManager : MonoBehaviour
         foreach (var item in hour.Alarm)
         {
             data.Add(new ValueTuple<DateTime, string, string, string, Color>(
-                DateTime.Parse(item.Date),
+                DateTimeOffset.Parse(item.Date, CultureInfo.InvariantCulture).UtcDateTime,
                 nodes.Find(i => i.Node.NodeId == item.NodeId).Node.Name,
                 "알림",
                 VMSAlarm.GetStatus(item.Status),
@@ -128,21 +129,20 @@ public class CalendarManager : MonoBehaviour
         // 500개로 고정시키기 ->
         // 3000 -> 6
         // 2500 -> 5
-        var step = (hour.MeasurementDate.Length / 500f);
+        var step = Math.Max((hour.MeasurementDate.Length / 500f), 1);
         for (var i = 0f; i < hour.MeasurementDate.Length; i += step)
         {
             var idx = (int)i;
             var item = hour.MeasurementDate[idx];
             
             data.Add(new ValueTuple<DateTime, string, string, string, Color>(
-                DateTime.Parse(item.MeasDate),
+                DateTimeOffset.Parse(item.MeasDate, CultureInfo.InvariantCulture).UtcDateTime,
                 nodes.Find(i => i.Node.NodeId == item.NodeId).Node.Name,
                 "데이터",
                 item.MeasValue.ToString("F3"),
                 new Color(0.7f,0.7f, 1f)
             ));
         }
-        
         
         int total_count = data.Count;
         
