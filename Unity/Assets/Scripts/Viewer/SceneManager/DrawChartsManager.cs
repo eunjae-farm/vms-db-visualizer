@@ -104,7 +104,7 @@ public class DrawChartsManager : MonoBehaviour
         var nodes = Nodes[MachineIndex];
         
         Charts.RemoveData();
-        var axis = "XYZ";
+        var axis = "HVA";
         
         for (int i = 0; i < nodes.list.Count; i++)
         {

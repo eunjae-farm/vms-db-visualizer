@@ -175,7 +175,7 @@ public class MoreDetailTurbine : SceneManager
                 "GB",
                 "GE"
             };
-            var axis = "XYZ";
+            var axis = "HVA";
             var setData = new List<UnityList<bool>>();
             var error = new List<string>();
             
@@ -189,7 +189,7 @@ public class MoreDetailTurbine : SceneManager
                 for (int axiss = 0; axiss < 3; axiss++)
                 {
                     var id = node.First(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
-                    var exists = alarms.Exists(alarm => alarm.Node == id.NodeId);
+                    var exists = nodeData.Exists(data => data.Node.NodeId == id.NodeId);
 
                     if (exists)
                     {
@@ -208,6 +208,8 @@ public class MoreDetailTurbine : SceneManager
                 }
                 setData.Add(t);
             }
+            // XYZ
+            // HVA
             
             TurbineMotion.SetData(setData);
             ChartManager.Setup(nodeData, turbineConnection);
