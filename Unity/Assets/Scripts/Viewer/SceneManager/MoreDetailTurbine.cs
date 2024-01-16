@@ -144,8 +144,6 @@ public class MoreDetailTurbine : SceneManager
 
         var alarms = Server.Instance.Alarm(point.AddSeconds(-seconds), point.AddSeconds(seconds), nodeIds);
         string deviceName = "";
-        string status = "";
-        int stat = 0;
         
         for (int i = 0; i < alarms.Count; i++)
         {
@@ -157,7 +155,7 @@ public class MoreDetailTurbine : SceneManager
         
         UnityThread.executeInUpdate(() =>
         {
-            if (stat != 0)
+            if (alarms.Count != 0)
             {
                 InformationDeviceStatus.text = $"장비 상태 : {deviceName}";
             }
