@@ -27,6 +27,12 @@ public class MoreDetailTurbine : SceneManager
         Cameras.SetCamera(0);
     }
 
+    public void SetCam(int i)
+    {
+        Cameras.SetCamera(i);
+    }
+    
+    
     public override void Enable()
     {
         UI.SetActive(true);
