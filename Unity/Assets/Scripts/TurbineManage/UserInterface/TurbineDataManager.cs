@@ -217,45 +217,46 @@ public class TurbineDataManager : MonoBehaviour
     public void Edit()
     {
         if (EditTurbineIndex == -1)
-                {
-                    Alarm.Open(PopupForAlarm.ButtonType.Error, "수정할 데이터를 선택하지 않으셨습니다.");
-                    return;
-                }
-                
-                if (!ValidateInformation())
-                {
-                    return;
-                }
-                var data = InformationWindTurbine.text.Split(":");
-                if (data.Length == 1)
-                {
-                    Alarm.Open(PopupForAlarm.ButtonType.Error, "풍력발전기가 선택이되지 않았습니다.");
-                    return;
-                }
-                
-                if (!int.TryParse(data[0], out int port))
-                {
-                    return;
-                }
-        
-                Debug.Log("Edit");
-                TurbineConnectionDataManager.Instance.Data[EditTurbineIndex] = new TurbineConnectionData
-                {
-                    DBIP = InformationDBIP.text,
-                    Name = InformationName.text,
-                    DBName = InformationDBName.text,
-                    ID = InformationId.text,
-                    PW = InformationPw.text,
-                    NodeId = port,
-                    NodeName = string.Join(":", data[1..]),
-                    WingRotatePerSeconds = float.Parse(WingSpeed.text),
-                    SlowRotateSpeed = float.Parse(SlowSpeed.text),
-                    FastRotateSpeed = float.Parse(FastSpeed.text),
-                    MagnitudeOfCorrectForMotion = float.Parse(MagnitudeOfCorrect.text), 
-                    MagnitudeOfErrorForMotion = float.Parse(MagnitudeOfError.text),
-                    ObserveBearing = BearingAxises.Select(item => item.text).ToList()
-                };
-                Start();
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "수정할 데이터를 선택하지 않으셨습니다.");
+            return;
+        }
+
+        if (!ValidateInformation())
+        {
+            return;
+        }
+
+        var data = InformationWindTurbine.text.Split(":");
+        if (data.Length == 1)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "풍력발전기가 선택이되지 않았습니다.");
+            return;
+        }
+
+        if (!int.TryParse(data[0], out int port))
+        {
+            return;
+        }
+
+        Debug.Log("Edit");
+        TurbineConnectionDataManager.Instance.Data[EditTurbineIndex] = new TurbineConnectionData
+        {
+            DBIP = InformationDBIP.text,
+            Name = InformationName.text,
+            DBName = InformationDBName.text,
+            ID = InformationId.text,
+            PW = InformationPw.text,
+            NodeId = port,
+            NodeName = string.Join(":", data[1..]),
+            WingRotatePerSeconds = float.Parse(WingSpeed.text),
+            SlowRotateSpeed = float.Parse(SlowSpeed.text),
+            FastRotateSpeed = float.Parse(FastSpeed.text),
+            MagnitudeOfCorrectForMotion = float.Parse(MagnitudeOfCorrect.text),
+            MagnitudeOfErrorForMotion = float.Parse(MagnitudeOfError.text),
+            ObserveBearing = BearingAxises.Select(item => item.text).ToList()
+        };
+        Start();
     }
 
     public void Delete()
