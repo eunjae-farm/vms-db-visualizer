@@ -148,6 +148,8 @@ public class MoreDetailTurbine : SceneManager
         }
 
         var alarms = Server.Instance.Alarm(point.AddSeconds(-seconds), point.AddSeconds(seconds), nodeIds);
+        alarms = alarms.DistinctBy(i => i.Node).ToList();
+        
         string deviceName = "";
         
         for (int i = 0; i < alarms.Count; i++)
@@ -196,7 +198,7 @@ public class MoreDetailTurbine : SceneManager
                     var id = node.First(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
                     var exists = nodeData.Exists(data => data.Node.NodeId == id.NodeId);
 
-                    if (exists)
+                    if (!exists)
                     {
                         ax.Add($"{axis[axiss]}");
                         isAdd = true;

@@ -44,22 +44,23 @@ public class DrawChartsManager : MonoBehaviour
     public List<UnityList<NodeData>> Nodes;
     public void ConvertData(List<NodeData> data, List<string> bearingSequnence)
     {
-        var GE_GS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[0]);
-        var GE_GS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[1]);
-        var GE_GS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[2]);
+        var MB_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[0]);
+        var MB_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[1]);
+        var MB_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[2]);
+        
+        var GE_GS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[3]);
+        var GE_GS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[4]);
+        var GE_GS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[5]);
 
-        var GE_RS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[3]);
-        var GE_RS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[4]);
-        var GE_RS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[5]);
-
-        var MB_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[6]);
-        var MB_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[7]);
-        var MB_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[8]);
+        var GE_RS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[6]);
+        var GE_RS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[7]);
+        var GE_RS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[8]);
 
         Nodes.Clear();
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { MB_A_VEL, MB_H_VEL, MB_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_GS_A_VEL, GE_GS_H_VEL, GE_GS_V_VEL } });
+        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
     }
     
     public void Setup(List<NodeData> nodeData, TurbineConnectionData connection)
