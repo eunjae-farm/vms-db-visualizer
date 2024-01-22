@@ -36,6 +36,10 @@ public class MoreDetailTurbine : SceneManager
         
         TurbineMotion.OutterBody(false);
         TurbineMotion.OnOutline(0, false);
+        for (int c = 0; c < CamButton.Count; c++)
+        {
+            CamButton[c].GetComponent<Image>().color = (0 == c ? ActivatedCamColor : DefaultCamColor);
+        }
         Cameras.SetCamera(0, true);
     }
 
@@ -43,7 +47,7 @@ public class MoreDetailTurbine : SceneManager
     {
         for (int c = 0; c < CamButton.Count; c++)
         {
-            CamButton[c].GetComponent<Image>().color = (i == c ? ActivatedCamColor : DefaultCamColor);
+            CamButton[c].GetComponent<Image>().color = ((i - 1) == c ? ActivatedCamColor : DefaultCamColor);
         }
         Cameras.SetCamera(i, false);
     }
