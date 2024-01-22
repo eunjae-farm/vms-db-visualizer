@@ -69,6 +69,7 @@ public class DrawChartsManager : MonoBehaviour
         ConvertData(nodeData, connection.ObserveBearing);
     }
 
+    private int tmp_click = -1;
     public void ShowEvent(int click, string name)
     {
         if (click == 0)
@@ -92,10 +93,20 @@ public class DrawChartsManager : MonoBehaviour
         InfoUI.GetComponent<RectTransform>().offsetMin = new Vector2();
         InfoUI.GetComponent<RectTransform>().offsetMax = new Vector2();
         MachineIndex = click - 1;
-        WindTurbine.GetComponent<RandomGeneratorMotion>().OnOutline(MachineIndex, true);
-    
+
+        bool p = (tmp_click != click);
+        WindTurbine.GetComponent<RandomGeneratorMotion>().OnOutline(MachineIndex, p);
+        if (p)
+        {
+            DrawChart(true);
+            tmp_click = click;
+        }
+        else
+        {
+            isOpenChart = false;
+            tmp_click = -1;
+        }
         
-        DrawChart(true);
     }
     
     // mode "TRUE" is FFT

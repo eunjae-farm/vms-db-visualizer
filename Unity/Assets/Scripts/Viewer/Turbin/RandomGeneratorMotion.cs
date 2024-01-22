@@ -66,7 +66,7 @@ public class RandomGeneratorMotion : MonoBehaviour
     {
         for (int i = 0; i < Bearing.Count; i++)
         {
-            foreach (var b in Bearing[id].list)
+            foreach (var b in Bearing[i].list)
             {
                 b.GetComponent<Outline>().enabled =((id == i) ? value : false);
             }
@@ -81,6 +81,9 @@ public class RandomGeneratorMotion : MonoBehaviour
 
     public void Awake()
     {
+        CreateData();
+    }
+    public void Start() { 
         foreach (var b in Bearing)
         {
             foreach (var obj in b.list)
@@ -88,9 +91,10 @@ public class RandomGeneratorMotion : MonoBehaviour
                 var o = obj.AddComponent<Outline>();
                 o.OutlineWidth = 7;
                 o.enabled = false;
+                o.OutlineColor = Color.red;
+                
             }
         }
-        CreateData();
     }
 
     void CreateData()
@@ -130,7 +134,7 @@ public class RandomGeneratorMotion : MonoBehaviour
         
         if (CurrentCycleOfRefresh < 0)
         {
-            CurrentCycleOfRefresh = CycleOfRefresh;
+            CurrentCycleOfRefresh += CycleOfRefresh;
             CreateData();
         }
 
