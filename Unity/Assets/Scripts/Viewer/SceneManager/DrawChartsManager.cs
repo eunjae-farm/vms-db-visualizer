@@ -114,14 +114,15 @@ public class DrawChartsManager : MonoBehaviour
     public void DrawChart(bool mode)
     {
         var nodes = Nodes[MachineIndex];
-        // var name = new List<string>
-        // {
-        //     "Main Bearing", 
-        //     "GearBox",
-        //     "Generator"
-        // };
-        // Charts.GetComponent<Title>().text = name[MachineIndex];
-
+        var name = new List<string>
+        {
+            "Main Bearing", 
+            "GearBox",
+            "Generator"
+        };
+        
+        Charts.GetChartComponent<Title>().text = name[MachineIndex];
+        
         Charts.RemoveData();
         var axis = "HVA";
         
