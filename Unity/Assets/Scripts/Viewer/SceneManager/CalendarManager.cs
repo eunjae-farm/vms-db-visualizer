@@ -66,10 +66,17 @@ public class CalendarManager : MonoBehaviour
 
     public void Open()
     {
-        ClickedDateTime = DateTime.MinValue;
-        Calendar.SetActive(true);
-        var now = DateTime.Now;
-        picker.Set(now.Year, now.Month);
+        if (Calendar.activeSelf)
+        {
+            Close();
+        }
+        else
+        {
+            ClickedDateTime = DateTime.MinValue;
+            Calendar.SetActive(true);
+            var now = DateTime.Now;
+            picker.Set(now.Year, now.Month);    
+        }
     }
 
     public void Close()
