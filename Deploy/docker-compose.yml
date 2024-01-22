@@ -1,0 +1,17 @@
+version: "3.2"
+services:
+  api:
+    build:
+      context: '../DatabaseServer/'
+
+  unity:
+    build:
+      context: '.'
+    ports:
+      - "8080:80"
+
+# networks:
+#   frontend:
+#   backend:
+# volumes:
+#     data:

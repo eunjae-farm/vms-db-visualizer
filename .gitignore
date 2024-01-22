@@ -1,4 +1,6 @@
 .idea/
+Deploy/DatabaseServer/
+Deploy/webgl/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
