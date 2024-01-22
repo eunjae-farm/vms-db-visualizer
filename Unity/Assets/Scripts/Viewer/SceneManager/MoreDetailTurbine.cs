@@ -24,6 +24,13 @@ public class MoreDetailTurbine : SceneManager
     
     public void BackToMain()
     {
+        // 뒤로가기 눌렀을 때,
+        // 1. Outline 삭제
+        // 다시 커버 닫기
+        // 그 외 모든 UI 정리하기
+        
+        TurbineMotion.OutterBody(false);
+        TurbineMotion.OnOutline(0, false);
         Cameras.SetCamera(0, true);
     }
 

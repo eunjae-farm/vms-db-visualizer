@@ -20,6 +20,13 @@ public class CalendarManager : MonoBehaviour
 
     public PopupForAlarm Alarm;
     public DateTime ClickedDateTime;
+
+    public void BackToMain()
+    {
+        Open();
+        Close();
+        CloseSelectVibDataInScrollView();
+    }
     
     private void Awake()
     {

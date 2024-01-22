@@ -43,6 +43,12 @@ public class OverviewTurbineSelect : SceneManager
     {
         if (moveDirection != 0)
         {
+            if (TurbineConnectionDataManager.Instance.Data.Count == 1)
+            {
+                moveDirection = 0;
+                return;
+            }
+            
             currentMoveDuration += Time.deltaTime;
 
             if (currentMoveDuration >= moveDuration)
@@ -98,11 +104,6 @@ public class OverviewTurbineSelect : SceneManager
             NameTag.text = $"설정된 발전기 정보 없음";
             return;
         }
-
-        if (TurbineConnectionDataManager.Instance.Data.Count == 1)
-        {
-            return;
-        }
         
         if (this.index < 0)
         {
@@ -110,6 +111,7 @@ public class OverviewTurbineSelect : SceneManager
         }
 
         moveDirection = index;
+        
         var d = TurbineConnectionDataManager.Instance.Data[this.index % TurbineConnectionDataManager.Instance.Data.Count];
         NameTag.text = $"풍력발전기 : {d.Name}";
         
@@ -126,6 +128,7 @@ public class OverviewTurbineSelect : SceneManager
         {
             item.SetActive(false);
         }
+        
         UpdateForView();
     }
 

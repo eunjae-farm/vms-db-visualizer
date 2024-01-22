@@ -34,6 +34,10 @@ public class DrawChartsManager : MonoBehaviour
         }
     }
 
+    public void BackToMain()
+    {
+        isOpenChart = false;
+    }
     private int MachineIndex = 0;
     public void ChartButton()
     {
