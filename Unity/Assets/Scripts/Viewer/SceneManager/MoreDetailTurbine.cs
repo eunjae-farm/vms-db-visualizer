@@ -8,6 +8,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MoreDetailTurbine : SceneManager
 {
@@ -21,6 +22,10 @@ public class MoreDetailTurbine : SceneManager
     public TMP_Text InformationDateTime;
     public TMP_Text InformationDeviceStatus;
     public TMP_Text InformationProblem;
+
+    public List<Button> CamButton;
+    public Color ActivatedCamColor;
+    public Color DefaultCamColor;
     
     public void BackToMain()
     {
@@ -36,6 +41,10 @@ public class MoreDetailTurbine : SceneManager
 
     public void SetCam(int i)
     {
+        for (int c = 0; c < CamButton.Count; c++)
+        {
+            CamButton[c].GetComponent<Image>().color = (i == c ? ActivatedCamColor : DefaultCamColor);
+        }
         Cameras.SetCamera(i, false);
     }
     
