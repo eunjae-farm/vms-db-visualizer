@@ -12816,6 +12816,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3575631673718389339, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
+      propertyPath: Bearing.Array.data[0].list.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575631673718389339, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
+      propertyPath: Bearing.Array.data[0].list.Array.data[4]
+      value: 
+      objectReference: {fileID: 828082591}
     - target: {fileID: 6712976642980510884, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -13018,6 +13026,11 @@ MonoBehaviour:
   WindTurbine: {fileID: 1968432094}
   nodeData: []
   Nodes: []
+--- !u!1 &828082591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5550577517522968585, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
+  m_PrefabInstance: {fileID: 809008674}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &837801863
 GameObject:
   m_ObjectHideFlags: 0
