@@ -2,3 +2,8 @@ __pycache__/
 scripts/
 push.sh
 *.ipynb
+dist/
+build/
+.*
+*.spec
+*.md

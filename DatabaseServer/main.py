@@ -22,7 +22,6 @@ def get_node():
     node = data.nodes()    
     return jsonify(node)
 
-
 # 1달 단위로, 데이터가 있는 정보를 추출하여 반환함.
 # Need to Search item from Node Id
 @app.route('/month', methods=["POST"])
