@@ -22350,6 +22350,8 @@ MonoBehaviour:
   CycleOfRefresh: 0.03
   MagnOfCorrect: 0.5
   MagnOfError: 2
+  VibrateWithMainBearing:
+  - {fileID: 8045566729509775073}
   Bearing:
   - list:
     - {fileID: 6562056100983002104}

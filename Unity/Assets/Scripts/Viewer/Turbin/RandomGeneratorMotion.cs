@@ -17,7 +17,8 @@ public class RandomGeneratorMotion : MonoBehaviour
     public float MagnOfError = 2.0F;
 
     // MainBearing, GearBox_MainBearing, GearBox_Generator, Generator
-    
+
+    public List<GameObject> VibrateWithMainBearing;
     public List<UnityList<GameObject>> Bearing;
     public List<UnityList<bool>> StatusOfTurbine;
     public List<Vector3> TargetOfPosition;
@@ -141,6 +142,16 @@ public class RandomGeneratorMotion : MonoBehaviour
         var ratio = 1 - (CurrentCycleOfRefresh / CycleOfRefresh);
         for (int group = 0; group < Bearing.Count; group++)
         {
+            if (group == 0)
+            {
+                for (int l = 0; l < VibrateWithMainBearing.Count; l++)
+                {
+                     VibrateWithMainBearing[l].transform.localPosition = Vector3.Lerp(
+                         OriginOfPosition[group],
+                         TargetOfPosition[group],
+                         ratio);   
+                }
+            }
             for (int l = 0; l < Bearing[group].list.Count; l++)
             {
                 Bearing[group].list[l].transform.localPosition = Vector3.Lerp(
