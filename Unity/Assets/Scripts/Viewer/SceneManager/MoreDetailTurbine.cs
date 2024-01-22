@@ -188,7 +188,8 @@ public class MoreDetailTurbine : SceneManager
             
             for (int type = 0; type < 3; type++)
             {
-                var t = new UnityList<bool>();
+                // var t = new UnityList<bool>();
+                var at = new UnityList<bool>();
                 string tmp = $"{dev[type]} (";
                 bool isAdd = false;
                 var ax = new List<string>();
@@ -197,6 +198,7 @@ public class MoreDetailTurbine : SceneManager
                 {
                     var id = node.First(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
                     var exists = nodeData.Exists(data => data.Node.NodeId == id.NodeId);
+                    var aalarm = alarms.Exists(alarm => alarm.Node == id.NodeId);
 
                     if (!exists)
                     {
@@ -204,8 +206,8 @@ public class MoreDetailTurbine : SceneManager
                         isAdd = true;
                     }
                     
-                    t.list.Add(exists);
-                    
+                    // t.list.Add(exists);
+                    at.list.Add(aalarm);
                 }
                 
                 if (isAdd)
@@ -213,7 +215,8 @@ public class MoreDetailTurbine : SceneManager
                     tmp += string.Join(", ", ax) + ")";
                     error.Add(tmp);
                 }
-                setData.Add(t);
+                
+                setData.Add(at);
             }
             // XYZ
             // HVA

@@ -58,7 +58,6 @@ public class DrawChartsManager : MonoBehaviour
 
         Nodes.Clear();
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { MB_A_VEL, MB_H_VEL, MB_V_VEL } });
-        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_GS_A_VEL, GE_GS_H_VEL, GE_GS_V_VEL } });
         Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
     }
@@ -94,7 +93,8 @@ public class DrawChartsManager : MonoBehaviour
         InfoUI.GetComponent<RectTransform>().offsetMax = new Vector2();
         MachineIndex = click - 1;
         WindTurbine.GetComponent<RandomGeneratorMotion>().OnOutline(MachineIndex, true);
-
+    
+        
         DrawChart(true);
     }
     
@@ -103,7 +103,14 @@ public class DrawChartsManager : MonoBehaviour
     public void DrawChart(bool mode)
     {
         var nodes = Nodes[MachineIndex];
-        
+        // var name = new List<string>
+        // {
+        //     "Main Bearing", 
+        //     "GearBox",
+        //     "Generator"
+        // };
+        // Charts.GetComponent<Title>().text = name[MachineIndex];
+
         Charts.RemoveData();
         var axis = "HVA";
         
