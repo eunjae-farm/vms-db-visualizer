@@ -99,6 +99,11 @@ public class OverviewTurbineSelect : SceneManager
             return;
         }
 
+        if (TurbineConnectionDataManager.Instance.Data.Count == 1)
+        {
+            return;
+        }
+        
         if (this.index < 0)
         {
             this.index = TurbineConnectionDataManager.Instance.Data.Count - 1;
