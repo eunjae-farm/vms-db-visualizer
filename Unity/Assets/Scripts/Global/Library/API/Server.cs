@@ -4,30 +4,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
 
-public class Server : MonoBehaviour
+public class Server
 {
+    private static readonly HttpClient client = new();
+
+    private static object _lock = new object();
     private static Server _instance = null;
-
-    public static Server Instance => _instance;
-
-    public void Awake()
+    public static Server Instance
     {
-        _instance = this;
-        DontDestroyOnLoad(this);
+        get
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new Server();
+                        Server.client.Timeout = TimeSpan.FromSeconds(3);
+                    }
+                }
+            }
+
+            return _instance;
+        }
     }
-
+    [field: SerializeField]
     private string IP;
+    [field: SerializeField]
     private int Port;
-
     LoginObject LoginData;
-
+    [field: SerializeField]
     private string Token = "NULL";
 
     public void Setup(string ip, int port)
@@ -36,37 +47,29 @@ public class Server : MonoBehaviour
         Port = port;
     }
 
-    (string, UnityWebRequest.Result) Perform(UnityWebRequest uwr)
-    {
-        uwr.SendWebRequest();
-        while (!uwr.isDone)
-        {
-        }
-
-        return (uwr.downloadHandler.text, uwr.result);
-    }
-
     public (bool, string) HealthyCheck(string ip, int port)
     {
-        using var client = UnityWebRequest.Get($"http://{ip}:{port}/healthy");
-        client.timeout = 3;
-        var (response, status) = Perform(client);
-
-        if (status == UnityWebRequest.Result.Success)
+        try
         {
-            var json = JsonConvert.DeserializeObject<JObject>(response);
+            var response = client.GetAsync($"http://{ip}:{port}/healthy").Result;
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<JObject>(responseString);
+
             var ver = json["version"].Value<string>();
             Debug.Log(json);
             return (true, ver);
         }
-
-        return (false, "");
+        catch
+        {
+            return (false, "");
+        }
     }
 
 
     public bool Login(LoginObject data)
     {
         LoginData = data;
+
         var values = new Dictionary<string, string>
         {
             { "id", LoginData.DatabaseId },
@@ -74,27 +77,21 @@ public class Server : MonoBehaviour
             { "name", LoginData.DatabaseName },
             { "ip", LoginData.DatabaseIP },
         };
-
-        var send = JsonConvert.SerializeObject(values);
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/login", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-
-        var (res, status) = Perform(client);
-        if (status == UnityWebRequest.Result.Success)
+        try
         {
-            var json = JsonConvert.DeserializeObject<JObject>(res);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            //Debug.Log(send);
+            var response = client.PostAsync($"http://{IP}:{Port}/login", content).Result;
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<JObject>(responseString);
             Token = json["token"].Value<string>();
             Debug.Log(json);
             return true;
+        }catch
+        {
+            return false;
         }
-
-        return false;
     }
 
     public void Logout()
@@ -105,15 +102,11 @@ public class Server : MonoBehaviour
         };
 
         var send = JsonConvert.SerializeObject(values);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/logout", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-
-        var (res, status) = Perform(client);
-        var json = JsonConvert.DeserializeObject<JObject>(res);
+        var content = new StringContent(send, Encoding.UTF8, "application/json");
+        var response = client.PostAsync($"http://{IP}:{Port}/logout", content).Result;
+        //Debug.Log(send);
+        var responseString = response.Content.ReadAsStringAsync().Result;
+        var json = JsonConvert.DeserializeObject<JObject>(responseString);
         //Token = json["token"].Value<string>();
         Debug.Log(json);
     }
@@ -131,40 +124,35 @@ public class Server : MonoBehaviour
             values["node"] = node;
         }
 
-        var send = JsonConvert.SerializeObject(values);
-
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/alarm", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-
-        var (res, status) = Perform(client);
-        if (status == UnityWebRequest.Result.Success)
+        try
         {
-            var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(res);
-            Debug.Log(json);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/alarm", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
             return json;
+        }catch
+        {
+            return null;
         }
-
-        return null;
     }
-
+    
     public List<VMSAlarm> Alarm(DateTime start, DateTime end, List<int> node)
     {
         if (start == DateTime.MinValue)
         {
             start = new DateTime(1980, 01, 01);
         }
-
+        
         if (end == DateTime.MinValue)
         {
             end = DateTime.UtcNow;
         }
-
+        
         var values = new Dictionary<object, object>
         {
             { "token", Token },
@@ -173,29 +161,23 @@ public class Server : MonoBehaviour
             { "node", node },
         };
 
-        var send = JsonConvert.SerializeObject(values);
-
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/alarm_date", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-
-        var (res, status) = Perform(client);
-
-        if (status == UnityWebRequest.Result.Success)
+        try
         {
-            var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(res);
-            Debug.Log(json);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/alarm_date", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSAlarm>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
             return json;
+        }catch
+        {
+            return null;
         }
-
-        return null;
     }
-
+    
 
     public VMSFFT fft(int id, int timeline, int end_freq)
     {
@@ -206,26 +188,22 @@ public class Server : MonoBehaviour
             { "timeline", timeline },
             { "freq", end_freq },
         };
-
-        var send = JsonConvert.SerializeObject(values);
-
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/fft", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-        var (res, status) = Perform(client);
-        if (status == UnityWebRequest.Result.Success)
+        try
         {
-            var json = JsonConvert.DeserializeObject<VMSFFT>(res);
-            Debug.Log(json);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/fft", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            //Debug.Log(responseString);
+            var json = JsonConvert.DeserializeObject<VMSFFT>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
             return json;
+        }catch
+        {
+            return null;
         }
-
-        return null;
     }
 
     public VMSCharts Charts(int id, int sample_rate)
@@ -236,25 +214,20 @@ public class Server : MonoBehaviour
             { "id", id },
             { "sample_rate", sample_rate },
         };
-        var send = JsonConvert.SerializeObject(values);
-
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/charts", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-        var (res, status) = Perform(client);
-        if (status == UnityWebRequest.Result.Success)
+        try
         {
-            var json = JsonConvert.DeserializeObject<VMSCharts>(res);
-            Debug.Log(json);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/charts", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<VMSCharts>(responseString);
+            //Debug.Log(Token);
             return json;
+        }catch
+        {
+            return null;
         }
-
-        return null;
     }
 
     public VMSMonth AvailableMonthData(List<int> nodes, int year, int month, int next_year, int next_month)
@@ -268,28 +241,23 @@ public class Server : MonoBehaviour
             { "ny", next_year },
             { "nm", next_month },
         };
-        var send = JsonConvert.SerializeObject(values);
-
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/month", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-
-        var (res, status) = Perform(client);
-        if (status == UnityWebRequest.Result.Success)
+        
+        try
         {
-            var json = JsonConvert.DeserializeObject<VMSMonth>(res);
-            Debug.Log(json);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/month", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<VMSMonth>(responseString);
+            //Debug.Log(Token);
             return json;
+        }catch
+        {
+            return null;
         }
-
-        return null;
     }
-
+    
     public VMSHour AvailableHourData(List<int> nodes, int year, int month, int day)
     {
         var values = new Dictionary<object, object>
@@ -300,26 +268,21 @@ public class Server : MonoBehaviour
             { "month", month },
             { "day", day },
         };
-
-        var send = JsonConvert.SerializeObject(values);
-
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/date", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-        var (res, status) = Perform(client);
-        if (status == UnityWebRequest.Result.Success)
+        
+        try
         {
-            var json = JsonConvert.DeserializeObject<VMSHour>(res);
-            Debug.Log(json);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/date", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<VMSHour>(responseString);
+            //Debug.Log(Token);
             return json;
+        }catch
+        {
+            return null;
         }
-
-        return null;
     }
 
     // i need some more idea.
@@ -365,32 +328,28 @@ public class Server : MonoBehaviour
         {
             { "token", Token },
         };
-        var send = JsonConvert.SerializeObject(values);
-
-        // var content = new StringContent(send, Encoding.UTF8, "application/json");
-        Debug.Log(send);
-        UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-        raw.contentType = "application/json";
-
-        using var client = new UnityWebRequest($"http://{IP}:{Port}/node", "POST");
-        client.timeout = 3;
-        client.uploadHandler = raw;
-        var (res, status) = Perform(client);
-        if (status == UnityWebRequest.Result.Success)
+        try
         {
-            var json = JsonConvert.DeserializeObject<List<VMSNode>>(res);
-            Debug.Log(json);
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/node", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSNode>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
+
             if (nodeId == -1)
             {
-                return (json);
-            }
-            else
+                return json;
+            }else
             {
-                return (ChildNodes(json, nodeId));
+                return ChildNodes(json, nodeId);
             }
+        }catch
+        {
+            return null;
         }
-
-        return (null);
     }
 
     public List<VMSNodeData> Search(int id, int size, int offset)
@@ -406,31 +365,20 @@ public class Server : MonoBehaviour
             };
 
             var send = JsonConvert.SerializeObject(values);
-
-            // var content = new StringContent(send, Encoding.UTF8, "application/json");
-            Debug.Log(send);
-            UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-            raw.contentType = "application/json";
-
-            using var client = new UnityWebRequest($"http://{IP}:{Port}/search", "POST");
-            client.timeout = 3;
-            client.uploadHandler = raw;
-            var (res, status) = Perform(client);
-            if (status == UnityWebRequest.Result.Success)
-            {
-                var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(res);
-                Debug.Log(json);
-                return (json);
-            }
-
-            return (null);
-        }
-        catch
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/search", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
+            return json;
+        }catch
         {
-            return (null);
+            return null;
         }
     }
-
+    
     public List<VMSNodeData> Search(int id, DateTime start, DateTime end)
     {
         try
@@ -442,30 +390,32 @@ public class Server : MonoBehaviour
                 { "start", start.ToString("yyyy-MM-dd HH:mm:ss") },
                 { "end", end.ToString("yyyy-MM-dd HH:mm:ss") }
             };
+
             var send = JsonConvert.SerializeObject(values);
-
-            // var content = new StringContent(send, Encoding.UTF8, "application/json");
-            Debug.Log(send);
-            UploadHandler raw = new UploadHandlerRaw(Encoding.UTF8.GetBytes(send));
-            raw.contentType = "application/json";
-
-            using var client = new UnityWebRequest($"http://{IP}:{Port}/find_search", "POST");
-            client.timeout = 3;
-            client.uploadHandler = raw;
-
-            var (res, status) = Perform(client);
-            if (status == UnityWebRequest.Result.Success)
-            {
-                var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(res);
-                Debug.Log(json);
-                return (json);
-            }
-
-            return (null);
-        }
-        catch
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/find_search", content).Result;
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<List<VMSNodeData>>(responseString);
+            //Token = json["token"].Value<string>();
+            //Debug.Log(Token);
+            return json;
+        }catch
         {
-            return (null);
+            return null;
         }
+    }
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }
