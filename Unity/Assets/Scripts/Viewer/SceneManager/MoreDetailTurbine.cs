@@ -256,6 +256,11 @@ public class MoreDetailTurbine : SceneManager
 
     private void Update()
     {
+        if (!UI.activeSelf)
+        {
+            return;
+        }
+        
         //마우스 클릭시
         if (Input.GetMouseButtonDown(0))
         {
