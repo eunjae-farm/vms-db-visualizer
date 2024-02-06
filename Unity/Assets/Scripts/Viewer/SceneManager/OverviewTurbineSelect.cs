@@ -8,6 +8,9 @@ using UnityEngine;
 
 public class OverviewTurbineSelect : SceneManager
 {
+    public GameObject TerrainOfOverview;
+    public GameObject TerrainOfNercel;
+    
     public TMPro.TMP_Text NameTag;
     private int index = 0;
     public GameObject AlarmComponent;
@@ -31,11 +34,15 @@ public class OverviewTurbineSelect : SceneManager
     public override void Enable(bool tomain)
     {
         UI.SetActive(true);
+        TerrainOfOverview.SetActive(true);
+        TerrainOfNercel.SetActive(false);
     }
 
     public override void Disable(bool tomain)
     {
         UI.SetActive(!tomain);
+        TerrainOfOverview.SetActive(false);
+        TerrainOfNercel.SetActive(true);
     }
 
 
