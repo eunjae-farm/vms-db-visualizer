@@ -16052,7 +16052,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &973530633
 Transform:
   m_ObjectHideFlags: 0
@@ -26182,6 +26182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441529f6376544ae48d37e9a8a2f2d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TerrainOfOverview: {fileID: 1204210626}
+  TerrainOfNercel: {fileID: 973530632}
   NameTag: {fileID: 1638673244}
   AlarmComponent: {fileID: 4572034711452900574, guid: 34e4ef37b4f9a4394a222cbb61bc9e27, type: 3}
   ContentOfListView: {fileID: 1203773770}
