@@ -44,7 +44,8 @@ public class TurbineDataManager : MonoBehaviour
     public List<TMPro.TMP_InputField> BearingAxises;
 
     public GameObject SelectForBearingName;    
-    public TMPro.TMP_Text TitleFromBearingName;    
+    public TMPro.TMP_Text TitleFromBearingName;
+    public TMPro.TMP_Text ContentOfSelectMachineScrollView;
     
     private int EditTurbineIndex = -1;
 
@@ -188,6 +189,32 @@ public class TurbineDataManager : MonoBehaviour
         PopiAxis.SetActive(false);
         
         // 검색
+        Task.Run(() =>
+        {
+            var node = Server.Instance.Node();    
+            UnityThread.executeInUpdate(() =>
+            {
+                int c = ContentOfSelectMachineScrollView.transform.childCount;
+                for (int i = 0; i < c; i++)
+                {
+                    Destroy(ContentOfSelectMachineScrollView.transform.GetChild(i).gameObject);
+                }
+                
+                // shallow copy, because Data type is List type based class.
+                for (int i = 0; i < node.Count; i++)
+                {
+                    GameObject obj = Instantiate(PrefabForContentFromTurbineScrollView,
+                        ContentOfSelectMachineScrollView.transform);
+
+                    obj.GetComponent<WindTurbineElement>().Setup(node[i].NodeId, node[i].Name, $"{node[i].Status}",
+                        $"{node[i].Active}", i);
+                    obj.GetComponent<WindTurbineElement>().Clicked += TurbineDataManager_Clicked;
+                    contentOfScrollView.Add(obj);
+                }
+            });
+        });
+        
+        
         return;
     }
 
