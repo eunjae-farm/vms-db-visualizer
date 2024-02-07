@@ -46,7 +46,7 @@ public class TurbineDataManager : MonoBehaviour
 
     public GameObject SelectForBearingName;    
     public TMPro.TMP_Text TitleFromBearingName;
-    public TMPro.TMP_Text ContentOfSelectMachineScrollView;
+    public GameObject ContentOfSelectMachineScrollView;
     
     private int EditTurbineIndex = -1;
 
@@ -190,7 +190,6 @@ public class TurbineDataManager : MonoBehaviour
         SelectForBearingName.SetActive(true);
         TitleFromBearingName.text = $"({t})에 사상할 노드 이름을 선택해 주세요.";
         
-        
         // 검색
         Task.Run(() =>
         {
@@ -210,7 +209,7 @@ public class TurbineDataManager : MonoBehaviour
                         ContentOfSelectMachineScrollView.transform);
 
                     obj.GetComponent<WindTurbineElement>().Setup(node[i].NodeId, node[i].Name, $"{node[i].Status}",
-                        $"{node[i].Active}", i);
+                        $"{(node[i].Active == 1).ToString()}", i);
                     obj.GetComponent<WindTurbineElement>().Clicked += (id, s) => turbineNodeName = s; 
                     contentOfScrollView.Add(obj);
                 }
