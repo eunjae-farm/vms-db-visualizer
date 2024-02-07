@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TurbineDataManager : MonoBehaviour
 {
@@ -175,7 +176,7 @@ public class TurbineDataManager : MonoBehaviour
     private string turbineNodeName = "";
     public void BearingAxisSearch()
     {
-        focusedInput = BearingAxises.FirstOrDefault(o => o.isFocused);
+        // focusedInput = BearingAxises.FirstOrDefault(o => o.onSelect);
         if (focusedInput == null)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Error, "입력하고 싶은 입력 창을 클릭해주세요.");
@@ -188,7 +189,7 @@ public class TurbineDataManager : MonoBehaviour
         var t = comp.text.Split(":")[0].Trim();
         SelectForBearingName.SetActive(true);
         TitleFromBearingName.text = $"({t})에 사상할 노드 이름을 선택해 주세요.";
-        PopiAxis.SetActive(false);
+        
         
         // 검색
         Task.Run(() =>
@@ -380,6 +381,13 @@ public class TurbineDataManager : MonoBehaviour
     private void Awake()
     {
         TurbineConnectionDataManager.Instance.Load();
+        BearingAxises.ForEach(o =>
+        {
+            o.onSelect.AddListener((string method) =>
+            {
+                focusedInput = o;
+            });
+        });
     }
 
     private void Start()
