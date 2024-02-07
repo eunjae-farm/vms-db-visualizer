@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class TurbineDataManager : MonoBehaviour
@@ -41,6 +42,9 @@ public class TurbineDataManager : MonoBehaviour
 
     [Header("Additional Info for Axis")] 
     public List<TMPro.TMP_InputField> BearingAxises;
+
+    public GameObject SelectForBearingName;    
+    public TMPro.TMP_Text TitleFromBearingName;    
     
     private int EditTurbineIndex = -1;
 
@@ -165,7 +169,36 @@ public class TurbineDataManager : MonoBehaviour
         PopiAxis.SetActive(false);
         return;
     }
-    
+
+    public void BearingAxisSearch()
+    {
+        var focusedInput = BearingAxises.FirstOrDefault(o => o.isFocused);
+        if (focusedInput == null)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "입력하고 싶은 입력 창을 클릭해주세요.");
+            return;
+        }
+
+        var p = focusedInput.transform.parent;
+        var c = p.GetChild(0).gameObject;
+        var comp = c.GetComponent<TMPro.TMP_Text>();
+        var t = comp.text.Split(":")[0].Trim();
+        SelectForBearingName.SetActive(true);
+        TitleFromBearingName.text = $"({t})에 사상할 노드 이름을 선택해 주세요.";
+        PopiAxis.SetActive(false);
+        
+        // 검색
+        return;
+    }
+
+    public void BearingAxisSearchSave(bool save)
+    {
+        SelectForBearingName.SetActive(false);
+        
+    }
+
+
+
     public void Add()
     {
         if (!ValidateInformation())
