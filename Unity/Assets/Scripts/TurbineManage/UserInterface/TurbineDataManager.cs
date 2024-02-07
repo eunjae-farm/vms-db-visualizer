@@ -171,9 +171,11 @@ public class TurbineDataManager : MonoBehaviour
         return;
     }
 
+    private TMPro.TMP_InputField focusedInput = null;
+    private string turbineNodeName = "";
     public void BearingAxisSearch()
     {
-        var focusedInput = BearingAxises.FirstOrDefault(o => o.isFocused);
+        focusedInput = BearingAxises.FirstOrDefault(o => o.isFocused);
         if (focusedInput == null)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Error, "입력하고 싶은 입력 창을 클릭해주세요.");
@@ -208,7 +210,7 @@ public class TurbineDataManager : MonoBehaviour
 
                     obj.GetComponent<WindTurbineElement>().Setup(node[i].NodeId, node[i].Name, $"{node[i].Status}",
                         $"{node[i].Active}", i);
-                    obj.GetComponent<WindTurbineElement>().Clicked += TurbineDataManager_Clicked;
+                    obj.GetComponent<WindTurbineElement>().Clicked += (id, s) => turbineNodeName = s; 
                     contentOfScrollView.Add(obj);
                 }
             });
@@ -221,7 +223,13 @@ public class TurbineDataManager : MonoBehaviour
     public void BearingAxisSearchSave(bool save)
     {
         SelectForBearingName.SetActive(false);
-        
+
+        if (!save)
+        {
+            return;
+        }
+
+        focusedInput.text = turbineNodeName;
     }
 
 
