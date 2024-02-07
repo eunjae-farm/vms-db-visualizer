@@ -158,7 +158,7 @@ public class TurbineDataManager : MonoBehaviour
     {
         var result = BearingAxises.Select(item => item.text).ToList();
 
-        if (result.Count != 9)
+        if (result.Count != 15)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Error, "시스템 오류 입니다. 오류 확인 이후에 오브젝트 설정이 정상적인지 확인해주시길 바랍니다.");
             return;
@@ -419,7 +419,7 @@ public class TurbineDataManager : MonoBehaviour
         MagnitudeOfCorrect.text = data.MagnitudeOfCorrectForMotion.ToString();
         MagnitudeOfError.text = data.MagnitudeOfErrorForMotion.ToString();
 
-        if (data.ObserveBearing.Count != 9)
+        if (data.ObserveBearing.Count != 15)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Warring, "해당 데이터는 오류가 난 풍력발전기 입니다. 삭제 및 수정하여 오류를 수정해주시길 바랍니다.");
         }
