@@ -15,6 +15,8 @@ public class NodeData
         this.Search = search;
     }
 
+    public int Axis { get; set; } = -1;
+
     [field: SerializeField]
     public VMSNode Node { get; set; }
     [field: SerializeField]

@@ -219,11 +219,15 @@ public class MoreDetailTurbine : SceneManager
                     var id = node.First(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
                     var exists = nodeData.Exists(data => data.Node.NodeId == id.NodeId);
                     var aalarm = alarms.Exists(alarm => alarm.Node == id.NodeId);
-
                     if (!exists)
                     {
                         ax.Add($"{axis[axiss]}");
                         isAdd = true;
+                    }else
+                    {
+                        nodeData.Where(data => data.Node.NodeId == id.NodeId)
+                            .ToList()
+                            .ForEach(i => i.Axis = axiss);
                     }
                     
                     // t.list.Add(exists);

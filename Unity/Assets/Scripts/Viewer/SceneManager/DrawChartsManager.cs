@@ -129,16 +129,16 @@ public class DrawChartsManager : MonoBehaviour
         
         Charts.RemoveData();
         var axis = "HVA";
-        
         for (int i = 0; i < nodes.list.Count; i++)
         {
             if (nodes.list[i] == null)
             {
                 continue;
             }
+            int axi = nodes.list[i].Axis;
             if (mode)
             {
-                var fft = Charts.AddSerie<Line>($"FFT {axis[i]}");            
+                var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");            
                 var fftData = nodes.list[i].FFT;
                 for (int c = 0; c < fftData.Frequency.Length; c += 1)
                 {
@@ -148,7 +148,7 @@ public class DrawChartsManager : MonoBehaviour
             }
             else
             {
-                var chart = Charts.AddSerie<Line>($"Time {axis[i]}");
+                var chart = Charts.AddSerie<Line>($"Time {axis[axi]}");
                 var chartData = nodes.list[i].Chart;
                 var time = Enumerable.Range(1, chartData.Data.Length)
                     .Select(i => (double)i / chartData.Data.Length * chartData.Duration)
