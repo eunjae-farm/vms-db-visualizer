@@ -49,7 +49,7 @@ public class DrawChartsManager : MonoBehaviour
     public List<UnityList<NodeData>> Nodes;
     public void ConvertData(List<NodeData> data, List<string> bearingSequnence)
     {
-        if (bearingSequnence.Count == 15)
+        if (bearingSequnence.Count != 15)
         {
             throw new NotImplementedException();
         }

@@ -126,11 +126,15 @@ public class RandomGeneratorMotion : MonoBehaviour
             List<List<Material[]>> m = new List<List<Material[]>>();
             foreach (var obj in b.list)
             {
+                m.Add(obj.GetComponentsInChildren<MeshRenderer>().Select((t => t.materials)).ToList());
+                if (obj.TryGetComponent<Outline>(out Outline _))
+                {
+                    continue;
+                }
                 var o = obj.AddComponent<Outline>();
                 o.OutlineWidth = 7;
                 o.enabled = false;
                 o.OutlineColor = Color.red;
-                m.Add(obj.GetComponentsInChildren<MeshRenderer>().Select((t => t.materials)).ToList());
             }
             AbledTurbineObject.Add(m);
         }

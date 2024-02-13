@@ -22738,8 +22738,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outter_body: {fileID: 3096667473335751366}
-  RangeStart: -0.02
-  RangeEnd: 0.02
   CycleOfRefresh: 0.03
   MagnOfCorrect: 0.5
   MagnOfError: 2
@@ -22759,14 +22757,22 @@ MonoBehaviour:
     - {fileID: 6571157559216404043}
     - {fileID: 7483792462769289469}
   - list:
+    - {fileID: 6193084051377880939}
+    - {fileID: 8634079270031768570}
+    - {fileID: 8635528090471274221}
+    - {fileID: 6571157559216404043}
+    - {fileID: 7483792462769289469}
+  - list:
+    - {fileID: 3072371688232193870}
+    - {fileID: 8737528663097502770}
+  - list:
     - {fileID: 3072371688232193870}
     - {fileID: 8737528663097502770}
   StatusOfTurbine:
   - list: 000000
   - list: 000000
   - list: 000000
-  TargetOfPosition: []
-  OriginOfPosition: []
+  ValueOfOverAll: []
   DisabledTurbineObject: {fileID: 2100000, guid: 8a22666d67a9a4fbc9ea2373dd0fe039, type: 2}
 --- !u!1 &8518881783690681279
 GameObject:
