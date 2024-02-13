@@ -14140,7 +14140,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3575631673718389339, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
       propertyPath: MagnOfError
-      value: 16
+      value: 0.002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575631673718389339, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
+      propertyPath: MagnOfCorrect
+      value: 0.0005
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575631673718389339, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
+      propertyPath: CycleOfRefresh
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3575631673718389339, guid: 94106b6cc5cf24857a5aed1761bb117e, type: 3}
       propertyPath: Bearing.Array.size
