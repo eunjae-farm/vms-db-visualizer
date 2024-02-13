@@ -22774,6 +22774,9 @@ MonoBehaviour:
   - list: 000000
   ValueOfOverAll: []
   DisabledTurbineObject: {fileID: 2100000, guid: 8a22666d67a9a4fbc9ea2373dd0fe039, type: 2}
+  FrontWing: {fileID: 7993135801291968427}
+  SlowAsile: {fileID: 6562056100983002104}
+  FastAsile: {fileID: 6193084051377880939}
 --- !u!1 &8518881783690681279
 GameObject:
   m_ObjectHideFlags: 0

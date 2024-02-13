@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 public class RandomGeneratorMotion : MonoBehaviour
 {
@@ -185,11 +188,23 @@ public class RandomGeneratorMotion : MonoBehaviour
         var p = Math.Abs(fr - 1) * 2;
         return p - 1;
     }
+    Vector3 ComputeCenterPosition(GameObject obj)
+    {
+        var center = obj.GetComponentsInChildren<Renderer>();
+        Vector3 c = new Vector3();
+        foreach (Renderer r in center)
+        {
+            c += r.bounds.center;
+        }
+        c /= center.Length;
+        return c;
+    }
+    
     // Update is called once per frame
     void Update()
     {
         CurrentCycleOfRefresh += Time.deltaTime;
-        
+
         if (CurrentCycleOfRefresh >= CycleOfRefresh)
         {
             CurrentCycleOfRefresh -= CycleOfRefresh * (int)(CurrentCycleOfRefresh / CycleOfRefresh);
@@ -200,30 +215,66 @@ public class RandomGeneratorMotion : MonoBehaviour
         {
             return;
         }
-        
+
         var ratio = getNum(1 - (CurrentCycleOfRefresh / CycleOfRefresh));
-        
-        for (int group = 0; group < Bearing.Count; group++)
+        List<Vector3> vec = new List<Vector3>();
+
+        for (int i = 0; i < Bearing.Count; i++)
         {
-            if (group == 0)
-            {
-                for (int l = 0; l < VibrateWithMainBearing.Count; l++)
-                {
-                     VibrateWithMainBearing[l].transform.localPosition = new Vector3(
-                         (float)(ValueOfOverAll[group].list[0] * ratio) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                         (float)(ValueOfOverAll[group].list[1] * ratio) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                         (float)(ValueOfOverAll[group].list[2] * ratio) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect)
-                         );   
-                }
-            }
-            for (int l = 0; l < Bearing[group].list.Count; l++)
-            {
-                Bearing[group].list[l].transform.localPosition = new Vector3(
-                    (float)(ValueOfOverAll[group].list[0] * ratio) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                    (float)(ValueOfOverAll[group].list[1] * ratio) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                    (float)(ValueOfOverAll[group].list[2] * ratio) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect)
-                );
-            }
+            var v = new Vector3(
+                (float)(ValueOfOverAll[i].list[0] * ratio) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect),
+                (float)(ValueOfOverAll[i].list[1] * ratio) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect),
+                (float)(ValueOfOverAll[i].list[2] * ratio) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect)
+            );
+            vec.Add(v);
         }
+
+        foreach (var item in Bearing[0].list)
+        {
+            var f = ComputeCenterPosition(FrontWing);
+            item.transform.localPosition = vec[0];
+            item.transform.localRotation = Quaternion.LookRotation(vec[0] - f);
+        }
+
+        foreach (var item in Bearing[1].list)
+        {
+            item.transform.localPosition = (vec[4] + vec[1]) / 2;
+            item.transform.localRotation = Quaternion.LookRotation(vec[2] - vec[1]);
+        }
+
+        foreach (var item in Bearing[2].list)
+        {
+            item.transform.localPosition = (vec[4] + vec[3]) / 2;
+            item.transform.localRotation = Quaternion.LookRotation(vec[4] - vec[3]);
+        }
+
+
+    // for (int group = 0; group < Bearing.Count; group++)
+        // {
+        //     if (group == 0)
+        //     {
+        //         for (int l = 0; l < VibrateWithMainBearing.Count; l++)
+        //         {
+        //             VibrateWithMainBearing[l].transform.localPosition = 
+        //         }
+        //     }
+        //
+        //     for (int l = 0; l < Bearing[group].list.Count; l++)
+        //     {
+        //         Bearing[group].list[l].transform.localPosition = new Vector3(
+        //             (float)(ValueOfOverAll[group].list[0] * ratio) *
+        //             (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+        //             (float)(ValueOfOverAll[group].list[1] * ratio) *
+        //             (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+        //             (float)(ValueOfOverAll[group].list[2] * ratio) *
+        //             (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect)
+        //         );
+        //     }
+        // }
     }
+
+    public GameObject FrontWing;
+    public GameObject SlowAsile;
+    public GameObject FastAsile;
+    
 }
