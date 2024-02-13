@@ -18,10 +18,7 @@ public class SemiTurbineManager : MonoBehaviour
     public void SetTurbineIndex(int i)
     {
         index = i;
-        InputCorrect.transform.GetChild(0).GetChild(0).GetComponent<TMPro.TMP_Text>().text =
-            TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfCorrectForMotion.ToString();
-        InputError.transform.GetChild(0).GetChild(0).GetComponent<TMPro.TMP_Text>().text =
-            TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion.ToString();
+        Recover();
     }
     
     public void ChangeOpen()
@@ -40,7 +37,7 @@ public class SemiTurbineManager : MonoBehaviour
     public void Recover()
     {
         TurbineConnectionDataManager.Instance.Load();
-        SetTurbineIndex(index);
+        UpdateForWindTurbine();
     }
 
     public void TextEditCorrect()
