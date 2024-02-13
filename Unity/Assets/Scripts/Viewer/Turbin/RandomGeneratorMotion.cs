@@ -13,8 +13,12 @@ public class RandomGeneratorMotion : MonoBehaviour
     public GameObject outter_body;
     // public float RangeStart = -10;
     // public float RangeEnd = 10;
-    public float CycleOfRefresh = 1f;
-    private float CurrentCycleOfRefresh = 1f;
+    public float CycleOfRefreshX = 0.302858192f;
+    public float CycleOfRefreshY = 0.41235f;
+    public float CycleOfRefreshZ = 0.3561829f;
+    private float CurrentCycleOfRefreshX = 0;
+    private float CurrentCycleOfRefreshY = 0;
+    private float CurrentCycleOfRefreshZ = 0;
     
     public float MagnOfCorrect = 0.5F;
     public float MagnOfError = 2.0F;
@@ -253,12 +257,21 @@ public class RandomGeneratorMotion : MonoBehaviour
     void Update()
     {
         tttt += Time.deltaTime * 10;
-        CurrentCycleOfRefresh += Time.deltaTime;
+        CurrentCycleOfRefreshX += Time.deltaTime;
+        CurrentCycleOfRefreshY += Time.deltaTime;
+        CurrentCycleOfRefreshZ += Time.deltaTime;
         
-        if (CurrentCycleOfRefresh >= CycleOfRefresh)
+        if (CurrentCycleOfRefreshX >= CycleOfRefreshX)
         {
-            CurrentCycleOfRefresh -= CycleOfRefresh * (int)(CurrentCycleOfRefresh / CycleOfRefresh);
-            // CreateData();
+            CurrentCycleOfRefreshX -= CycleOfRefreshX * (int)(CurrentCycleOfRefreshX / CycleOfRefreshX);
+        }
+        if (CurrentCycleOfRefreshY >= CycleOfRefreshY)
+        {
+            CurrentCycleOfRefreshY -= CycleOfRefreshY * (int)(CurrentCycleOfRefreshY / CycleOfRefreshY);
+        }
+        if (CurrentCycleOfRefreshZ >= CycleOfRefreshZ)
+        {
+            CurrentCycleOfRefreshZ -= CycleOfRefreshZ * (int)(CurrentCycleOfRefreshZ / CycleOfRefreshZ);
         }
 
         if (ValueOfOverAll.Count == 0)
@@ -266,15 +279,17 @@ public class RandomGeneratorMotion : MonoBehaviour
             return;
         }
 
-        var ratio = getNum(1 - (CurrentCycleOfRefresh / CycleOfRefresh));
+        var ratioX = getNum(1 - (CurrentCycleOfRefreshX / CycleOfRefreshX));
+        var ratioY = getNum(1 - (CurrentCycleOfRefreshY / CycleOfRefreshY));
+        var ratioZ = getNum(1 - (CurrentCycleOfRefreshZ / CycleOfRefreshZ));
         List<Vector3> vec = new List<Vector3>();
 
         for (int i = 0; i < 5; i++)
         {
             var v = new Vector3(
-                (float)(ValueOfOverAll[i].list[0] * ratio) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect),
-                (float)(ValueOfOverAll[i].list[1] * ratio) * (StatusOfTurbine[i].list[1] ? MagnOfError : MagnOfCorrect),
-                (float)(ValueOfOverAll[i].list[2] * ratio) * (StatusOfTurbine[i].list[2] ? MagnOfError : MagnOfCorrect)
+                (float)(ValueOfOverAll[i].list[0] * ratioX) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect),
+                (float)(ValueOfOverAll[i].list[1] * ratioY) * (StatusOfTurbine[i].list[1] ? MagnOfError : MagnOfCorrect),
+                (float)(ValueOfOverAll[i].list[2] * ratioZ) * (StatusOfTurbine[i].list[2] ? MagnOfError : MagnOfCorrect)
             );
             vec.Add(v);
         }
