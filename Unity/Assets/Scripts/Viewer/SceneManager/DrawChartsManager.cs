@@ -129,6 +129,7 @@ public class DrawChartsManager : MonoBehaviour
         Charts.GetChartComponent<Title>().text = name[MachineIndex];
         Charts.GetChartComponent<YAxis>().axisLabel.formatter = "{value:f3}";
         Charts.GetChartComponent<XAxis>().axisLabel.formatter = "";
+        Charts.GetChartComponent<Tooltip>().numericFormatter = "F3";
         
         Charts.RemoveData();
         var axis = "HVA";
