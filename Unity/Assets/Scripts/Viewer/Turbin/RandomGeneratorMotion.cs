@@ -71,6 +71,32 @@ public class RandomGeneratorMotion : MonoBehaviour
     }
     #endregion
 
+    Vector3 ComputeCenterPosition(GameObject obj)
+    {
+        var center = obj.GetComponentsInChildren<Renderer>();
+        Vector3 c = new Vector3();
+        foreach (Renderer r in center)
+        {
+            c += r.bounds.center;
+        }
+        c /= center.Length;
+        return c;
+    }
+    void RotateObject(Transform objTransform, Vector3 rot)
+    {
+        var center = ComputeCenterPosition(objTransform.gameObject);
+        
+        objTransform.RotateAround(center, Vector3.right, rot.x);
+        objTransform.RotateAround(center, Vector3.up, rot.y);
+        objTransform.RotateAround(center, Vector3.forward, rot.z);
+        
+        // objTransform.gameObject
+        //     .GetComponentsInChildren<MeshRenderer>()
+        //     .Select(i => i.gameObject.transform)
+        //     .ToList()
+        // .ForEach(i => i.localRotation = Quaternion.Euler(rot));
+    }
+    
     public void OnOutline(int id, bool value)
     {
         for (int i = 0; i < Bearing.Count; i++)
@@ -135,6 +161,7 @@ public class RandomGeneratorMotion : MonoBehaviour
             foreach (var obj in b.list)
             {
                 m.Add(obj.GetComponentsInChildren<MeshRenderer>().Select((t => t.materials)).ToList());
+                
                 if (obj.TryGetComponent<Outline>(out Outline _))
                 {
                     continue;
@@ -193,23 +220,14 @@ public class RandomGeneratorMotion : MonoBehaviour
         var p = Math.Abs(fr - 1) * 2;
         return p - 1;
     }
-    Vector3 ComputeCenterPosition(GameObject obj)
-    {
-        var center = obj.GetComponentsInChildren<Renderer>();
-        Vector3 c = new Vector3();
-        foreach (Renderer r in center)
-        {
-            c += r.bounds.center;
-        }
-        c /= center.Length;
-        return c;
-    }
-    
+
+    private float tttt = 0;
     // Update is called once per frame
     void Update()
     {
+        tttt += Time.deltaTime * 10;
         CurrentCycleOfRefresh += Time.deltaTime;
-
+        
         if (CurrentCycleOfRefresh >= CycleOfRefresh)
         {
             CurrentCycleOfRefresh -= CycleOfRefresh * (int)(CurrentCycleOfRefresh / CycleOfRefresh);
@@ -253,8 +271,7 @@ public class RandomGeneratorMotion : MonoBehaviour
         //     item.transform.localRotation = Quaternion.LookRotation(vec[4] - vec[3]);
         // }
 
-
-    for (int group = 0; group < 3; group++)
+        for (int group = 0; group < 3; group++)
         {
             if (group == 0)
             {
@@ -266,7 +283,8 @@ public class RandomGeneratorMotion : MonoBehaviour
         
             for (int l = 0; l < Bearing[group].list.Count; l++)
             {
-                Bearing[group].list[l].transform.localPosition = vec[group];
+                RotateObject(Bearing[group].list[l].transform, new Vector3(Time.deltaTime * 5,Time.deltaTime * 5,Time.deltaTime * 5));
+                // Bearing[group].list[l].transform.localPosition = vec[group];
             }
         }
     }
