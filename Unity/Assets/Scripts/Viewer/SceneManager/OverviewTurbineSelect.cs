@@ -251,6 +251,7 @@ public class OverviewTurbineSelect : SceneManager
 
         CameraManager.SetCamera(1, true);
         DataThrou.LoadForLatestTime(Get(), currentNode);
+        DataThrou.gameObject.GetComponent<SemiTurbineManager>().SetTurbineIndex(this.index);
     }
     
     private void OverviewTurbineSelect_MouseClick(GameObject arg1, VMSAlarmWithNode arg2)
