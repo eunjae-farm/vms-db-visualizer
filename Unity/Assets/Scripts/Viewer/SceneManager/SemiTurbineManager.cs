@@ -44,14 +44,12 @@ public class SemiTurbineManager : MonoBehaviour
     public void TextEditCorrect()
     {
         TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfCorrectForMotion = SliderCorrect.value;
-        InputCorrect.text = SliderCorrect.value.ToString();
         UpdateForWindTurbine();
     }
 
     public void TextEditError()
     {
         TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion = SliderError.value;
-        InputError.text = SliderError.value.ToString();
         UpdateForWindTurbine();
     }
 
@@ -76,6 +74,11 @@ public class SemiTurbineManager : MonoBehaviour
     {
         var co = TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfCorrectForMotion;
         var err = TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion;
+        InputCorrect.text = co.ToString();
+        InputError.text = err.ToString();
+        SliderCorrect.value = co;
+        SliderError.value = err;
+        
         WindTurbine.MagnOfCorrect = co;
         WindTurbine.MagnOfCorrect = err;
     }
