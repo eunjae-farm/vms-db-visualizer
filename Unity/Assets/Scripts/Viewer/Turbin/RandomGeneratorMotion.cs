@@ -26,7 +26,7 @@ public class RandomGeneratorMotion : MonoBehaviour
 
     public Material DisabledTurbineObject;
 
-    private List<List<Material>> AbledTurbineObject;
+    private List<List<List<Material>>> AbledTurbineObject;
     
     #region Removable Outter Body
     public void OutterBody(bool on)
@@ -93,11 +93,20 @@ public class RandomGeneratorMotion : MonoBehaviour
                 {
                     if (checkAnyErrorisExist && item.item)
                     {
-                        b.o.GetComponent<MeshRenderer>().material = DisabledTurbineObject;
+                        b.o.GetComponentsInChildren<MeshRenderer>().ToList()
+                            .ForEach(i =>
+                            {
+                                i.material = DisabledTurbineObject;
+                            });
                     }
                     else
                     {
-                        b.o.GetComponent<MeshRenderer>().material = AbledTurbineObject[item.idx][b.i];
+                        AbledTurbineObject[item.idx][b.i].Select((i, iidx) => (i, iidx))
+                            .ToList().ForEach(data =>
+                            {
+                                b.o.GetComponentsInChildren<MeshRenderer>()[data.iidx].material = data.i;        
+                            });
+                        
                     }
                 });
             });
@@ -111,14 +120,14 @@ public class RandomGeneratorMotion : MonoBehaviour
     public void Start() { 
         foreach (var b in Bearing)
         {
-            List<Material> m = new List<Material>();
+            List<List<Material>> m = new List<List<Material>>();
             foreach (var obj in b.list)
             {
                 var o = obj.AddComponent<Outline>();
                 o.OutlineWidth = 7;
                 o.enabled = false;
                 o.OutlineColor = Color.red;
-                m.Add(obj.GetComponent<MeshRenderer>().material);
+                m.Add(obj.GetComponentsInChildren<MeshRenderer>().Select((t => t.material)).ToList());
                 AbledTurbineObject.Add(m);
             }
         }
