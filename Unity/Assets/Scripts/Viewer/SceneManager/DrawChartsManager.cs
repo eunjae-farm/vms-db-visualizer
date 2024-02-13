@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,6 +127,8 @@ public class DrawChartsManager : MonoBehaviour
         };
         
         Charts.GetChartComponent<Title>().text = name[MachineIndex];
+        Charts.GetChartComponent<YAxis>().axisLabel.formatter = "{value:f3}";
+        Charts.GetChartComponent<XAxis>().axisLabel.formatter = "";
         
         Charts.RemoveData();
         var axis = "HVA";
@@ -138,6 +141,9 @@ public class DrawChartsManager : MonoBehaviour
             int axi = nodes.list[i].Axis;
             if (mode)
             {
+                Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Default;
+                Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Default;
+
                 var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");            
                 var fftData = nodes.list[i].FFT;
                 for (int c = 0; c < fftData.Frequency.Length; c += 1)
@@ -148,6 +154,21 @@ public class DrawChartsManager : MonoBehaviour
             }
             else
             {
+                Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
+                Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
+
+                var m = nodes.list.SelectMany(item => item.Chart.Data)
+                    .Select(item => Math.Abs((item)))
+                    .Max();
+                var mt = nodes.list.Select(item => item.Chart.Duration)
+                    .Select(item => Math.Abs((item)))
+                    .Select(item => (int)(item * 1000) / 1000)
+                    .Max();
+                
+                Charts.GetChartComponent<YAxis>().max = +(m*1.1);
+                Charts.GetChartComponent<YAxis>().min = -(m*1.1);
+                Charts.GetChartComponent<XAxis>().max = mt;
+                
                 var chart = Charts.AddSerie<Line>($"Time {axis[axi]}");
                 var chartData = nodes.list[i].Chart;
                 var time = Enumerable.Range(1, chartData.Data.Length)
