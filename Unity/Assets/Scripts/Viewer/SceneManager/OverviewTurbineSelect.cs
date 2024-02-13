@@ -266,5 +266,6 @@ public class OverviewTurbineSelect : SceneManager
         CameraManager.SetCamera(1, true);
         var date = DateTimeOffset.Parse(arg2.Date, CultureInfo.InvariantCulture).UtcDateTime;
         DataThrou.LoadForAlarm(Get(), currentNode, arg2);
+        DataThrou.gameObject.GetComponent<SemiTurbineManager>().SetTurbineIndex(this.index);
     }
 }
