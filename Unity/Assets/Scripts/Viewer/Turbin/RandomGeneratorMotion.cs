@@ -93,13 +93,16 @@ public class RandomGeneratorMotion : MonoBehaviour
             .ToList()
             .ForEach(item =>
             {
-                Bearing[item.idx].list.Select((o, i) => (o, i))
+                var convidx = new int[5] { 0, 1, 1, 2, 2, };
+                var connvidx = convidx[item.idx];
+                Bearing[connvidx].list.Select((o, i) => (o, i))
                     .ToList()
                     .ForEach(b =>
                 {
+                    var mr = b.o.GetComponentsInChildren<MeshRenderer>();
+                    
                     if (checkAnyErrorisExist && item.item)
                     {
-                        var mr = b.o.GetComponentsInChildren<MeshRenderer>();
                         for (int i = 0; i < mr.Length; i++)
                         {
                             mr[i].materials = Enumerable.Repeat(DisabledTurbineObject, mr[i].materials.Length).ToArray();
@@ -107,12 +110,14 @@ public class RandomGeneratorMotion : MonoBehaviour
                     }
                     else
                     {
-                        var mr = b.o.GetComponentsInChildren<MeshRenderer>();
+                        if (mr[i].material == DisabledTurbineObject)
+                        {
+                            continue;
+                        }
                         for (int i = 0; i < mr.Length; i++)
                         {
-                            mr[i].materials = AbledTurbineObject[item.idx][b.i][i];;
+                            mr[i].materials = AbledTurbineObject[connvidx][b.i][i];;
                         }
-                        
                     }
                 });
             });
