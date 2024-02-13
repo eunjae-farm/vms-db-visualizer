@@ -8,8 +8,8 @@ using Random = UnityEngine.Random;
 public class RandomGeneratorMotion : MonoBehaviour
 {
     public GameObject outter_body;
-    public float RangeStart = -10;
-    public float RangeEnd = 10;
+    // public float RangeStart = -10;
+    // public float RangeEnd = 10;
     public float CycleOfRefresh = 1f;
     private float CurrentCycleOfRefresh = 1f;
     
@@ -22,8 +22,8 @@ public class RandomGeneratorMotion : MonoBehaviour
     public List<UnityList<GameObject>> Bearing;
     public List<UnityList<bool>> StatusOfTurbine;
     public List<UnityList<double>> ValueOfOverAll;
-    public List<Vector3> TargetOfPosition;
-    public List<Vector3> OriginOfPosition;
+    // public List<Vector3> TargetOfPosition;
+    // public List<Vector3> OriginOfPosition;
 
     public Material DisabledTurbineObject;
 
@@ -118,7 +118,7 @@ public class RandomGeneratorMotion : MonoBehaviour
 
     public void Awake()
     {
-        CreateData();
+        // CreateData();
     }
     public void Start() { 
         foreach (var b in Bearing)
@@ -136,35 +136,35 @@ public class RandomGeneratorMotion : MonoBehaviour
         }
     }
 
-    void CreateData()
-    {
-        var arr = new List<List<Vector3>>
-        {
-            TargetOfPosition, OriginOfPosition
-        };
-
-        foreach (var obj in arr)
-        {
-            while (obj.Count < Bearing.Count)
-            {
-                obj.Add(new Vector3());
-            }
-        }
-
-
-        for (int group = 0; group < Bearing.Count; group++)
-        {
-            // var o = Bearing[group].list[l];
-            var vec = new Vector3(
-                Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[1] ? MagnOfError : MagnOfCorrect),
-                Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[2] ? MagnOfError : MagnOfCorrect)
-            );
-
-            TargetOfPosition[group] = vec;
-            OriginOfPosition[group] = Bearing[group].list[0].transform.localPosition;
-        }
-    }
+    // void CreateData()
+    // {
+    //     var arr = new List<List<Vector3>>
+    //     {
+    //         TargetOfPosition, OriginOfPosition
+    //     };
+    //
+    //     foreach (var obj in arr)
+    //     {
+    //         while (obj.Count < Bearing.Count)
+    //         {
+    //             obj.Add(new Vector3());
+    //         }
+    //     }
+    //
+    //
+    //     for (int group = 0; group < Bearing.Count; group++)
+    //     {
+    //         // var o = Bearing[group].list[l];
+    //         var vec = new Vector3(
+    //             Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+    //             Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[1] ? MagnOfError : MagnOfCorrect),
+    //             Random.Range(RangeStart, RangeEnd) * (StatusOfTurbine[group].list[2] ? MagnOfError : MagnOfCorrect)
+    //         );
+    //
+    //         TargetOfPosition[group] = vec;
+    //         OriginOfPosition[group] = Bearing[group].list[0].transform.localPosition;
+    //     }
+    // }
 
     // Update is called once per frame
     void Update()
@@ -174,9 +174,14 @@ public class RandomGeneratorMotion : MonoBehaviour
         if (CurrentCycleOfRefresh < 0)
         {
             CurrentCycleOfRefresh += CycleOfRefresh;
-            CreateData();
+            // CreateData();
         }
 
+        if (ValueOfOverAll.Count == 0)
+        {
+            return;
+        }
+        
         var ratio = 1 - (CurrentCycleOfRefresh / CycleOfRefresh);
         for (int group = 0; group < Bearing.Count; group++)
         {
@@ -184,18 +189,20 @@ public class RandomGeneratorMotion : MonoBehaviour
             {
                 for (int l = 0; l < VibrateWithMainBearing.Count; l++)
                 {
-                     VibrateWithMainBearing[l].transform.localPosition = Vector3.Lerp(
-                         OriginOfPosition[group],
-                         TargetOfPosition[group],
-                         ratio);   
+                     VibrateWithMainBearing[l].transform.localPosition = new Vector3(
+                         (float)(ValueOfOverAll[group].list[0] * (ratio - 0.5)) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+                         (float)(ValueOfOverAll[group].list[1] * (ratio - 0.5)) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+                         (float)(ValueOfOverAll[group].list[2] * (ratio - 0.5)) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect)
+                         );   
                 }
             }
             for (int l = 0; l < Bearing[group].list.Count; l++)
             {
-                Bearing[group].list[l].transform.localPosition = Vector3.Lerp(
-                    OriginOfPosition[group],
-                    TargetOfPosition[group],
-                    ratio);
+                Bearing[group].list[l].transform.localPosition = new Vector3(
+                    (float)(ValueOfOverAll[group].list[0] * (ratio - 0.5)) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+                    (float)(ValueOfOverAll[group].list[1] * (ratio - 0.5)) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
+                    (float)(ValueOfOverAll[group].list[2] * (ratio - 0.5)) * (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect)
+                );
             }
         }
     }

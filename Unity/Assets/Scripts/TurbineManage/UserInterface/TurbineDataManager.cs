@@ -222,6 +222,18 @@ public class TurbineDataManager : MonoBehaviour
 
     public void BearingAxisSearchSave(bool save)
     {
+        var node = Server.Instance.Node()
+            .Select(i => i.Name.ToLower())
+            .ToList();
+        var exi = BearingAxises.Select(i => node.Contains(i.text))
+            .All(i => i);
+        
+        if (!exi)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "모든 축의 정보가 옳바르지 않습니다. 다시 한번 확인해주세요.");
+            return;
+        }
+        
         SelectForBearingName.SetActive(false);
 
         if (!save)

@@ -200,14 +200,16 @@ public class MoreDetailTurbine : SceneManager
             {
                 "MB",
                 "GB",
-                "GE"
+                "GE",
+                "DE",
+                "NDE",
             };
             var axis = "HVA";
             var setData = new List<UnityList<bool>>();
             var overAllData = new List<UnityList<double>>();
             var error = new List<string>();
             
-            for (int type = 0; type < 3; type++)
+            for (int type = 0; type < 5; type++)
             {
                 // var t = new UnityList<bool>();
                 var at = new UnityList<bool>();
@@ -218,7 +220,12 @@ public class MoreDetailTurbine : SceneManager
                 
                 for (int axiss = 0; axiss < 3; axiss++)
                 {
-                    var id = node.First(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
+                    var id = node.FirstOrDefault(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
+                    if (id == null)
+                    {
+                        PopupAlarm.Open(PopupForAlarm.ButtonType.Error, "모든 축의 정보가 옳바르지 않습니다. 다시한번 확인해주세요.");
+                        return;
+                    }
                     var exists = nodeData.Exists(data => data.Node.NodeId == id.NodeId);
                     var aalarm = alarms.Exists(alarm => alarm.Node == id.NodeId);
                     
