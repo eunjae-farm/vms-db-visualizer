@@ -26,7 +26,7 @@ public class RandomGeneratorMotion : MonoBehaviour
 
     public Material DisabledTurbineObject;
 
-    private List<List<List<Material>>> AbledTurbineObject;
+    private List<List<List<Material[]>>> AbledTurbineObject = new List<List<List<Material[]>>>();
     
     #region Removable Outter Body
     public void OutterBody(bool on)
@@ -93,19 +93,19 @@ public class RandomGeneratorMotion : MonoBehaviour
                 {
                     if (checkAnyErrorisExist && item.item)
                     {
-                        b.o.GetComponentsInChildren<MeshRenderer>().ToList()
-                            .ForEach(i =>
-                            {
-                                i.material = DisabledTurbineObject;
-                            });
+                        var mr = b.o.GetComponentsInChildren<MeshRenderer>();
+                        for (int i = 0; i < mr.Length; i++)
+                        {
+                            mr[i].materials = Enumerable.Repeat(DisabledTurbineObject, mr[i].materials.Length).ToArray();
+                        }
                     }
                     else
                     {
-                        AbledTurbineObject[item.idx][b.i].Select((i, iidx) => (i, iidx))
-                            .ToList().ForEach(data =>
-                            {
-                                b.o.GetComponentsInChildren<MeshRenderer>()[data.iidx].material = data.i;        
-                            });
+                        var mr = b.o.GetComponentsInChildren<MeshRenderer>();
+                        for (int i = 0; i < mr.Length; i++)
+                        {
+                            mr[i].materials = AbledTurbineObject[item.idx][b.i][i];;
+                        }
                         
                     }
                 });
@@ -120,16 +120,16 @@ public class RandomGeneratorMotion : MonoBehaviour
     public void Start() { 
         foreach (var b in Bearing)
         {
-            List<List<Material>> m = new List<List<Material>>();
+            List<List<Material[]>> m = new List<List<Material[]>>();
             foreach (var obj in b.list)
             {
                 var o = obj.AddComponent<Outline>();
                 o.OutlineWidth = 7;
                 o.enabled = false;
                 o.OutlineColor = Color.red;
-                m.Add(obj.GetComponentsInChildren<MeshRenderer>().Select((t => t.material)).ToList());
-                AbledTurbineObject.Add(m);
+                m.Add(obj.GetComponentsInChildren<MeshRenderer>().Select((t => t.materials)).ToList());
             }
+            AbledTurbineObject.Add(m);
         }
     }
 
