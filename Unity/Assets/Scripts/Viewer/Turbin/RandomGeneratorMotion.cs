@@ -21,6 +21,7 @@ public class RandomGeneratorMotion : MonoBehaviour
     public List<GameObject> VibrateWithMainBearing;
     public List<UnityList<GameObject>> Bearing;
     public List<UnityList<bool>> StatusOfTurbine;
+    public List<UnityList<double>> ValueOfOverAll;
     public List<Vector3> TargetOfPosition;
     public List<Vector3> OriginOfPosition;
 
@@ -78,10 +79,12 @@ public class RandomGeneratorMotion : MonoBehaviour
         }
     }
 
-    public void SetData(List<UnityList<bool>> status)
+    public void SetData(List<UnityList<bool>> status, List<UnityList<double>> overall)
     {
         StatusOfTurbine = status;
-        bool checkAnyErrorisExist =StatusOfTurbine.Any(i => i.list.Any(p => p));
+        ValueOfOverAll = overall;
+        
+        bool checkAnyErrorisExist = StatusOfTurbine.Any(i => i.list.Any(p => p));
         StatusOfTurbine.Select(i => i.list.Any(p => p == true))
             .Select((item, idx) => (item, idx))
             .ToList()

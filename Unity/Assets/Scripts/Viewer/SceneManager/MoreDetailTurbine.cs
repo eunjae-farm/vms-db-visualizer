@@ -204,6 +204,7 @@ public class MoreDetailTurbine : SceneManager
             };
             var axis = "HVA";
             var setData = new List<UnityList<bool>>();
+            var overAllData = new List<UnityList<double>>();
             var error = new List<string>();
             
             for (int type = 0; type < 3; type++)
@@ -213,21 +214,26 @@ public class MoreDetailTurbine : SceneManager
                 string tmp = $"{dev[type]} (";
                 bool isAdd = false;
                 var ax = new List<string>();
+                var oad = new UnityList<double>();
                 
                 for (int axiss = 0; axiss < 3; axiss++)
                 {
                     var id = node.First(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
                     var exists = nodeData.Exists(data => data.Node.NodeId == id.NodeId);
                     var aalarm = alarms.Exists(alarm => alarm.Node == id.NodeId);
+                    
+                        
                     if (!exists)
                     {
                         ax.Add($"{axis[axiss]}");
                         isAdd = true;
+                        oad.list.Add(0);
                     }else
                     {
                         nodeData.Where(data => data.Node.NodeId == id.NodeId)
                             .ToList()
                             .ForEach(i => i.Axis = axiss);
+                        oad.list.Add(nodeData.First(o => o.Node.NodeId == id.NodeId).Search.Value);
                     }
                     
                     // t.list.Add(exists);
@@ -239,13 +245,14 @@ public class MoreDetailTurbine : SceneManager
                     tmp += string.Join(", ", ax) + ")";
                     error.Add(tmp);
                 }
-                
+
+                overAllData.Add(oad);
                 setData.Add(at);
             }
             // XYZ
             // HVA
             
-            TurbineMotion.SetData(setData);
+            TurbineMotion.SetData(setData, overAllData);
             ChartManager.Setup(nodeData, turbineConnection);
 
             InformationProblem.text = "누락 문제 : " + (error.Count == 0 ? "없음" : string.Join(", ", error));
