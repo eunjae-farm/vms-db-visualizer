@@ -249,26 +249,19 @@ public class RandomGeneratorMotion : MonoBehaviour
         // }
 
 
-    for (int group = 0; group < Bearing.Count; group++)
+    for (int group = 0; group < 3; group++)
         {
             if (group == 0)
             {
-                // for (int l = 0; l < VibrateWithMainBearing.Count; l++)
-                // {
-                    // VibrateWithMainBearing[l].transform.localPosition = 
-                // }
+                for (int l = 0; l < VibrateWithMainBearing.Count; l++)
+                {
+                    VibrateWithMainBearing[l].transform.localPosition = vec[group]; 
+                }
             }
         
             for (int l = 0; l < Bearing[group].list.Count; l++)
             {
-                Bearing[group].list[l].transform.localPosition = new Vector3(
-                    (float)(ValueOfOverAll[group].list[0] * ratio) *
-                    (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                    (float)(ValueOfOverAll[group].list[1] * ratio) *
-                    (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect),
-                    (float)(ValueOfOverAll[group].list[2] * ratio) *
-                    (StatusOfTurbine[group].list[0] ? MagnOfError : MagnOfCorrect)
-                );
+                Bearing[group].list[l].transform.localPosition = vec[group];
             }
         }
     }
