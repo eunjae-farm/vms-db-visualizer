@@ -49,22 +49,19 @@ public class DrawChartsManager : MonoBehaviour
     public List<UnityList<NodeData>> Nodes;
     public void ConvertData(List<NodeData> data, List<string> bearingSequnence)
     {
-        var MB_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[0]);
-        var MB_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[1]);
-        var MB_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[2]);
-        
-        var GE_GS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[3]);
-        var GE_GS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[4]);
-        var GE_GS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[5]);
-
-        var GE_RS_A_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[6]);
-        var GE_RS_H_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[7]);
-        var GE_RS_V_VEL = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[8]);
+        if (bearingSequnence.Count == 15)
+        {
+            throw new NotImplementedException();
+        }
 
         Nodes.Clear();
-        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { MB_A_VEL, MB_H_VEL, MB_V_VEL } });
-        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_GS_A_VEL, GE_GS_H_VEL, GE_GS_V_VEL } });
-        Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { GE_RS_A_VEL, GE_RS_H_VEL, GE_RS_V_VEL } });
+        for (int i = 0; i < 5; i++)
+        {
+            var H = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[i * 3 + 0]);
+            var V = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[i * 3 + 1]);
+            var A = data.FirstOrDefault(item => item.Node.Name == bearingSequnence[i * 3 + 2]);
+            Nodes.Add(new UnityList<NodeData> { list = new List<NodeData> { H, V, A } });
+        }
     }
     
     public void Setup(List<NodeData> nodeData, TurbineConnectionData connection)
