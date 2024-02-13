@@ -223,7 +223,7 @@ public class MoreDetailTurbine : SceneManager
                     var id = node.FirstOrDefault(id => id.Name == data.ObserveBearing[type * 3 + axiss]);
                     if (id == null)
                     {
-                        PopupAlarm.Open(PopupForAlarm.ButtonType.Error, "모든 축의 정보가 옳바르지 않습니다. 다시한번 확인해주세요.");
+                        PopupAlarm.Open(PopupForAlarm.ButtonType.Error, "모든 축의 정보가 옳바르지 않습니다. 다시 한번 확인해주세요.");
                         return;
                     }
                     var exists = nodeData.Exists(data => data.Node.NodeId == id.NodeId);

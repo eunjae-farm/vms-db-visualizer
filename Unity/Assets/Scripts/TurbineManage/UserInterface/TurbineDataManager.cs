@@ -157,8 +157,18 @@ public class TurbineDataManager : MonoBehaviour
 
     public void BearingAxisSave()
     {
-        var result = BearingAxises.Select(item => item.text).ToList();
-
+        var result = BearingAxises.Select(item => item.text.ToLower()).ToList();
+        var node = Server.Instance.Node()
+            .Select(i => i.Name.ToLower())
+            .ToList();
+        var exi = result.Select(i => node.Contains(i))
+            .All(i => i);
+        
+        if (!exi)
+        {
+            Alarm.Open(PopupForAlarm.ButtonType.Error, "모든 축의 정보가 옳바르지 않습니다. 다시 한번 확인해주세요.");
+            return;
+        }
         if (result.Count != 15)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Error, "시스템 오류 입니다. 오류 확인 이후에 오브젝트 설정이 정상적인지 확인해주시길 바랍니다.");
@@ -221,19 +231,7 @@ public class TurbineDataManager : MonoBehaviour
     }
 
     public void BearingAxisSearchSave(bool save)
-    {
-        var node = Server.Instance.Node()
-            .Select(i => i.Name.ToLower())
-            .ToList();
-        var exi = BearingAxises.Select(i => node.Contains(i.text))
-            .All(i => i);
-        
-        if (!exi)
-        {
-            Alarm.Open(PopupForAlarm.ButtonType.Error, "모든 축의 정보가 옳바르지 않습니다. 다시 한번 확인해주세요.");
-            return;
-        }
-        
+    {   
         SelectForBearingName.SetActive(false);
 
         if (!save)
