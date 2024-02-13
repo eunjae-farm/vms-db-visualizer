@@ -10,7 +10,9 @@ public class SemiTurbineManager : MonoBehaviour
     public Slider SliderError;
     public GameObject Panels;
     public TMPro.TMP_InputField InputCorrect;
+    public TMPro.TMP_Text InputCorrectPlacehorder;
     public TMPro.TMP_InputField InputError;
+    public TMPro.TMP_Text InputErrorPlacehorder;
 
     private int index = -1;
     public void SetTurbineIndex(int i)
@@ -30,8 +32,8 @@ public class SemiTurbineManager : MonoBehaviour
     public void Save()
     {
         TurbineConnectionDataManager.Instance.Save();
-        InputCorrect.transform.GetChild(0).GetChild(0).GetComponent<TMPro.TMP_Text>().text = InputCorrect.text;
-        InputError.transform.GetChild(0).GetChild(0).GetComponent<TMPro.TMP_Text>().text = InputError.text;
+        InputCorrectPlacehorder.text = InputCorrect.text;
+        InputErrorPlacehorder.text = InputError.text;
         UpdateForWindTurbine();
     }
 
@@ -80,6 +82,6 @@ public class SemiTurbineManager : MonoBehaviour
         SliderError.value = err;
         
         WindTurbine.MagnOfCorrect = co;
-        WindTurbine.MagnOfCorrect = err;
+        WindTurbine.MagnOfError = err;
     }
 }
