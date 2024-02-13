@@ -110,12 +110,12 @@ public class RandomGeneratorMotion : MonoBehaviour
                     }
                     else
                     {
-                        if (mr[i].material == DisabledTurbineObject)
-                        {
-                            continue;
-                        }
                         for (int i = 0; i < mr.Length; i++)
                         {
+                            if (mr[i].material == DisabledTurbineObject)
+                            {
+                                continue;
+                            }
                             mr[i].materials = AbledTurbineObject[connvidx][b.i][i];;
                         }
                     }

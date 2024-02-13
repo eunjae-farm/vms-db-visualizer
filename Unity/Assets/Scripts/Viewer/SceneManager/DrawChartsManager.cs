@@ -160,7 +160,7 @@ public class DrawChartsManager : MonoBehaviour
                     .Max();
                 var mt = nodes.list.Select(item => item.Chart.Duration)
                     .Select(item => Math.Abs((item)))
-                    .Select(item => (int)(item * 1000) / 1000)
+                    .Select(item => (int)(item * 1000) / 1000.0)
                     .Max();
                 
                 Charts.GetChartComponent<YAxis>().max = +(m*1.1);
