@@ -82,13 +82,22 @@ public class RandomGeneratorMotion : MonoBehaviour
         c /= center.Length;
         return c;
     }
+
+    private Dictionary<Transform, Vector3> previousRot = new Dictionary<Transform, Vector3>();
     void RotateObject(Transform objTransform, Vector3 rot)
     {
-        var center = ComputeCenterPosition(objTransform.gameObject);
+        if (previousRot.ContainsKey(objTransform))
+        {
+            var prev = previousRot[objTransform];
+            objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.forward, -prev.z);
+            objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.up, -prev.y);
+            objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.right, -prev.x);
+        }
         
-        objTransform.RotateAround(center, Vector3.right, rot.x);
-        objTransform.RotateAround(center, Vector3.up, rot.y);
-        objTransform.RotateAround(center, Vector3.forward, rot.z);
+        objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.right, rot.x);
+        objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.up, rot.y);
+        objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.forward, rot.z);
+        previousRot[objTransform] = rot;
         
         // objTransform.gameObject
         //     .GetComponentsInChildren<MeshRenderer>()
@@ -112,48 +121,64 @@ public class RandomGeneratorMotion : MonoBehaviour
     {
         StatusOfTurbine = status;
         ValueOfOverAll = overall;
+
+        for (int b = 0; b < Bearing.Count; b++)
+        {
+            for (int obj = 0; obj < Bearing[b].list.Count; obj++)
+            {
+                var mrs = Bearing[b].list[obj].GetComponentsInChildren<MeshRenderer>();
+                for (int mr = 0; mr < mrs.Length; mr++)
+                {
+                    mrs[mr].materials = AbledTurbineObject[b][obj][mr];
+                }
+            }
+        }
         
         bool checkAnyErrorisExist = StatusOfTurbine.Any(i => i.list.Any(p => p));
-        StatusOfTurbine.Select(i => i.list.Any(p => p == true))
-            .Select((item, idx) => (item, idx))
-            .ToList()
-            .ForEach(item =>
+        var item = StatusOfTurbine.Select(i => i.list.Any(p => p == true)).ToList();
+        for (int bear = 0; bear < Bearing.Count; bear++)
+        {
+            for (var mach = 0; mach < Bearing[bear].list.Count; mach++)
             {
-                var convidx = new int[5] { 0, 1, 1, 2, 2, };
-                var connvidx = convidx[item.idx];
-                Bearing[connvidx].list.Select((o, i) => (o, i))
-                    .ToList()
-                    .ForEach(b =>
+                var mr = Bearing[bear].list[mach].GetComponentsInChildren<MeshRenderer>();
+                if (checkAnyErrorisExist && !item[bear])
                 {
-                    var mr = b.o.GetComponentsInChildren<MeshRenderer>();
-                    
-                    if (checkAnyErrorisExist && item.item)
+                    for (int i = 0; i < mr.Length; i++)
                     {
-                        for (int i = 0; i < mr.Length; i++)
-                        {
-                            mr[i].materials = Enumerable.Repeat(DisabledTurbineObject, mr[i].materials.Length).ToArray();
-                        }
+                        mr[i].materials = Enumerable.Repeat(DisabledTurbineObject, mr[i].materials.Length).ToArray();
                     }
-                    else
+                }
+                else
+                {
+                    for (int i = 0; i < mr.Length; i++)
                     {
-                        for (int i = 0; i < mr.Length; i++)
+                        if (mr[i].material.name.StartsWith(DisabledTurbineObject.name))
                         {
-                            if (mr[i].material == DisabledTurbineObject)
-                            {
-                                continue;
-                            }
-                            mr[i].materials = AbledTurbineObject[connvidx][b.i][i];;
+                            continue;
                         }
+
+                        mr[i].materials = AbledTurbineObject[bear][mach][i];
                     }
-                });
-            });
+                }
+            }
+        }
 
     }
 
     public void Awake()
     {
+        c1 = ComputeCenterPosition(Bearing[0].list[0]);
+        c2 = ComputeCenterPosition(Bearing[1].list[0]);
+        c3 = ComputeCenterPosition(Bearing[2].list[0]);
+        f = ComputeCenterPosition(FrontWing);
         // CreateData();
     }
+
+    private Vector3 c1;
+    private Vector3 c2;
+    private Vector3 c3;
+    private Vector3 f;
+    
     public void Start() { 
         foreach (var b in Bearing)
         {
@@ -222,6 +247,8 @@ public class RandomGeneratorMotion : MonoBehaviour
     }
 
     private float tttt = 0;
+
+    private Vector3[] prevLocal = new Vector3[3] { new Vector3(), new Vector3(), new Vector3() };
     // Update is called once per frame
     void Update()
     {
@@ -242,35 +269,42 @@ public class RandomGeneratorMotion : MonoBehaviour
         var ratio = getNum(1 - (CurrentCycleOfRefresh / CycleOfRefresh));
         List<Vector3> vec = new List<Vector3>();
 
-        for (int i = 0; i < Bearing.Count; i++)
+        for (int i = 0; i < 5; i++)
         {
             var v = new Vector3(
                 (float)(ValueOfOverAll[i].list[0] * ratio) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect),
-                (float)(ValueOfOverAll[i].list[1] * ratio) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect),
-                (float)(ValueOfOverAll[i].list[2] * ratio) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect)
+                (float)(ValueOfOverAll[i].list[1] * ratio) * (StatusOfTurbine[i].list[1] ? MagnOfError : MagnOfCorrect),
+                (float)(ValueOfOverAll[i].list[2] * ratio) * (StatusOfTurbine[i].list[2] ? MagnOfError : MagnOfCorrect)
             );
             vec.Add(v);
         }
 
-        // foreach (var item in Bearing[0].list)
-        // {
-        //     var f = ComputeCenterPosition(FrontWing);
-        //     item.transform.localPosition = vec[0];
-        //     item.transform.localRotation = Quaternion.LookRotation(vec[0] - f);
-        // }
+        
+        foreach (var item in Bearing[0].list)
+        {
+            // RotateObject(item.transform, Quaternion.LookRotation((c1 + vec[0]) - f).eulerAngles);
+            item.transform.localPosition = vec[0];
+            prevLocal[0] = vec[0];
+        }
+        
+        foreach (var item in Bearing[1].list)
+        {
+            // RotateObject(item.transform, Quaternion.LookRotation((c2 + vec[2]) - (c1 + vec[1])).eulerAngles);
+            item.transform.localPosition =  vec[1];
+            prevLocal[1] = vec[1];
+        }
+        
+        foreach (var item in Bearing[2].list)
+        {
+            // RotateObject(item.transform, Quaternion.LookRotation((c3 + vec[4]) - (c2 + vec[3])).eulerAngles);
+            item.transform.localPosition = vec[2];
+            prevLocal[2] = vec[2];
+        }
         //
-        // foreach (var item in Bearing[1].list)
-        // {
-        //     item.transform.localPosition = (vec[4] + vec[1]) / 2;
-        //     item.transform.localRotation = Quaternion.LookRotation(vec[2] - vec[1]);
-        // }
-        //
-        // foreach (var item in Bearing[2].list)
-        // {
-        //     item.transform.localPosition = (vec[4] + vec[3]) / 2;
-        //     item.transform.localRotation = Quaternion.LookRotation(vec[4] - vec[3]);
-        // }
-
+        // RotateObject(Bearing[0].list[0].transform, Quaternion.LookRotation(c2 - c1).eulerAngles);
+        // RotateObject(Bearing[2].list[0].transform, Quaternion.LookRotation(c3 - c2).eulerAngles);
+        // Quaternion.LookRotation(c3 - c2).eulerAngles;
+        
         for (int group = 0; group < 3; group++)
         {
             if (group == 0)
@@ -280,10 +314,10 @@ public class RandomGeneratorMotion : MonoBehaviour
                     VibrateWithMainBearing[l].transform.localPosition = vec[group]; 
                 }
             }
-        
+
             for (int l = 0; l < Bearing[group].list.Count; l++)
             {
-                RotateObject(Bearing[group].list[l].transform, new Vector3(Time.deltaTime * 5,Time.deltaTime * 5,Time.deltaTime * 5));
+                // RotateObject(Bearing[group].list[l].transform, new Vector3(10,15,30));
                 // Bearing[group].list[l].transform.localPosition = vec[group];
             }
         }

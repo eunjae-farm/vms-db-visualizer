@@ -120,7 +120,9 @@ public class DrawChartsManager : MonoBehaviour
         {
             "Main Bearing", 
             "GearBox",
-            "Generator"
+            "Generator",
+            "DE",
+            "NDE",
         };
         
         Charts.GetChartComponent<Title>().text = name[MachineIndex];
