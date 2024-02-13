@@ -22767,6 +22767,7 @@ MonoBehaviour:
   - list: 000000
   TargetOfPosition: []
   OriginOfPosition: []
+  DisabledTurbineObject: {fileID: 2100000, guid: 8a22666d67a9a4fbc9ea2373dd0fe039, type: 2}
 --- !u!1 &8518881783690681279
 GameObject:
   m_ObjectHideFlags: 0

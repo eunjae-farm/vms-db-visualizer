@@ -24,6 +24,10 @@ public class RandomGeneratorMotion : MonoBehaviour
     public List<Vector3> TargetOfPosition;
     public List<Vector3> OriginOfPosition;
 
+    public Material DisabledTurbineObject;
+
+    private List<List<Material>> AbledTurbineObject;
+    
     #region Removable Outter Body
     public void OutterBody(bool on)
     {
@@ -77,7 +81,27 @@ public class RandomGeneratorMotion : MonoBehaviour
     public void SetData(List<UnityList<bool>> status)
     {
         StatusOfTurbine = status;
-        
+        bool checkAnyErrorisExist =StatusOfTurbine.Any(i => i.list.Any(p => p));
+        StatusOfTurbine.Select(i => i.list.Any(p => p == true))
+            .Select((item, idx) => (item, idx))
+            .ToList()
+            .ForEach(item =>
+            {
+                Bearing[item.idx].list.Select((o, i) => (o, i))
+                    .ToList()
+                    .ForEach(b =>
+                {
+                    if (checkAnyErrorisExist && item.item)
+                    {
+                        b.o.GetComponent<MeshRenderer>().material = DisabledTurbineObject;
+                    }
+                    else
+                    {
+                        b.o.GetComponent<MeshRenderer>().material = AbledTurbineObject[item.idx][b.i];
+                    }
+                });
+            });
+
     }
 
     public void Awake()
@@ -87,13 +111,15 @@ public class RandomGeneratorMotion : MonoBehaviour
     public void Start() { 
         foreach (var b in Bearing)
         {
+            List<Material> m = new List<Material>();
             foreach (var obj in b.list)
             {
                 var o = obj.AddComponent<Outline>();
                 o.OutlineWidth = 7;
                 o.enabled = false;
                 o.OutlineColor = Color.red;
-                
+                m.Add(obj.GetComponent<MeshRenderer>().material);
+                AbledTurbineObject.Add(m);
             }
         }
     }
