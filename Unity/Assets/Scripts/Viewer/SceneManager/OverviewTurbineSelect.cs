@@ -12,6 +12,11 @@ public class OverviewTurbineSelect : SceneManager
     public GameObject TerrainOfNercel;
     
     public TMPro.TMP_Text NameTag;
+    
+    public TMPro.TMP_Text TextOfTemperture;
+    public TMPro.TMP_Text TextOfDecibel;
+    public TMPro.TMP_Text TextOfDust;
+    
     private int index = 0;
     public GameObject AlarmComponent;
     private List<GameObject> AlarmComponentInListView = new List<GameObject>();
