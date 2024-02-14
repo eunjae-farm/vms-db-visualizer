@@ -22,7 +22,7 @@ public class MoreDetailTurbine : SceneManager
     public TMP_Text InformationDateTime;
     public TMP_Text InformationDeviceStatus;
     public TMP_Text InformationProblem;
-
+    
     public List<Button> CamButton;
     public Color ActivatedCamColor;
     public Color DefaultCamColor;

@@ -23,6 +23,10 @@ public class DrawChartsManager : MonoBehaviour
     [SerializeField]
     private TurbineConnectionData turbineConnection;
 
+    public TMPro.TMP_Text OverallOfHorizontal;
+    public TMPro.TMP_Text OverallOfVertical;
+    public TMPro.TMP_Text OverallOfAxial;
+    
     private bool _isOpenChart = false;
     private bool isOpenChart {
         get {
@@ -124,6 +128,19 @@ public class DrawChartsManager : MonoBehaviour
             "DE",
             "NDE",
         };
+        var overall = new List<TMPro.TMP_Text>
+        {
+            OverallOfHorizontal,
+            OverallOfVertical,
+            OverallOfAxial,
+        };
+        foreach (var o in overall)
+        {
+            o.gameObject.SetActive(false);
+        }
+        // OverallOfHorizontal.text = $"H : {1234:F3} mm/s";
+        // OverallOfVertical.text = $"V : {1234:F3} mm/s";
+        // OverallOfAxial.text = $"A : {1234:F3} mm/s";
         
         Charts.GetChartComponent<Title>().text = name[MachineIndex];
         Charts.GetChartComponent<YAxis>().axisLabel.formatter = "{value:f3}";
@@ -139,6 +156,9 @@ public class DrawChartsManager : MonoBehaviour
                 continue;
             }
             int axi = nodes.list[i].Axis;
+            overall[axi].gameObject.SetActive(true);
+            overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value / 1000.0:F3} mm/s";
+            
             if (mode)
             {
                 Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Default;
