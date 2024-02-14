@@ -286,10 +286,11 @@ public class RandomGeneratorMotion : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
+            // m to mm
             var v = new Vector3(
-                (float)(ValueOfOverAll[i].list[0] * ratioX) * (StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect),
-                (float)(ValueOfOverAll[i].list[1] * ratioY) * (StatusOfTurbine[i].list[1] ? MagnOfError : MagnOfCorrect),
-                (float)(ValueOfOverAll[i].list[2] * ratioZ) * (StatusOfTurbine[i].list[2] ? MagnOfError : MagnOfCorrect)
+                (float)(ValueOfOverAll[i].list[0] * ratioX) * ((StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect) / 1000),
+                (float)(ValueOfOverAll[i].list[1] * ratioY) * ((StatusOfTurbine[i].list[1] ? MagnOfError : MagnOfCorrect) / 1000),
+                (float)(ValueOfOverAll[i].list[2] * ratioZ) * ((StatusOfTurbine[i].list[2] ? MagnOfError : MagnOfCorrect) / 1000)
             );
             vec.Add(v);
         }
