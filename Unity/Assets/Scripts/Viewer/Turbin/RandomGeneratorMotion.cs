@@ -171,19 +171,20 @@ public class RandomGeneratorMotion : MonoBehaviour
 
     public void Awake()
     {
-        c1 = ComputeCenterPosition(Bearing[0].list[0]);
-        c2 = ComputeCenterPosition(Bearing[1].list[0]);
-        c3 = ComputeCenterPosition(Bearing[2].list[0]);
-        f = ComputeCenterPosition(FrontWing);
+        // c1 = ComputeCenterPosition(Bearing[0].list[0]);
+        // c2 = ComputeCenterPosition(Bearing[1].list[0]);
+        // c3 = ComputeCenterPosition(Bearing[2].list[0]);
+        // f = ComputeCenterPosition(FrontWing);
         // CreateData();
     }
 
-    private Vector3 c1;
-    private Vector3 c2;
-    private Vector3 c3;
-    private Vector3 f;
+    Vector3 mb  ;
+    Vector3 con1;
+    Vector3 gb  ;
+    Vector3 con2;
+    Vector3 ge  ;
     
-    public void Start() { 
+    public void Start() {
         foreach (var b in Bearing)
         {
             List<List<Material[]>> m = new List<List<Material[]>>();
@@ -202,6 +203,12 @@ public class RandomGeneratorMotion : MonoBehaviour
             }
             AbledTurbineObject.Add(m);
         }
+
+        mb = new Vector3(0, 0, Bearing[0].list[0].transform.position.z);
+       con1 = new Vector3(0, 0, SlowAsile.transform.position.z);
+       gb = new Vector3(0, 0, Bearing[1].list[0].transform.position.z);
+       con2 = new Vector3(0, 0, FastAsile.transform.position.z);
+       ge = new Vector3(0, 0, Bearing[2].list[0].transform.position.z);
     }
 
     // void CreateData()
@@ -295,21 +302,45 @@ public class RandomGeneratorMotion : MonoBehaviour
             vec.Add(v);
         }
 
-        var p1 = Bearing[1].list[0].transform.position - Bearing[0].list[0].transform.position;
-        var p2 = Bearing[2].list[0].transform.position - Bearing[1].list[0].transform.position;
-        var p3 = Bearing[1].list[0].transform.position - Bearing[0].list[0].transform.position;
+        var p0 = FrontWing.transform.position;
+        p0.x = p0.y = 0;
+        
+        var p1 = vec[0] + mb;
+        var p2 = ((vec[1] + vec[2]) / 2) + gb;
+        var p3 = ((vec[3] + vec[4]) / 2) + ge;
+        
+        
+        // mb  
+        //     con1
+        // gb  
+        //     con2
+        // ge  
+        
+        var pc1 = p1 - p0;
+        // var pd0 = SlowAsile.transform.position - Bearing[0].list[0].transform.position;
+        
+        // var pc2 = Bearing[1].list[0].transform.position - SlowAsile.transform.position;
+        var pd1 = p2 - con1;
+        // var pc3 = FastAsile.transform.position - Bearing[1].list[0].transform.position;
+
+        var pd2 = p3 - con2;
+        // SlowAsile.transform.localRotation = Quaternion.LookRotation(pc2);
+        // FastAsile.transform.localRotation = Quaternion.LookRotation(pc3);
         
         foreach (var item in Bearing[0].list)
         {
-            
-            // item.transform.localPosition = Quaternion.LookRotation()
+            var p = Quaternion.LookRotation(-pc1).eulerAngles;
+            p.z = 0;
             item.transform.localPosition = vec[0];
+            item.transform.localRotation = Quaternion.Euler(p);
             // prevLocal[0] = vec[0];
         }
         
         foreach (var item in Bearing[1].list)
         {
-            
+            var p = Quaternion.LookRotation(-pd1).eulerAngles;
+            p.z = 0;
+            item.transform.localRotation = Quaternion.Euler(p);
             // RotateObject(item.transform, Quaternion.LookRotation((c2 + vec[2]) - (c1 + vec[1])).eulerAngles);
             item.transform.localPosition =  vec[1];
             // prevLocal[1] = vec[1];
@@ -317,6 +348,9 @@ public class RandomGeneratorMotion : MonoBehaviour
         
         foreach (var item in Bearing[2].list)
         {
+            var p = Quaternion.LookRotation(-pd2).eulerAngles;
+            p.z = 0;
+            item.transform.localRotation = Quaternion.Euler(p);
             // RotateObject(item.transform, Quaternion.LookRotation((c3 + vec[4]) - (c2 + vec[3])).eulerAngles);
             item.transform.localPosition = vec[2];
             // prevLocal[2] = vec[2];
