@@ -342,7 +342,7 @@ public class RandomGeneratorMotion : MonoBehaviour
             p.z = 0;
             item.transform.localRotation = Quaternion.Euler(p);
             // RotateObject(item.transform, Quaternion.LookRotation((c2 + vec[2]) - (c1 + vec[1])).eulerAngles);
-            item.transform.localPosition =  vec[1];
+            item.transform.localPosition =  (vec[1] + vec[2]) / 2;
             // prevLocal[1] = vec[1];
         }
         
@@ -352,7 +352,7 @@ public class RandomGeneratorMotion : MonoBehaviour
             p.z = 0;
             item.transform.localRotation = Quaternion.Euler(p);
             // RotateObject(item.transform, Quaternion.LookRotation((c3 + vec[4]) - (c2 + vec[3])).eulerAngles);
-            item.transform.localPosition = vec[2];
+            item.transform.localPosition = (vec[3] + vec[4]) / 2;
             // prevLocal[2] = vec[2];
         }
         //

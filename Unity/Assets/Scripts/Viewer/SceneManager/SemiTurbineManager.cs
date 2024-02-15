@@ -83,8 +83,8 @@ public class SemiTurbineManager : MonoBehaviour
         
         for (int i = 0; i < 5; i++)
         {
-            InputCorrectPlacehorder[i].text = co[i].ToString();
-            InputErrorPlacehorder[i].text = err[i].ToString();
+            InputCorrect[i].text = co[i].ToString();
+            InputError[i].text = err[i].ToString();
             SliderCorrect[i].value = co[i];
             SliderError[i].value = err[i];
         }
