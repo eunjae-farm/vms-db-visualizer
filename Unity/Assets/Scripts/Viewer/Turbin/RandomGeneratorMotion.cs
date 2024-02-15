@@ -320,16 +320,16 @@ public class RandomGeneratorMotion : MonoBehaviour
         // var pd0 = SlowAsile.transform.position - Bearing[0].list[0].transform.position;
         
         // var pc2 = Bearing[1].list[0].transform.position - SlowAsile.transform.position;
-        var pd1 = p2 - con1;
+        var pd1 = p2 - p1;
         // var pc3 = FastAsile.transform.position - Bearing[1].list[0].transform.position;
 
-        var pd2 = p3 - con2;
+        var pd2 = p3 - p2;
         // SlowAsile.transform.localRotation = Quaternion.LookRotation(pc2);
         // FastAsile.transform.localRotation = Quaternion.LookRotation(pc3);
         
         foreach (var item in Bearing[0].list)
         {
-            var p = Quaternion.LookRotation(-pc1).eulerAngles;
+            var p = Quaternion.LookRotation(-pc1).eulerAngles * 20 * 1.5f;
             p.z = 0;
             item.transform.localPosition = vec[0];
             item.transform.localRotation = Quaternion.Euler(p);
@@ -338,7 +338,7 @@ public class RandomGeneratorMotion : MonoBehaviour
         
         foreach (var item in Bearing[1].list)
         {
-            var p = Quaternion.LookRotation(-pd1).eulerAngles;
+            var p = Quaternion.LookRotation(-pd1).eulerAngles * 1.5f;
             p.z = 0;
             item.transform.localRotation = Quaternion.Euler(p);
             // RotateObject(item.transform, Quaternion.LookRotation((c2 + vec[2]) - (c1 + vec[1])).eulerAngles);
@@ -348,7 +348,7 @@ public class RandomGeneratorMotion : MonoBehaviour
         
         foreach (var item in Bearing[2].list)
         {
-            var p = Quaternion.LookRotation(-pd2).eulerAngles;
+            var p = Quaternion.LookRotation(-pd2).eulerAngles * 1.5f;
             p.z = 0;
             item.transform.localRotation = Quaternion.Euler(p);
             // RotateObject(item.transform, Quaternion.LookRotation((c3 + vec[4]) - (c2 + vec[3])).eulerAngles);
