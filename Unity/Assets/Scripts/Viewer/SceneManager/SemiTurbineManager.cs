@@ -42,13 +42,13 @@ public class SemiTurbineManager : MonoBehaviour
 
     public void TextEditCorrect()
     {
-        TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfCorrectForMotion = SliderCorrect.value;
+        // TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfCorrectForMotion = SliderCorrect.value;
         UpdateForWindTurbine();
     }
 
     public void TextEditError()
     {
-        TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion = SliderError.value;
+        // TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion = SliderError.value;
         UpdateForWindTurbine();
     }
 
@@ -56,7 +56,7 @@ public class SemiTurbineManager : MonoBehaviour
     {
         if (float.TryParse(InputCorrect.text, out float value))
         {
-            TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfCorrectForMotion = value;
+            // TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfCorrectForMotion = value;
             UpdateForWindTurbine();
         }
     }
@@ -64,7 +64,7 @@ public class SemiTurbineManager : MonoBehaviour
     {
         if (float.TryParse(InputError.text, out float value))
         {
-            TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion = value;
+            // TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion = value;
             UpdateForWindTurbine();
         }
     }
@@ -75,8 +75,8 @@ public class SemiTurbineManager : MonoBehaviour
         var err = TurbineConnectionDataManager.Instance.Data[index].MagnitudeOfErrorForMotion;
         InputCorrect.text = co.ToString();
         InputError.text = err.ToString();
-        SliderCorrect.value = co;
-        SliderError.value = err;
+        // SliderCorrect.value = co;
+        // SliderError.value = err;
         
         WindTurbine.MagnOfCorrect = co;
         WindTurbine.MagnOfError = err;

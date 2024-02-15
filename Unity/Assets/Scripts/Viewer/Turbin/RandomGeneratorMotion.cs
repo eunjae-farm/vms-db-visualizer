@@ -20,8 +20,8 @@ public class RandomGeneratorMotion : MonoBehaviour
     private float CurrentCycleOfRefreshY = 0;
     private float CurrentCycleOfRefreshZ = 0;
     
-    public float MagnOfCorrect = 0.5F;
-    public float MagnOfError = 2.0F;
+    public List<float> MagnOfCorrect = Enumerable.Repeat(0.5f, 5).ToList();
+    public List<float> MagnOfError = Enumerable.Repeat(0.5f, 5).ToList();
 
     // MainBearing, GearBox_MainBearing, GearBox_Generator, Generator
 
@@ -295,9 +295,9 @@ public class RandomGeneratorMotion : MonoBehaviour
         {
             // m to mm
             var v = new Vector3(
-                (float)(ValueOfOverAll[i].list[0] * ratioX) * ((StatusOfTurbine[i].list[0] ? MagnOfError : MagnOfCorrect) / 1000),
-                (float)(ValueOfOverAll[i].list[1] * ratioY) * ((StatusOfTurbine[i].list[1] ? MagnOfError : MagnOfCorrect) / 1000),
-                (float)(ValueOfOverAll[i].list[2] * ratioZ) * ((StatusOfTurbine[i].list[2] ? MagnOfError : MagnOfCorrect) / 1000)
+                (float)(ValueOfOverAll[i].list[0] * ratioX) * ((StatusOfTurbine[i].list[0] ? MagnOfError[i] : MagnOfCorrect[i]) / 1000),
+                (float)(ValueOfOverAll[i].list[1] * ratioY) * ((StatusOfTurbine[i].list[1] ? MagnOfError[i] : MagnOfCorrect[i]) / 1000),
+                (float)(ValueOfOverAll[i].list[2] * ratioZ) * ((StatusOfTurbine[i].list[2] ? MagnOfError[i] : MagnOfCorrect[i]) / 1000)
             );
             vec.Add(v);
         }

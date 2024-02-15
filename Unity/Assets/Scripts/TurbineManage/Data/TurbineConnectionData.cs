@@ -13,11 +13,11 @@ public class TurbineConnectionData
     public int NodeId { get; set; }
     public string NodeName { get; set; }
 
-    public float WingRotatePerSeconds { get; set; }
+    // public float WingRotatePerSeconds { get; set; }
     public float SlowRotateSpeed { get; set; }
     public float FastRotateSpeed { get; set; }
-    public float MagnitudeOfCorrectForMotion { get; set; }
-    public float MagnitudeOfErrorForMotion { get; set; }
+    public List<float> MagnitudeOfCorrectForMotion { get; set; }
+    public List<float> MagnitudeOfErrorForMotion { get; set; }
 
     public List<string> ObserveBearing { get; set; } = new List<string>();
 

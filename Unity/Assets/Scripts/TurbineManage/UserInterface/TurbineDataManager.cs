@@ -20,8 +20,8 @@ public class TurbineDataManager : MonoBehaviour
     public TMPro.TMP_InputField WingSpeed;
     public TMPro.TMP_InputField SlowSpeed;
     public TMPro.TMP_InputField FastSpeed;
-    public TMPro.TMP_InputField MagnitudeOfCorrect;
-    public TMPro.TMP_InputField MagnitudeOfError;
+    public List<TMPro.TMP_InputField> MagnitudeOfCorrect;
+    public List<TMPro.TMP_InputField> MagnitudeOfError;
     
     [Header("Seted Turbine List")]
     public GameObject ContentFromScrollView;
@@ -66,9 +66,11 @@ public class TurbineDataManager : MonoBehaviour
             WingSpeed,
             SlowSpeed,
             FastSpeed,
-            MagnitudeOfCorrect,
-            MagnitudeOfError,
+            // MagnitudeOfCorrect,
+            // MagnitudeOfError,
         };
+        floatList.AddRange(MagnitudeOfCorrect);
+        floatList.AddRange(MagnitudeOfError);
 
         foreach (var f in floatList)
         {
@@ -271,11 +273,11 @@ public class TurbineDataManager : MonoBehaviour
             PW = InformationPw.text,
             NodeId = port,
             NodeName = string.Join(":", data[1..]),
-            WingRotatePerSeconds = float.Parse(WingSpeed.text),
+            // WingRotatePerSeconds = float.Parse(WingSpeed.text),
             SlowRotateSpeed = float.Parse(SlowSpeed.text),
             FastRotateSpeed = float.Parse(FastSpeed.text),
-            MagnitudeOfCorrectForMotion = float.Parse(MagnitudeOfCorrect.text),
-            MagnitudeOfErrorForMotion = float.Parse(MagnitudeOfError.text),
+            MagnitudeOfCorrectForMotion = MagnitudeOfCorrect.Select(i => float.Parse(i.text)).ToList(),
+            MagnitudeOfErrorForMotion = MagnitudeOfError.Select(i => float.Parse(i.text)).ToList(),
             ObserveBearing = BearingAxises.Select(item => item.text).ToList()
         });
         Start();
@@ -327,11 +329,11 @@ public class TurbineDataManager : MonoBehaviour
             PW = InformationPw.text,
             NodeId = port,
             NodeName = string.Join(":", data[1..]),
-            WingRotatePerSeconds = float.Parse(WingSpeed.text),
+            // WingRotatePerSeconds = float.Parse(WingSpeed.text),
             SlowRotateSpeed = float.Parse(SlowSpeed.text),
             FastRotateSpeed = float.Parse(FastSpeed.text),
-            MagnitudeOfCorrectForMotion = float.Parse(MagnitudeOfCorrect.text),
-            MagnitudeOfErrorForMotion = float.Parse(MagnitudeOfError.text),
+            MagnitudeOfCorrectForMotion = MagnitudeOfCorrect.Select(i => float.Parse(i.text)).ToList(),
+            MagnitudeOfErrorForMotion = MagnitudeOfError.Select(i => float.Parse(i.text)).ToList(),
             ObserveBearing = BearingAxises.Select(item => item.text).ToList()
         };
         Start();
@@ -430,12 +432,19 @@ public class TurbineDataManager : MonoBehaviour
         InformationId.text = data.ID;
         InformationPw.text = data.PW;
         InformationWindTurbine.text = $"{data.NodeId}:{data.NodeName}";
-        WingSpeed.text = data.WingRotatePerSeconds.ToString();
+        WingSpeed.text = data.SlowRotateSpeed.ToString();
         SlowSpeed.text = data.SlowRotateSpeed.ToString();
         FastSpeed.text = data.FastRotateSpeed.ToString();
-        MagnitudeOfCorrect.text = data.MagnitudeOfCorrectForMotion.ToString();
-        MagnitudeOfError.text = data.MagnitudeOfErrorForMotion.ToString();
 
+        for (int i = 0; i < data.MagnitudeOfCorrectForMotion.Count; i++)
+        {
+            MagnitudeOfCorrect[i].text = data.MagnitudeOfCorrectForMotion[i].ToString();    
+        }
+        for (int i = 0; i < data.MagnitudeOfErrorForMotion.Count; i++)
+        {
+            MagnitudeOfError[i].text = data.MagnitudeOfErrorForMotion[i].ToString();
+        }
+        
         if (data.ObserveBearing.Count != 15)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Warring, "해당 데이터는 오류가 난 풍력발전기 입니다. 삭제 및 수정하여 오류를 수정해주시길 바랍니다.");

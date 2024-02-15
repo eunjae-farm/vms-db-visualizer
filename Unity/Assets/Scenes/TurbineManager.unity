@@ -2260,7 +2260,7 @@ GameObject:
   - component: {fileID: 118208288}
   - component: {fileID: 118208289}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Correct Magnitude Input Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27425,8 +27425,18 @@ MonoBehaviour:
   WingSpeed: {fileID: 860498732}
   SlowSpeed: {fileID: 1987224419}
   FastSpeed: {fileID: 250081615}
-  MagnitudeOfCorrect: {fileID: 2036847910}
-  MagnitudeOfError: {fileID: 0}
+  MagnitudeOfCorrect:
+  - {fileID: 2036847910}
+  - {fileID: 16343728}
+  - {fileID: 501959636}
+  - {fileID: 34585989}
+  - {fileID: 1185964327}
+  MagnitudeOfError:
+  - {fileID: 1009833332}
+  - {fileID: 413578024}
+  - {fileID: 1531819780}
+  - {fileID: 460870907}
+  - {fileID: 533905696}
   ContentFromScrollView: {fileID: 753040024}
   Prefab: {fileID: 8465498423229171001, guid: 374d2c1aa36ed42a889949b7978f361e, type: 3}
   ContentFromTurbineScrollView: {fileID: 484878059}
