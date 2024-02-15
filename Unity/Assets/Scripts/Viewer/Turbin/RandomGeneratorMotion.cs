@@ -88,27 +88,27 @@ public class RandomGeneratorMotion : MonoBehaviour
     }
 
     private Dictionary<Transform, Vector3> previousRot = new Dictionary<Transform, Vector3>();
-    void RotateObject(Transform objTransform, Vector3 rot)
-    {
-        if (previousRot.ContainsKey(objTransform))
-        {
-            var prev = previousRot[objTransform];
-            objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.forward, -prev.z);
-            objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.up, -prev.y);
-            objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.right, -prev.x);
-        }
-        
-        objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.right, rot.x);
-        objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.up, rot.y);
-        objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.forward, rot.z);
-        previousRot[objTransform] = rot;
-        
-        // objTransform.gameObject
-        //     .GetComponentsInChildren<MeshRenderer>()
-        //     .Select(i => i.gameObject.transform)
-        //     .ToList()
-        // .ForEach(i => i.localRotation = Quaternion.Euler(rot));
-    }
+    // void RotateObject(Transform objTransform, Vector3 rot)
+    // {
+    //     if (previousRot.ContainsKey(objTransform))
+    //     {
+    //         var prev = previousRot[objTransform];
+    //         objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.forward, -prev.z);
+    //         objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.up, -prev.y);
+    //         objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.right, -prev.x);
+    //     }
+    //     
+    //     objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.right, rot.x);
+    //     objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.up, rot.y);
+    //     objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.forward, rot.z);
+    //     previousRot[objTransform] = rot;
+    //     
+    //     // objTransform.gameObject
+    //     //     .GetComponentsInChildren<MeshRenderer>()
+    //     //     .Select(i => i.gameObject.transform)
+    //     //     .ToList()
+    //     // .ForEach(i => i.localRotation = Quaternion.Euler(rot));
+    // }
     
     public void OnOutline(int id, bool value)
     {
@@ -295,26 +295,31 @@ public class RandomGeneratorMotion : MonoBehaviour
             vec.Add(v);
         }
 
+        var p1 = Bearing[1].list[0].transform.position - Bearing[0].list[0].transform.position;
+        var p2 = Bearing[2].list[0].transform.position - Bearing[1].list[0].transform.position;
+        var p3 = Bearing[1].list[0].transform.position - Bearing[0].list[0].transform.position;
         
         foreach (var item in Bearing[0].list)
         {
-            // RotateObject(item.transform, Quaternion.LookRotation((c1 + vec[0]) - f).eulerAngles);
+            
+            // item.transform.localPosition = Quaternion.LookRotation()
             item.transform.localPosition = vec[0];
-            prevLocal[0] = vec[0];
+            // prevLocal[0] = vec[0];
         }
         
         foreach (var item in Bearing[1].list)
         {
+            
             // RotateObject(item.transform, Quaternion.LookRotation((c2 + vec[2]) - (c1 + vec[1])).eulerAngles);
             item.transform.localPosition =  vec[1];
-            prevLocal[1] = vec[1];
+            // prevLocal[1] = vec[1];
         }
         
         foreach (var item in Bearing[2].list)
         {
             // RotateObject(item.transform, Quaternion.LookRotation((c3 + vec[4]) - (c2 + vec[3])).eulerAngles);
             item.transform.localPosition = vec[2];
-            prevLocal[2] = vec[2];
+            // prevLocal[2] = vec[2];
         }
         //
         // RotateObject(Bearing[0].list[0].transform, Quaternion.LookRotation(c2 - c1).eulerAngles);
