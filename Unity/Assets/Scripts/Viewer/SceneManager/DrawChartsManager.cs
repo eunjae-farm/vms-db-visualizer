@@ -137,10 +137,7 @@ public class DrawChartsManager : MonoBehaviour
         {
             o.gameObject.SetActive(false);
         }
-        // OverallOfHorizontal.text = $"H : {1234:F3} mm/s";
-        // OverallOfVertical.text = $"V : {1234:F3} mm/s";
-        // OverallOfAxial.text = $"A : {1234:F3} mm/s";
-        
+
         Charts.GetChartComponent<Title>().text = name[MachineIndex];
         Charts.GetChartComponent<YAxis>().axisLabel.formatter = "{value:f3}";
         Charts.GetChartComponent<XAxis>().axisLabel.formatter = "";
