@@ -174,14 +174,13 @@ def logout():
 def healthyCheck():
     return jsonify({"time": datetime.datetime.now().isoformat(), "version": __VERSION__})
 
-@app.route("/env", methods=["GET"])
+@app.route("/env", methods=["POST"])
 def environment():
     params = request.get_json()
     if not author.valid(params['token']):
         return jsonify({"error": "token is not matching from database"})
     
     db = author.get(params['token'])
-    token = author.login("Dongbuk", params['pw'], params['name'], params['ip'])
     # data = database("Dongbuk", "59.28.91.19", "sa", "skf1234!")
     data = database("Dongbuk", db['ip'], db['id'], db['pw'])
     data.connect()
