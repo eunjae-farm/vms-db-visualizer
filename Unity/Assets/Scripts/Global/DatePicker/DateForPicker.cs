@@ -97,7 +97,7 @@ public class DateForPicker : MonoBehaviour
         }
     }
 
-    [EasyButtons.Button("Load")]
+    //[EasyButtons.Button("Load")]
     public void Load()
     {
         Title.text = $"{Year}년 {Month}월";

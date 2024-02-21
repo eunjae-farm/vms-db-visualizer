@@ -17,7 +17,7 @@ public class TurbineDataManager : MonoBehaviour
     public TMPro.TMP_InputField InformationWindTurbine;
 
     [Header("Additional Information")]
-    public TMPro.TMP_InputField WingSpeed;
+    //public TMPro.TMP_InputField WingSpeed;
     public TMPro.TMP_InputField SlowSpeed;
     public TMPro.TMP_InputField FastSpeed;
     public List<TMPro.TMP_InputField> MagnitudeOfCorrect;
@@ -50,7 +50,7 @@ public class TurbineDataManager : MonoBehaviour
     
     private int EditTurbineIndex = -1;
 
-    bool ValidateInformation()
+    bool ValidateInformation(bool t = true)
     {
         var list = new List<TMPro.TMP_InputField>
         {
@@ -61,23 +61,26 @@ public class TurbineDataManager : MonoBehaviour
             InformationPw,
         };
 
-        var floatList = new List<TMPro.TMP_InputField>
+        if (t)
         {
-            WingSpeed,
-            SlowSpeed,
-            FastSpeed,
-            // MagnitudeOfCorrect,
-            // MagnitudeOfError,
-        };
-        floatList.AddRange(MagnitudeOfCorrect);
-        floatList.AddRange(MagnitudeOfError);
-
-        foreach (var f in floatList)
-        {
-            if (!float.TryParse(f.text, out _))
+            var floatList = new List<TMPro.TMP_InputField>
             {
-                Alarm.Open(PopupForAlarm.ButtonType.Error, "정보의 데이터가 모두 기입이 되지 않았습니다.");
-                return false;
+                //WingSpeed,
+                SlowSpeed,
+                FastSpeed,
+                // MagnitudeOfCorrect,
+                // MagnitudeOfError,
+            };
+            floatList.AddRange(MagnitudeOfCorrect);
+            floatList.AddRange(MagnitudeOfError);
+
+            foreach (var f in floatList)
+            {
+                if (!float.TryParse(f.text, out _))
+                {
+                    Alarm.Open(PopupForAlarm.ButtonType.Error, "정보의 데이터가 모두 기입이 되지 않았습니다.");
+                    return false;
+                }
             }
         }
         
@@ -94,7 +97,7 @@ public class TurbineDataManager : MonoBehaviour
 
     public void ConnectionTest()
     {
-        if (!ValidateInformation())
+        if (!ValidateInformation(false))
         {
             return;
         }
@@ -432,7 +435,7 @@ public class TurbineDataManager : MonoBehaviour
         InformationId.text = data.ID;
         InformationPw.text = data.PW;
         InformationWindTurbine.text = $"{data.NodeId}:{data.NodeName}";
-        WingSpeed.text = data.SlowRotateSpeed.ToString();
+        //WingSpeed.text = data.SlowRotateSpeed.ToString();
         SlowSpeed.text = data.SlowRotateSpeed.ToString();
         FastSpeed.text = data.FastRotateSpeed.ToString();
 
