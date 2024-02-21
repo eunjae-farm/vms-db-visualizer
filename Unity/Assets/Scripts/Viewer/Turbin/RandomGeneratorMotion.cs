@@ -137,7 +137,8 @@ public class RandomGeneratorMotion : MonoBehaviour
                 }
             }
         }
-        
+
+        // int[] index = new int[5] { 0, 1, 1, 2, 2 };
         bool checkAnyErrorisExist = StatusOfTurbine.Any(i => i.list.Any(p => p));
         var item = StatusOfTurbine.Select(i => i.list.Any(p => p == true)).ToList();
         for (int bear = 0; bear < Bearing.Count; bear++)
