@@ -19,7 +19,41 @@ class database:
                              password=self.password, 
                              database=self.db)
         self.cursor = conn.cursor() # 쿼리 생성과 결과 조회를 위해 사용
+    
+    def environment(self, temp: str = 525, sound: str = 525, dust: str = 525):
+        # self.cursor.execute('''SELECT IDNode FROM Node WHERE NodeName = \'{0}\''''.format(temp))
+        # row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        # temp_node_id = row[0]
         
+        # self.cursor.execute('''SELECT IDNode FROM Node WHERE NodeName = \'{0}\''''.format(sound))
+        # row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        # sound_node_id = row[0]
+        
+        # self.cursor.execute('''SELECT IDNode FROM Node WHERE NodeName = \'{0}\''''.format(dust))
+        # row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        # dust_node_id = row[0]
+
+        self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
+                                        ORDER BY (SELECT NULL), IDMeasurement DESC 
+                                        OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(temp, 0, 1))
+        row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        temp_v = row[0]
+        
+        self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
+                                        ORDER BY (SELECT NULL), IDMeasurement DESC 
+                                        OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(sound, 0, 1))
+        row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        sound_v = row[0]
+        
+        self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
+                                        ORDER BY (SELECT NULL), IDMeasurement DESC 
+                                        OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(dust, 0, 1))
+        row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        dust_v = row[0]
+
+        return {"temp": temp_v, "sound": sound_v, "dust": dust_v}
+        
+
     def nodes(self):
         result = []
         self.cursor.execute('''SELECT IDNode, IDParent, TreeType,

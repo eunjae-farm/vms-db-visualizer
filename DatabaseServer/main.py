@@ -4,8 +4,9 @@ from auth import Authorization
 from convert import convert_spectra 
 import numpy as np
 import datetime
+import random as rd
 
-__VERSION__ = '0.1.5'
+__VERSION__ = '1.0.0'
 
 author = Authorization()
 app = Flask(__name__)
@@ -172,6 +173,23 @@ def logout():
 @app.route("/healthy", methods=["GET"])
 def healthyCheck():
     return jsonify({"time": datetime.datetime.now().isoformat(), "version": __VERSION__})
+
+@app.route("/env", methods=["GET"])
+def environment():
+    params = request.get_json()
+    if not author.valid(params['token']):
+        return jsonify({"error": "token is not matching from database"})
+    
+    db = author.get(params['token'])
+    token = author.login("Dongbuk", params['pw'], params['name'], params['ip'])
+    # data = database("Dongbuk", "59.28.91.19", "sa", "skf1234!")
+    data = database("Dongbuk", db['ip'], db['id'], db['pw'])
+    data.connect()
+    # return data.environment()
+    
+    return {"temp": rd.random() * 10 + 20, 
+            "sound": rd.random() * 60 + 40, 
+            "dust": rd.random() * 70 + 20} 
 
 if __name__ == "__main__":
     app.run(port=5001, host="0.0.0.0")
