@@ -138,11 +138,15 @@ public class RandomGeneratorMotion : MonoBehaviour
             }
         }
 
-        // int[] index = new int[5] { 0, 1, 1, 2, 2 };
+        
         bool checkAnyErrorisExist = StatusOfTurbine.Any(i => i.list.Any(p => p));
         var item = StatusOfTurbine.Select(i => i.list.Any(p => p == true)).ToList();
-        for (int bear = 0; bear < Bearing.Count; bear++)
+
+        int[] index = new int[5] { 0, 1, 1, 2, 2 };
+        for (int stat = 0; stat < item.Count; stat++)
         {
+            int bear = index[stat];
+            
             for (var mach = 0; mach < Bearing[bear].list.Count; mach++)
             {
                 var mr = Bearing[bear].list[mach].GetComponentsInChildren<MeshRenderer>();
@@ -165,9 +169,8 @@ public class RandomGeneratorMotion : MonoBehaviour
                         mr[i].materials = AbledTurbineObject[bear][mach][i];
                     }
                 }
-            }
-        }
-
+            }   
+        } 
     }
 
     public void Awake()
@@ -206,10 +209,10 @@ public class RandomGeneratorMotion : MonoBehaviour
         }
 
         mb = new Vector3(0, 0, Bearing[0].list[0].transform.position.z);
-       con1 = new Vector3(0, 0, SlowAsile.transform.position.z);
-       gb = new Vector3(0, 0, Bearing[1].list[0].transform.position.z);
-       con2 = new Vector3(0, 0, FastAsile.transform.position.z);
-       ge = new Vector3(0, 0, Bearing[2].list[0].transform.position.z);
+        con1 = new Vector3(0, 0, SlowAsile.transform.position.z);
+        gb = new Vector3(0, 0, Bearing[1].list[0].transform.position.z);
+        con2 = new Vector3(0, 0, FastAsile.transform.position.z);
+        ge = new Vector3(0, 0, Bearing[2].list[0].transform.position.z);
     }
 
     // void CreateData()
