@@ -378,6 +378,30 @@ public class Server
             return null;
         }
     }
+
+    public VMSEnvironment Environment()
+    {
+        try
+        {
+            var values = new Dictionary<object, object>
+            {
+                { "token", Token },
+            };
+
+            var send = JsonConvert.SerializeObject(values);
+            var content = new StringContent(send, Encoding.UTF8, "application/json");
+            var response = client.PostAsync($"http://{IP}:{Port}/env", content).Result;
+            
+            //Debug.Log(send);
+            var responseString = response.Content.ReadAsStringAsync().Result;
+            var json = JsonConvert.DeserializeObject<VMSEnvironment>(responseString);
+            return json;
+        }catch
+        {
+            return null;
+        }
+    }
+
     
     public List<VMSNodeData> Search(int id, DateTime start, DateTime end)
     {

@@ -206,6 +206,8 @@ public class OverviewTurbineSelect : SceneManager
                 DatabaseId = turbine.ID,
                 DatabasePw = turbine.PW
             });
+
+            var env = Server.Instance.Environment();
             
             var data = Get();
             currentNode = Server.Instance.Node(turbine.NodeId)
@@ -222,6 +224,10 @@ public class OverviewTurbineSelect : SceneManager
 
             UnityThread.executeInUpdate(() =>
             {
+                TextOfDust.text = $"먼지 농도 : {env.Dust:F1} \u338d/m\u00b3";
+                TextOfDecibel.text = $"소음         : {env.Sound:F1} dB";
+                TextOfTemperture.text = $"온도         : {env.Temp:F1} \u00b0C";
+                
                 for (int i = AlarmComponentInListView.Count; i < currentAlarm.Count; i++)
                 {
                     GameObject myInstance = Instantiate(AlarmComponent, ContentOfListView.transform);
