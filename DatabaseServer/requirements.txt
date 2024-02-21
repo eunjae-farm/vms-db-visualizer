@@ -1,5 +1,5 @@
-pymssql
-numpy
-scipy
-matplotlib
-flask
+pymssql==2.2.7
+numpy==1.23.5
+scipy==1.10.1
+matplotlib==3.7.2
+Flask==2.3.1
