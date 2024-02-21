@@ -150,7 +150,7 @@ public class RandomGeneratorMotion : MonoBehaviour
             for (var mach = 0; mach < Bearing[bear].list.Count; mach++)
             {
                 var mr = Bearing[bear].list[mach].GetComponentsInChildren<MeshRenderer>();
-                if (checkAnyErrorisExist && !item[bear])
+                if (checkAnyErrorisExist && !item[stat])
                 {
                     for (int i = 0; i < mr.Length; i++)
                     {
