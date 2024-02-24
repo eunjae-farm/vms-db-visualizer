@@ -74,6 +74,10 @@ public class TurbineDataManager : MonoBehaviour
             floatList.AddRange(MagnitudeOfCorrect);
             floatList.AddRange(MagnitudeOfError);
 
+            if (!BearingAxisSave_())
+            {
+                return false;
+            }
             foreach (var f in floatList)
             {
                 if (!float.TryParse(f.text, out _))
@@ -159,8 +163,11 @@ public class TurbineDataManager : MonoBehaviour
     {
         PopiAxis.SetActive(true);
     }
-
     public void BearingAxisSave()
+    {
+        BearingAxisSave_();
+    }
+    public bool BearingAxisSave_()
     {
         var result = BearingAxises.Select(item => item.text.ToLower()).ToList();
         var node = Server.Instance.Node()
@@ -172,14 +179,17 @@ public class TurbineDataManager : MonoBehaviour
         if (!exi)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Error, "모든 축의 정보가 옳바르지 않습니다. 다시 한번 확인해주세요.");
-            return;
+            return false;
         }
         if (result.Count != 15)
         {
             Alarm.Open(PopupForAlarm.ButtonType.Error, "시스템 오류 입니다. 오류 확인 이후에 오브젝트 설정이 정상적인지 확인해주시길 바랍니다.");
-            return;
+            return false;
         }
         PopiAxis.SetActive(false);
+        Alarm.Open(PopupForAlarm.ButtonType.Default, "성공적으로 데이터를 저장하였습니다.");
+
+        return true;
     }
     public void BearingAxisCancel()
     {
@@ -246,7 +256,6 @@ public class TurbineDataManager : MonoBehaviour
 
         focusedInput.text = turbineNodeName;
     }
-
 
 
     public void Add()
