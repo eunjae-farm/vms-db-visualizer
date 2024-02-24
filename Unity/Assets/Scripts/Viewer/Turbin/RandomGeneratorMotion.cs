@@ -368,9 +368,11 @@ public class RandomGeneratorMotion : MonoBehaviour
         {
             if (group == 0)
             {
+                var v = Enumerable.Aggregate(vec, (a, b) => a + b) 
+                        / vec.Count;
                 for (int l = 0; l < VibrateWithMainBearing.Count; l++)
                 {
-                    VibrateWithMainBearing[l].transform.localPosition = vec[group]; 
+                    VibrateWithMainBearing[l].transform.localPosition = v; 
                 }
             }
 
