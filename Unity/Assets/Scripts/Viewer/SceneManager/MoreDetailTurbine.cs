@@ -8,6 +8,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 
 public class MoreDetailTurbine : SceneManager
@@ -26,6 +27,7 @@ public class MoreDetailTurbine : SceneManager
     public List<Button> CamButton;
     public Color ActivatedCamColor;
     public Color DefaultCamColor;
+    public PostProcessVolume Volume;
     
     public void BackToMain()
     {
@@ -42,6 +44,12 @@ public class MoreDetailTurbine : SceneManager
         {
             CamButton[c].GetComponent<Image>().color = (0 == c ? ActivatedCamColor : DefaultCamColor);
         }
+
+        Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 356.4f;
+        Volume.profile.GetSetting<DepthOfField>().aperture.value = 0.4f;
+        Volume.profile.GetSetting<DepthOfField>().focalLength.value = 200f;
+        Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Small;
+
         Cameras.SetCamera(0, true);
     }
 
@@ -50,6 +58,38 @@ public class MoreDetailTurbine : SceneManager
         for (int c = 0; c < CamButton.Count; c++)
         {
             CamButton[c].GetComponent<Image>().color = ((i - 1) == c ? ActivatedCamColor : DefaultCamColor);
+        }
+        switch (i)
+        {
+            case 1:
+                Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 2.35f;
+                Volume.profile.GetSetting<DepthOfField>().aperture.value = 32f;
+                Volume.profile.GetSetting<DepthOfField>().focalLength.value = 120f;
+                Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Small;
+                break;
+            case 2:
+                Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 2.0f;
+                Volume.profile.GetSetting<DepthOfField>().aperture.value = 32f;
+                Volume.profile.GetSetting<DepthOfField>().focalLength.value = 115f;
+                Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Small;
+                break;
+            case 3:
+                Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 2.35f;
+                Volume.profile.GetSetting<DepthOfField>().aperture.value = 32f;
+                Volume.profile.GetSetting<DepthOfField>().focalLength.value = 120f;
+                Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Large;
+                break;
+            case 4:
+                Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 6f;
+                Volume.profile.GetSetting<DepthOfField>().aperture.value = 13f;
+                Volume.profile.GetSetting<DepthOfField>().focalLength.value = 120f;
+                Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Small;
+                break;
+        }
+        if (i == 4)
+        {
+        }else
+        {
         }
         Cameras.SetCamera(i, false);
     }
@@ -71,6 +111,7 @@ public class MoreDetailTurbine : SceneManager
 
     private void InitSetup()
     {
+        SetCam(1);
         TurbineMotion.gameObject.transform.position = new Vector3(0,0,0);
         TurbineMotion.gameObject.transform.localScale = new Vector3(1,1,1);
         PopupAlarm.AutoClose = false;
