@@ -150,7 +150,7 @@ public class RandomGeneratorMotion : MonoBehaviour
     }
 
     public float ToggleForOutline = 1.0f;
-    
+    bool toogleStatus = false;
     IEnumerator BulbForOutline()
     {
         while(!bulbStop)
@@ -161,10 +161,11 @@ public class RandomGeneratorMotion : MonoBehaviour
                 {
                     if (b.tag == "red" && b.GetComponent<Outline>().OutlineColor == Color.red)
                     {
-                        b.GetComponent<Outline>().enabled = !b.GetComponent<Outline>().enabled;
+                        b.GetComponent<Outline>().enabled = !toogleStatus;
                     }
                 }
             }
+            toogleStatus = !toogleStatus;
             yield return new WaitForSeconds(ToggleForOutline);
         }
     }
