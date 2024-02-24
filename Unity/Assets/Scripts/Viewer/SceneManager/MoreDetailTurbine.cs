@@ -33,6 +33,8 @@ public class MoreDetailTurbine : SceneManager
         // 1. Outline 삭제
         // 다시 커버 닫기
         // 그 외 모든 UI 정리하기
+        TurbineMotion.gameObject.transform.position = new Vector3(-18f, 54.3f, 388.9f);
+        TurbineMotion.gameObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
         
         TurbineMotion.OutterBody(false);
         TurbineMotion.OnOutline(0, false);
@@ -69,6 +71,8 @@ public class MoreDetailTurbine : SceneManager
 
     private void InitSetup()
     {
+        TurbineMotion.gameObject.transform.position = new Vector3(0,0,0);
+        TurbineMotion.gameObject.transform.localScale = new Vector3(1,1,1);
         PopupAlarm.AutoClose = false;
         PopupAlarm.Open(PopupForAlarm.ButtonType.Warring, "데이터 로딩중");
         TurbineMotion.OutterBody(false);
