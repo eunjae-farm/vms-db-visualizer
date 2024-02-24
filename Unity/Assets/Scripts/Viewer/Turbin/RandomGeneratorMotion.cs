@@ -34,10 +34,16 @@ public class RandomGeneratorMotion : MonoBehaviour
 
     // public Material DisabledTurbineObject;
     // private List<List<List<Material[]>>> AbledTurbineObject = new List<List<List<Material[]>>>();
-    
+
     #region Removable Outter Body
+    bool µû°­_¿­·È³ª = false;
     public void OutterBody(bool on)
     {
+        if (µû°­_¿­·È³ª == on)
+        {
+            return;
+        }
+
         if (on)
         {
             StartCoroutine(OutterBodyCoroutine(0.8f, 0, -9));
@@ -46,6 +52,7 @@ public class RandomGeneratorMotion : MonoBehaviour
         {
             StartCoroutine(OutterBodyCoroutine(0.8f, -9, 0));
         }
+        µû°­_¿­·È³ª = on;
         //outter_body.transform.position = new Vector3(0, 0, -9);
     }
 
@@ -57,7 +64,6 @@ public class RandomGeneratorMotion : MonoBehaviour
     }
     IEnumerator OutterBodyCoroutine(float duration, float s, float e)
     {
-
         float target = 0;
         outter_body.transform.localPosition = get_curret_position(s);
         while (target <= duration)

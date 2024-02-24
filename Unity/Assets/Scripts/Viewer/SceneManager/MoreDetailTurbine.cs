@@ -48,7 +48,7 @@ public class MoreDetailTurbine : SceneManager
         Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 356.4f;
         Volume.profile.GetSetting<DepthOfField>().aperture.value = 0.4f;
         Volume.profile.GetSetting<DepthOfField>().focalLength.value = 200f;
-        Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Small;
+                Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Small;
 
         Cameras.SetCamera(0, true);
     }
@@ -111,7 +111,7 @@ public class MoreDetailTurbine : SceneManager
 
     private void InitSetup()
     {
-        SetCam(1);
+        SetCam(4);
         TurbineMotion.gameObject.transform.position = new Vector3(0,0,0);
         TurbineMotion.gameObject.transform.localScale = new Vector3(1,1,1);
         PopupAlarm.AutoClose = false;
@@ -239,7 +239,6 @@ public class MoreDetailTurbine : SceneManager
             InformationDateTime.text = "날짜 : " + point.ToString("yyyy년 MM월 dd일 HH시 mm분 ss초");
 
             PopupAlarm.Close();
-            TurbineMotion.OutterBody(true);
             
             var dev = new List<string>
             {
@@ -357,6 +356,10 @@ public class MoreDetailTurbine : SceneManager
                                 t = t.parent.transform;
                             }
                             int id = int.Parse(t.gameObject.name.Split("_")[1]);
+                            if (id == 0)
+                            {
+                                TurbineMotion.OutterBody(true);
+                            }
                             ChartManager.ShowEvent(id, t.gameObject.name);
                             
                             Debug.Log(t.gameObject.name);
