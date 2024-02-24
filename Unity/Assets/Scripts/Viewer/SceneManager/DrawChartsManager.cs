@@ -145,6 +145,14 @@ public class DrawChartsManager : MonoBehaviour
         
         Charts.RemoveData();
         var axis = "HVA";
+        Color[] colors = new[]
+        {
+            new Color(89f / 255, 112f / 255, 192.0f / 255),
+            new Color(158f / 255,202f / 255,126f / 255),
+            new Color(242f / 255,201f / 255,107f / 255),
+        };
+
+        int addedNum = 0;
         for (int i = 0; i < nodes.list.Count; i++)
         {
             if (nodes.list[i] == null)
@@ -154,19 +162,21 @@ public class DrawChartsManager : MonoBehaviour
             int axi = nodes.list[i].Axis;
             overall[axi].gameObject.SetActive(true);
             overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
+            // overall[addedNum].color = colors[addedNum];
             
             if (mode)
             {
                 Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Default;
                 Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Default;
 
-                var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");
                 if (nodes.list[i].FFT == null || 
                     nodes.list[i].FFT.Frequency == null || 
                     nodes.list[i].FFT.Intensity == null)
                 {
                     continue;
                 }
+                
+                var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");
                 var fftData = nodes.list[i].FFT;
                 
                 for (int c = 0; c < fftData.Frequency.Length; c += 1)
@@ -184,6 +194,7 @@ public class DrawChartsManager : MonoBehaviour
                 {
                     continue;
                 }
+                
                 var m = nodes.list.SelectMany(item => item.Chart.Data)
                     .Select(item => Math.Abs((item)))
                     .Max();
@@ -207,6 +218,7 @@ public class DrawChartsManager : MonoBehaviour
                     chart.AddXYData(time[p], chartData.Data[p]);
                 }
             }
+            addedNum += 1;
         }
     }
 
