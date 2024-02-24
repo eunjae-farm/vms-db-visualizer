@@ -32,9 +32,8 @@ public class RandomGeneratorMotion : MonoBehaviour
     // public List<Vector3> TargetOfPosition;
     // public List<Vector3> OriginOfPosition;
 
-    public Material DisabledTurbineObject;
-
-    private List<List<List<Material[]>>> AbledTurbineObject = new List<List<List<Material[]>>>();
+    // public Material DisabledTurbineObject;
+    // private List<List<List<Material[]>>> AbledTurbineObject = new List<List<List<Material[]>>>();
     
     #region Removable Outter Body
     public void OutterBody(bool on)
@@ -91,7 +90,7 @@ public class RandomGeneratorMotion : MonoBehaviour
     // void RotateObject(Transform objTransform, Vector3 rot)
     // {
     //     if (previousRot.ContainsKey(objTransform))
-    //     {
+    //     { 
     //         var prev = previousRot[objTransform];
     //         objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.forward, -prev.z);
     //         objTransform.RotateAround(ComputeCenterPosition(objTransform.gameObject), Vector3.up, -prev.y);
@@ -110,67 +109,69 @@ public class RandomGeneratorMotion : MonoBehaviour
     //     // .ForEach(i => i.localRotation = Quaternion.Euler(rot));
     // }
     
+    
+    
+    // clicked!
     public void OnOutline(int id, bool value)
     {
         for (int i = 0; i < Bearing.Count; i++)
         {
             foreach (var b in Bearing[i].list)
             {
-                b.GetComponent<Outline>().enabled =((id == i) ? value : false);
+                if (id == i)
+                {
+                    b.GetComponent<Outline>().OutlineColor = Color.white;                    
+                }
+                // b.GetComponent<Outline>().enabled =(id == i ? value : false);
             }
         }
+    }
+
+    public void SetOutline(List<bool> id)
+    {
+        for (int i = 0; i < Bearing.Count; i++)
+        {
+            foreach (var b in Bearing[i].list)
+            {
+                if (id[i])
+                {
+                    b.GetComponent<Outline>().OutlineColor = Color.red;    
+                }
+                else
+                {
+                    b.GetComponent<Outline>().OutlineColor = Color.green;
+                }
+            }
+        }   
     }
 
     public void SetData(List<UnityList<bool>> status, List<UnityList<double>> overall)
     {
         StatusOfTurbine = status;
         ValueOfOverAll = overall;
-
-        for (int b = 0; b < Bearing.Count; b++)
-        {
-            for (int obj = 0; obj < Bearing[b].list.Count; obj++)
-            {
-                var mrs = Bearing[b].list[obj].GetComponentsInChildren<MeshRenderer>();
-                for (int mr = 0; mr < mrs.Length; mr++)
-                {
-                    mrs[mr].materials = AbledTurbineObject[b][obj][mr];
-                }
-            }
-        }
-
+        // for (int b = 0; b < Bearing.Count; b++)
+        // {
+        //     for (int obj = 0; obj < Bearing[b].list.Count; obj++)
+        //     {
+        //         var mrs = Bearing[b].list[obj].GetComponentsInChildren<MeshRenderer>();
+        //         for (int mr = 0; mr < mrs.Length; mr++)
+        //         {
+        //             mrs[mr].materials = AbledTurbineObject[b][obj][mr];
+        //         }
+        //     }
+        // }
         
         bool checkAnyErrorisExist = StatusOfTurbine.Any(i => i.list.Any(p => p));
         var item = StatusOfTurbine.Select(i => i.list.Any(p => p == true)).ToList();
 
         int[] index = new int[5] { 0, 1, 1, 2, 2 };
-        for (int stat = 0; stat < item.Count; stat++)
+        List<bool> data = new List<bool> { false, false, false };
+        for (int i = 0; i < item.Count; i++)
         {
-            int bear = index[stat];
-            
-            for (var mach = 0; mach < Bearing[bear].list.Count; mach++)
-            {
-                var mr = Bearing[bear].list[mach].GetComponentsInChildren<MeshRenderer>();
-                if (checkAnyErrorisExist && !item[stat])
-                {
-                    for (int i = 0; i < mr.Length; i++)
-                    {
-                        mr[i].materials = Enumerable.Repeat(DisabledTurbineObject, mr[i].materials.Length).ToArray();
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < mr.Length; i++)
-                    {
-                        if (mr[i].material.name.StartsWith(DisabledTurbineObject.name))
-                        {
-                            continue;
-                        }
-
-                        mr[i].materials = AbledTurbineObject[bear][mach][i];
-                    }
-                }
-            }   
-        } 
+            data[index[i]] |= item[i] & checkAnyErrorisExist;
+        }
+        
+        SetOutline(data);
     }
 
     public void Awake()
@@ -205,7 +206,7 @@ public class RandomGeneratorMotion : MonoBehaviour
                 o.enabled = false;
                 o.OutlineColor = Color.red;
             }
-            AbledTurbineObject.Add(m);
+            // AbledTurbineObject.Add(m);
         }
 
         mb = new Vector3(0, 0, Bearing[0].list[0].transform.position.z);

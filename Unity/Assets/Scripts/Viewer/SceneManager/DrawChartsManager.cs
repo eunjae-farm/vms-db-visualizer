@@ -160,8 +160,13 @@ public class DrawChartsManager : MonoBehaviour
                 Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Default;
                 Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Default;
 
-                var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");            
+                var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");
+                if (nodes.list[i].FFT == null)
+                {
+                    continue;
+                }
                 var fftData = nodes.list[i].FFT;
+                
                 for (int c = 0; c < fftData.Frequency.Length; c += 1)
                 {
                     int p = (int)c;
@@ -172,7 +177,10 @@ public class DrawChartsManager : MonoBehaviour
             {
                 Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
                 Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
-
+                if (nodes.list[i].Chart == null)
+                {
+                    continue;
+                }
                 var m = nodes.list.SelectMany(item => item.Chart.Data)
                     .Select(item => Math.Abs((item)))
                     .Max();
