@@ -153,7 +153,7 @@ public class DrawChartsManager : MonoBehaviour
             }
             int axi = nodes.list[i].Axis;
             overall[axi].gameObject.SetActive(true);
-            overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value / 1000.0:F1} mm/s";
+            overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
             
             if (mode)
             {
