@@ -37,7 +37,7 @@ public class MoreDetailTurbine : SceneManager
         TurbineMotion.gameObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
         
         TurbineMotion.OutterBody(false);
-        TurbineMotion.OnOutline(0, false);
+        TurbineMotion.OnOutline(-1, false);
         for (int c = 0; c < CamButton.Count; c++)
         {
             CamButton[c].GetComponent<Image>().color = (0 == c ? ActivatedCamColor : DefaultCamColor);

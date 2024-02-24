@@ -46,7 +46,10 @@ public class DrawChartsManager : MonoBehaviour
     public void ChartButton()
     {
         isOpenChart = false;
-        WindTurbine.GetComponent<RandomGeneratorMotion>().OnOutline(MachineIndex, false);
+        if (MachineIndex > 0)
+        {
+            WindTurbine.GetComponent<RandomGeneratorMotion>().OnOutline(MachineIndex, false);
+        }
     }
     
     public List<UnityList<NodeData>> Nodes;

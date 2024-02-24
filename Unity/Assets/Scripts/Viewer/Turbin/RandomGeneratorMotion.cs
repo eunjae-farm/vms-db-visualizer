@@ -108,8 +108,9 @@ public class RandomGeneratorMotion : MonoBehaviour
     //     //     .ToList()
     //     // .ForEach(i => i.localRotation = Quaternion.Euler(rot));
     // }
-    
-    
+
+
+    bool bulbStop = true;
     
     // clicked!
     public void OnOutline(int id, bool value)
@@ -118,27 +119,67 @@ public class RandomGeneratorMotion : MonoBehaviour
         {
             foreach (var b in Bearing[i].list)
             {
-                if (id == i)
+                if (id == -1)
                 {
-                    b.GetComponent<Outline>().OutlineColor = Color.white;                    
+                    bulbStop = true;
+                    b.GetComponent<Outline>().enabled = false;
                 }
-                // b.GetComponent<Outline>().enabled =(id == i ? value : false);
+
+                if (value && id == i)
+                {
+                    b.GetComponent<Outline>().OutlineColor = Color.white;
+                }else
+                {
+                    if (b.tag == "red")
+                    {
+                        b.GetComponent<Outline>().OutlineColor = Color.red;
+                    }
+                    else
+                    {
+                        b.GetComponent<Outline>().OutlineColor = Color.green;
+                    }
+                }
             }
         }
     }
 
+    public float ToggleForOutline = 1.0f;
+    
+    IEnumerator BulbForOutline()
+    {
+        while(!bulbStop)
+        {
+            for (int i = 0; i < Bearing.Count; i++)
+            {
+                foreach (var b in Bearing[i].list)
+                {
+                    if (b.tag == "red" && b.GetComponent<Outline>().OutlineColor == Color.red)
+                    {
+                        b.GetComponent<Outline>().enabled = !b.GetComponent<Outline>().enabled;
+                    }
+                }
+            }
+            yield return new WaitForSeconds(ToggleForOutline);
+        }
+    }
     public void SetOutline(List<bool> id)
     {
+        bulbStop = false;
+        StartCoroutine(BulbForOutline());
         for (int i = 0; i < Bearing.Count; i++)
         {
             foreach (var b in Bearing[i].list)
             {
+                b.GetComponent<Outline>().enabled = true;
+
                 if (id[i])
                 {
+                    b.tag = "red";
                     b.GetComponent<Outline>().OutlineColor = Color.red;    
                 }
                 else
                 {
+                    b.tag = "green";
                     b.GetComponent<Outline>().OutlineColor = Color.green;
                 }
             }
@@ -204,6 +245,7 @@ public class RandomGeneratorMotion : MonoBehaviour
                 var o = obj.AddComponent<Outline>();
                 o.OutlineWidth = 7;
                 o.enabled = false;
+                o.OutlineMode = Outline.Mode.OutlineVisible;
                 o.OutlineColor = Color.red;
             }
             // AbledTurbineObject.Add(m);

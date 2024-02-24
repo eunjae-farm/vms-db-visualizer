@@ -70,7 +70,7 @@ public class OverviewTurbineSelect : SceneManager
 
             var evals = moveAnimationCurve.Evaluate(currentMoveDuration / moveDuration);
             bool isThreshold = false;
-            if (evals > 0.4)
+            if (evals > 0.5)
             {
                 isThreshold = true;
             }
@@ -78,14 +78,15 @@ public class OverviewTurbineSelect : SceneManager
             var item = WindTurbines;
             // convert to 0 1 2 => 1, 0, -1
             //-1 0 1 
-            float x = 300 * -(1 - 1);
-            x += 300 * evals * moveDirection;
+            float x = -18;
+            x -= 20 * evals * moveDirection;
             if (isThreshold)
             {
-                x += -moveDirection * 300;
+                x -= -moveDirection * 20;
             }
 
-            item.transform.position = new Vector3(x, 0, 0);
+            // -18 -> -8
+            item.transform.position = new Vector3(x, item.transform.position.y, item.transform.position.z);
 
 
             if (Mathf.Abs(currentMoveDuration - moveDuration) < float.Epsilon)
