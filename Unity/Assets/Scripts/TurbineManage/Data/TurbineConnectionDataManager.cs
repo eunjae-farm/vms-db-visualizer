@@ -28,7 +28,7 @@ public class TurbineConnectionDataManager : SingleTon<TurbineConnectionDataManag
                 DBName = "Hangwon4",
                 FastRotateSpeed = 1000,
                 ID = "sa",
-                PW ="skf1234!",
+                PW = "skf1234!",
                 MagnitudeOfCorrectForMotion = new List<float>
                 {
                     0.5f,0.5f,0.5f,0.5f,0.5f
