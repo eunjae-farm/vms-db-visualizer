@@ -161,7 +161,9 @@ public class DrawChartsManager : MonoBehaviour
                 Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Default;
 
                 var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");
-                if (nodes.list[i].FFT == null)
+                if (nodes.list[i].FFT == null || 
+                    nodes.list[i].FFT.Frequency == null || 
+                    nodes.list[i].FFT.Intensity == null)
                 {
                     continue;
                 }
@@ -177,7 +179,8 @@ public class DrawChartsManager : MonoBehaviour
             {
                 Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
                 Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
-                if (nodes.list[i].Chart == null)
+                if (nodes.list[i].Chart == null || 
+                    nodes.list[i].Chart.Data == null) 
                 {
                     continue;
                 }
