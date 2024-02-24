@@ -281,9 +281,10 @@ public class MoreDetailTurbine : SceneManager
                         oad.list.Add(0);
                     }else
                     {
-                        nodeData.Where(data => data.Node.NodeId == id.NodeId)
-                            .ToList()
-                            .ForEach(i => i.Axis = axiss);
+                        // 문제! 이름이 같다면 HVA 가 같다만 문제가 생김!
+                        //nodeData.Where(data => data.Node.NodeId == id.NodeId)
+                        //    .ToList()
+                        //    .ForEach(i => i.Axis.Add(axiss));
                         oad.list.Add(nodeData.First(o => o.Node.NodeId == id.NodeId).Search.Value);
                     }
                     

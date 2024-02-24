@@ -15,7 +15,7 @@ public class NodeData
         this.Search = search;
     }
 
-    public int Axis { get; set; } = -1;
+    public List<int> Axis { get; set; } = new List<int>();
 
     [field: SerializeField]
     public VMSNode Node { get; set; }

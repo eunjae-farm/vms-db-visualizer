@@ -162,7 +162,7 @@ public class DrawChartsManager : MonoBehaviour
             {
                 continue;
             }
-            int axi = nodes.list[i].Axis;
+            int axi = i;
             overall[axi].gameObject.SetActive(true);
             overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
             // overall[addedNum].color = colors[addedNum];
