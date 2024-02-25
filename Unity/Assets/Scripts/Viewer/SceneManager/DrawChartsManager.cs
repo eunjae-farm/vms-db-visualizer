@@ -121,15 +121,31 @@ public class DrawChartsManager : MonoBehaviour
     // mode "FALSE" is Charts
     public void DrawChart(bool mode)
     {
-        var nodes = Nodes[MachineIndex];
+        
         var name = new List<string>
         {
             "Main Bearing", 
             "GearBox",
             "Generator",
-            "DE",
-            "NDE",
         };
+        var vvv = new List<List<(int, string)>>
+        {
+            new List<(int, string)>
+            {
+                (0, "RS"),
+            },
+            new List<(int, string)>
+            {
+                (1, "RS"),
+                (2, "GS"),
+            },
+            new List<(int, string)>
+            {
+                (3, "DE"),
+                (4, "NDE"),
+            }
+        };
+        
         var overall = new List<TMPro.TMP_Text>
         {
             OverallOfHorizontal,
@@ -154,75 +170,85 @@ public class DrawChartsManager : MonoBehaviour
             new Color(158f / 255,202f / 255,126f / 255),
             new Color(242f / 255,201f / 255,107f / 255),
         };
-
-        int addedNum = 0;
-        for (int i = 0; i < nodes.list.Count; i++)
+        Charts.GetChartComponent<YAxis>().max = 0;
+        Charts.GetChartComponent<YAxis>().min = 0;
+        Charts.GetChartComponent<XAxis>().max = 0;
+        
+        foreach (var (midx, mname) in vvv[MachineIndex])
         {
-            if (nodes.list[i] == null)
-            {
-                continue;
-            }
-            int axi = i;
-            overall[axi].gameObject.SetActive(true);
-            overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
-            // overall[addedNum].color = colors[addedNum];
+            var nodes = Nodes[midx];
             
-            if (mode)
+            for (int i = 0; i < nodes.list.Count; i++)
             {
-                Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Default;
-                Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Default;
+                if (nodes.list[i] == null)
+                {
+                    continue;
+                }
 
-                if (nodes.list[i].FFT == null || 
-                    nodes.list[i].FFT.Frequency == null || 
-                    nodes.list[i].FFT.Intensity == null)
+                int axi = i;
+                // overall[addedNum].color = colors[addedNum];
+
+                if (mode)
                 {
-                    continue;
+                    Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Default;
+                    Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Default;
+
+                    if (nodes.list[i].FFT == null ||
+                        nodes.list[i].FFT.Frequency == null ||
+                        nodes.list[i].FFT.Intensity == null)
+                    {
+                        continue;
+                    }
+
+                    var fft = Charts.AddSerie<Line>($"FFT({mname}) {axis[axi]}");
+                    var fftData = nodes.list[i].FFT;
+
+                    for (int c = 0; c < fftData.Frequency.Length; c += 1)
+                    {
+                        int p = (int)c;
+                        fft.AddXYData(fftData.Frequency[p], fftData.Intensity[p]);
+                    }
+                }
+                else
+                {
+                    Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
+                    Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
+                    if (nodes.list[i].Chart == null ||
+                        nodes.list[i].Chart.Data == null)
+                    {
+                        continue;
+                    }
+
+                    var m = nodes.list.SelectMany(item => item.Chart.Data)
+                        .Select(item => Math.Abs((item)))
+                        .Max();
+                    var mt = nodes.list.Select(item => item.Chart.Duration)
+                        .Select(item => Math.Abs((item)))
+                        .Select(item => (int)(item * 1000) / 1000.0)
+                        .Max();
+
+                    Charts.GetChartComponent<YAxis>().max += m * 1.1 / vvv[MachineIndex].Count;
+                    Charts.GetChartComponent<YAxis>().min -= m * 1.1 / vvv[MachineIndex].Count;
+                    Charts.GetChartComponent<XAxis>().max = Math.Max(mt, Charts.GetChartComponent<XAxis>().max);
+
+                    var chart = Charts.AddSerie<Line>($"Time({mname}) {axis[axi]}");
+                    var chartData = nodes.list[i].Chart;
+                    var time = Enumerable.Range(1, chartData.Data.Length)
+                        .Select(i => (double)i / chartData.Data.Length * chartData.Duration)
+                        .ToArray();
+                    for (float c = 0; c < chartData.Data.Length; c += (chartData.Data.Length / 1000f))
+                    {
+                        int p = (int)c;
+                        chart.AddXYData(time[p], chartData.Data[p]);
+                    }
                 }
                 
-                var fft = Charts.AddSerie<Line>($"FFT {axis[axi]}");
-                var fftData = nodes.list[i].FFT;
-                
-                for (int c = 0; c < fftData.Frequency.Length; c += 1)
-                {
-                    int p = (int)c;
-                    fft.AddXYData(fftData.Frequency[p], fftData.Intensity[p]);
-                }
+                overall[axi].gameObject.SetActive(true);
+                overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
             }
-            else
-            {
-                Charts.GetChartComponent<YAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
-                Charts.GetChartComponent<XAxis>().minMaxType = Axis.AxisMinMaxType.Custom;
-                if (nodes.list[i].Chart == null || 
-                    nodes.list[i].Chart.Data == null) 
-                {
-                    continue;
-                }
-                
-                var m = nodes.list.SelectMany(item => item.Chart.Data)
-                    .Select(item => Math.Abs((item)))
-                    .Max();
-                var mt = nodes.list.Select(item => item.Chart.Duration)
-                    .Select(item => Math.Abs((item)))
-                    .Select(item => (int)(item * 1000) / 1000.0)
-                    .Max();
-                
-                Charts.GetChartComponent<YAxis>().max = +(m*1.1);
-                Charts.GetChartComponent<YAxis>().min = -(m*1.1);
-                Charts.GetChartComponent<XAxis>().max = mt;
-                
-                var chart = Charts.AddSerie<Line>($"Time {axis[axi]}");
-                var chartData = nodes.list[i].Chart;
-                var time = Enumerable.Range(1, chartData.Data.Length)
-                    .Select(i => (double)i / chartData.Data.Length * chartData.Duration)
-                    .ToArray();
-                for (float c = 0; c < chartData.Data.Length; c += (chartData.Data.Length / 1000f))
-                {
-                    int p = (int)c;
-                    chart.AddXYData(time[p], chartData.Data[p]);
-                }
-            }
-            addedNum += 1;
+            
         }
+
     }
 
 }

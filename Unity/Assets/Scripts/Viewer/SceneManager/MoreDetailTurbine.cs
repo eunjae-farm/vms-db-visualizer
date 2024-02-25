@@ -45,9 +45,9 @@ public class MoreDetailTurbine : SceneManager
             CamButton[c].GetComponent<Image>().color = (0 == c ? ActivatedCamColor : DefaultCamColor);
         }
 
-        Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 356.4f;
-        Volume.profile.GetSetting<DepthOfField>().aperture.value = 0.4f;
-        Volume.profile.GetSetting<DepthOfField>().focalLength.value = 200f;
+        Volume.profile.GetSetting<DepthOfField>().focusDistance.value = 20.0f;
+        Volume.profile.GetSetting<DepthOfField>().aperture.value = 3.6f;
+        Volume.profile.GetSetting<DepthOfField>().focalLength.value = 225f;
                 Volume.profile.GetSetting<DepthOfField>().kernelSize.value = KernelSize.Small;
 
         Cameras.SetCamera(0, true);
@@ -242,11 +242,11 @@ public class MoreDetailTurbine : SceneManager
             
             var dev = new List<string>
             {
-                "MB",
-                "GB",
-                "GE",
-                "DE",
-                "NDE",
+                "MB RS",
+                "GB RS",
+                "GB GS",
+                "GE DE",
+                "GE NDE",
             };
             var axis = "HVA";
             var setData = new List<UnityList<bool>>();
