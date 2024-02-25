@@ -219,10 +219,17 @@ public class DrawChartsManager : MonoBehaviour
                         continue;
                     }
 
-                    var m = nodes.list.SelectMany(item => item.Chart.Data)
+                    var m = nodes.list
+                        .Where(item => item != null)
+                        .Where(item => item.Chart != null)
+                        .Where(item => item.Chart.Data != null)
+                        .SelectMany(item => item.Chart.Data)
                         .Select(item => Math.Abs((item)))
                         .Max();
-                    var mt = nodes.list.Select(item => item.Chart.Duration)
+                    var mt = nodes.list
+                        .Where(item => item != null)
+                        .Where(item => item.Chart != null)
+                        .Select(item => item.Chart.Duration)
                         .Select(item => Math.Abs((item)))
                         .Select(item => (int)(item * 1000) / 1000.0)
                         .Max();
