@@ -382,7 +382,8 @@ public class RandomGeneratorMotion : MonoBehaviour
         // FastAsile.transform.localRotation = Quaternion.LookRotation(pc3);
 
         var va = Enumerable.Aggregate(vec, (a, b) => a + b)
-                     / vec.Count;
+                     / vec.Count
+                     * 0.20f;
 
         foreach (var item in Bearing[0].list)
         {
