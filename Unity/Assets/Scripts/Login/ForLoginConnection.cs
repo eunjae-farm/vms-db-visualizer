@@ -15,6 +15,10 @@ public class ForLoginConnection : MonoBehaviour
         Exit.SetActive(true);
     }
 
+    public void Start()
+    {
+        Connect();
+    }
     public void Connect()
     {
         if (FieldOfAPI.text == "")

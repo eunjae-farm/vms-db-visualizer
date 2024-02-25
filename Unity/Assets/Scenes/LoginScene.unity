@@ -2506,7 +2506,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 127.0.0.1:5001
+  m_Text: zip.udon.party:6001
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -2914,7 +2914,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "127.0.0.1:5001\u200B"
+  m_text: "zip.udon.party:6001\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e639817f0e34647509639eb955276c80, type: 2}
   m_sharedMaterial: {fileID: -5848982140935437643, guid: e639817f0e34647509639eb955276c80, type: 2}
@@ -3133,7 +3133,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ex) home.udon.party:8000
+  m_text: ex) 127.0.0.1:5001
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e639817f0e34647509639eb955276c80, type: 2}
   m_sharedMaterial: {fileID: -5848982140935437643, guid: e639817f0e34647509639eb955276c80, type: 2}

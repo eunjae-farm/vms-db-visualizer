@@ -36,10 +36,10 @@ public class RandomGeneratorMotion : MonoBehaviour
     // private List<List<List<Material[]>>> AbledTurbineObject = new List<List<List<Material[]>>>();
 
     #region Removable Outter Body
-    bool µû°­_¿­·È³ª = false;
+    bool turbine_value_checker = false;
     public void OutterBody(bool on)
     {
-        if (µû°­_¿­·È³ª == on)
+        if (turbine_value_checker == on)
         {
             return;
         }
@@ -52,7 +52,7 @@ public class RandomGeneratorMotion : MonoBehaviour
         {
             StartCoroutine(OutterBodyCoroutine(0.8f, -9, 0));
         }
-        µû°­_¿­·È³ª = on;
+        turbine_value_checker = on;
         //outter_body.transform.position = new Vector3(0, 0, -9);
     }
 
