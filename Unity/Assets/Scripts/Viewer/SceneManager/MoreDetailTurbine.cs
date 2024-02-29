@@ -35,7 +35,7 @@ public class MoreDetailTurbine : SceneManager
         // 1. Outline 삭제
         // 다시 커버 닫기
         // 그 외 모든 UI 정리하기
-        TurbineMotion.gameObject.transform.position = new Vector3(-18f, 54.3f, 388.9f);
+        TurbineMotion.gameObject.transform.position = new Vector3(-18.3f, 54.3f, 394.8f);
         TurbineMotion.gameObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
         
         TurbineMotion.OutterBody(false);

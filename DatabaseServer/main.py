@@ -184,11 +184,11 @@ def environment():
     # data = database("Dongbuk", "59.28.91.19", "sa", "skf1234!")
     data = database("Dongbuk", db['ip'], db['id'], db['pw'])
     data.connect()
-    # return data.environment()
+    return data.environment()
     
-    return {"temp": rd.random() * 10 + 20, 
-            "sound": rd.random() * 60 + 40, 
-            "dust": rd.random() * 70 + 20} 
+    # return {"temp": rd.random() * 10 + 20, 
+            # "sound": rd.random() * 60 + 40, 
+            # "dust": rd.random() * 70 + 20} 
 
 if __name__ == "__main__":
     app.run(port=5001, host="0.0.0.0")

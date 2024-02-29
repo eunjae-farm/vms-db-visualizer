@@ -1,5 +1,6 @@
 import pymssql as mssql
 from dto import convertRaw, convertSearch, convertNode, convertAlarm
+import random as rd
 
 class database:
     def __init__(self, name, ip, id, pw):
@@ -20,7 +21,7 @@ class database:
                              database=self.db)
         self.cursor = conn.cursor() # 쿼리 생성과 결과 조회를 위해 사용
     
-    def environment(self, temp: str = 525, sound: str = 525, dust: str = 525):
+    def environment(self, temp: str = 403, sound: str = 403, dust: str = 403):
         # self.cursor.execute('''SELECT IDNode FROM Node WHERE NodeName = \'{0}\''''.format(temp))
         # row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
         # temp_node_id = row[0]
@@ -33,25 +34,31 @@ class database:
         # row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
         # dust_node_id = row[0]
 
-        self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
-                                        ORDER BY (SELECT NULL), IDMeasurement DESC 
-                                        OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(temp, 0, 1))
+        self.cursor.execute('''SELECT Amp
+                    FROM Dongbuk.dbo.TrendSingle t
+                    WHERE IDPoint = {0}
+                    ORDER BY ReadingTime DESC 
+                    OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(temp, 0, 1))
+        
         row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
         temp_v = row[0]
         
-        self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
-                                        ORDER BY (SELECT NULL), IDMeasurement DESC 
-                                        OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(sound, 0, 1))
-        row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
-        sound_v = row[0]
+        # self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
+        #                                 ORDER BY (SELECT NULL), IDMeasurement DESC 
+        #                                 OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(sound, 0, 1))
+        # row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        # sound_v = row[0]
         
-        self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
-                                        ORDER BY (SELECT NULL), IDMeasurement DESC 
-                                        OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(dust, 0, 1))
-        row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
-        dust_v = row[0]
+        # self.cursor.execute('''SELECT Process FROM Measurement WHERE IDNode = {0} 
+        #                                 ORDER BY (SELECT NULL), IDMeasurement DESC 
+        #                                 OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY'''.format(dust, 0, 1))
+        # row = self.cursor.fetchone() # 쿼리 결과의 다음 행을 가져와 리턴
+        # dust_v = row[0]
 
-        return {"temp": temp_v, "sound": sound_v, "dust": dust_v}
+        return {"temp": temp_v, 
+                "sound": rd.random() * 60 + 40, 
+                "dust": rd.random() * 70 + 20}
+                
         
 
     def nodes(self):

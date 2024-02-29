@@ -387,7 +387,7 @@ public class RandomGeneratorMotion : MonoBehaviour
 
         foreach (var item in Bearing[0].list)
         {
-            var p = Quaternion.LookRotation(-pc1).eulerAngles;
+            var p = Quaternion.LookRotation(pc1).eulerAngles;
             p.z = 0;
             item.transform.localPosition = vec[0] + va;
             item.transform.localRotation = Quaternion.Euler(p);
