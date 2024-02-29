@@ -133,6 +133,7 @@ public class RandomGeneratorMotion : MonoBehaviour
 
                 if (value && id == i)
                 {
+                    b.GetComponent<Outline>().enabled = true;
                     b.GetComponent<Outline>().OutlineColor = Color.white;
                 }else
                 {
@@ -195,6 +196,10 @@ public class RandomGeneratorMotion : MonoBehaviour
 
     public void SetData(List<UnityList<bool>> status, List<UnityList<double>> overall)
     {
+    CycleOfRefreshX = Random.Range(0.2f, 0.8f);
+    CycleOfRefreshY = Random.Range(0.2f, 0.8f);
+    CycleOfRefreshZ = Random.Range(0.2f, 0.8f);
+    
         StatusOfTurbine = status;
         ValueOfOverAll = overall;
         // for (int b = 0; b < Bearing.Count; b++)
@@ -237,6 +242,9 @@ public class RandomGeneratorMotion : MonoBehaviour
     Vector3 con2;
     Vector3 ge  ;
     
+    // Vector3 mbeuler  ;
+    // Vector3 gbeuler  ;
+    // Vector3 geeuler  ;
     public void Start() {
         foreach (var b in Bearing)
         {
@@ -359,9 +367,9 @@ public class RandomGeneratorMotion : MonoBehaviour
         var p0 = FrontWing.transform.position;
         p0.x = p0.y = 0;
         
-        var p1 = vec[0] + mb;
-        var p2 = ((vec[1] + vec[2]) / 2) + gb;
-        var p3 = ((vec[3] + vec[4]) / 2) + ge;
+        var p1 = (vec[0] / 35) + mb;
+        var p2 = ((vec[1] + vec[2]) / 2 / 35.0f) + gb;
+        var p3 = ((vec[3] + vec[4]) / 2 / 35.0f) + ge;
         
         
         // mb  

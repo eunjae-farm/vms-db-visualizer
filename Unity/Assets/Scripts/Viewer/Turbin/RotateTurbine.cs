@@ -38,9 +38,15 @@ public class RotateTurbine : MonoBehaviour
         var (center, _) = ComputeCenterPosition(Propeller);
         this.Propeller.transform.RotateAround(center, Vector3.forward, Time.deltaTime * WingRotatePerSeconds * 360);
 
-        this.TurbineFromSlow.transform.Rotate(Vector3.forward, Time.deltaTime * SlowRotateSpeed * 360);
-        this.TurbineFromFast.transform.Rotate(Vector3.forward, Time.deltaTime * FastwRotateSpeed * 360);
+        if (TurbineFromSlow.gameObject != null)
+        {
+            this.TurbineFromSlow.transform.Rotate(Vector3.forward, Time.deltaTime * SlowRotateSpeed * 360);
+        }
 
+        if (TurbineFromFast.gameObject != null)
+        {
+            this.TurbineFromFast.transform.Rotate(Vector3.forward, Time.deltaTime * FastwRotateSpeed * 360);    
+        }
         //var cur = this.Propeller.transform.eulerAngles;
         //this.Propeller.transform.RotateAround(Vector3.forward, WingRotatePerSeconds * Time.deltaTime * 3.6f);
     }

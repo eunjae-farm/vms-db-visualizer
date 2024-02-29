@@ -22,9 +22,19 @@ public class DrawChartsManager : MonoBehaviour
     [SerializeField]
     private TurbineConnectionData turbineConnection;
 
-    public TMPro.TMP_Text OverallOfHorizontal;
-    public TMPro.TMP_Text OverallOfVertical;
-    public TMPro.TMP_Text OverallOfAxial;
+    public GameObject SomeOfOverlay;
+    public GameObject OneOfOverlay;
+    
+    public TMPro.TMP_Text OneOfOverallOfHorizontal;
+    public TMPro.TMP_Text OneOfOverallOfVertical;
+    public TMPro.TMP_Text OneOfOverallOfAxial;
+    
+    public TMPro.TMP_Text SomeOfOverallOfHorizontal;
+    public TMPro.TMP_Text SomeOfOverallOfVertical;
+    public TMPro.TMP_Text SomeOfOverallOfAxial;
+    public TMPro.TMP_Text OtherOfOverallOfHorizontal;
+    public TMPro.TMP_Text OtherOfOverallOfVertical;
+    public TMPro.TMP_Text OtherOfOverallOfAxial;
     
     private bool _isOpenChart = false;
     private bool isOpenChart {
@@ -146,13 +156,27 @@ public class DrawChartsManager : MonoBehaviour
             }
         };
         
-        var overall = new List<TMPro.TMP_Text>
+        var oneofoverall = new List<TMPro.TMP_Text>
         {
-            OverallOfHorizontal,
-            OverallOfVertical,
-            OverallOfAxial,
+            OneOfOverallOfHorizontal,
+            OneOfOverallOfVertical,
+            OneOfOverallOfAxial,
         };
-        foreach (var o in overall)
+        var someofoverall = new List<TMPro.TMP_Text>
+        {
+            SomeOfOverallOfHorizontal,
+            SomeOfOverallOfVertical,
+            SomeOfOverallOfAxial,
+            OtherOfOverallOfHorizontal,
+            OtherOfOverallOfVertical,
+            OtherOfOverallOfAxial,
+        };
+            
+        foreach (var o in oneofoverall)
+        {
+            o.gameObject.SetActive(false);
+        }
+        foreach (var o in someofoverall)
         {
             o.gameObject.SetActive(false);
         }
@@ -173,7 +197,19 @@ public class DrawChartsManager : MonoBehaviour
         Charts.GetChartComponent<YAxis>().max = 0;
         Charts.GetChartComponent<YAxis>().min = 0;
         Charts.GetChartComponent<XAxis>().max = 0;
-        
+
+        if (vvv[MachineIndex].Count == 1)
+        {
+            OneOfOverlay.SetActive(true);
+            SomeOfOverlay.SetActive(false);
+        }
+        else
+        {
+            OneOfOverlay.SetActive(false);
+            SomeOfOverlay.SetActive(true);
+        }
+
+        int upM = 0;
         foreach (var (midx, mname) in vvv[MachineIndex])
         {
             var nodes = Nodes[midx];
@@ -250,10 +286,32 @@ public class DrawChartsManager : MonoBehaviour
                     }
                 }
                 
-                overall[axi].gameObject.SetActive(true);
-                overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
+                if (vvv[MachineIndex].Count == 1)
+                {
+                    OneOfOverlay.SetActive(true);
+                    SomeOfOverlay.SetActive(false);
+                }
+                else
+                {
+                    OneOfOverlay.SetActive(false);
+                    SomeOfOverlay.SetActive(true);
+                }
+                
+                if (vvv[MachineIndex].Count == 1)
+                {
+                    oneofoverall[axi].gameObject.SetActive(true);
+                    oneofoverall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
+                }
+                else
+                {
+                    someofoverall[axi + upM * 3].gameObject.SetActive(true);
+                    someofoverall[axi + upM * 3].text = $"({mname}){axis[axi]} : {nodes.list[i].Search.Value:F1}1";
+                }
+                // overall[axi].gameObject.SetActive(true);
+                // overall[axi].text = $"{axis[axi]} : {nodes.list[i].Search.Value:F1} mm/s";
             }
-            
+
+            upM += 1;
         }
 
     }
